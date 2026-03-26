@@ -89,6 +89,94 @@ Guidelines:
 - Only reference cars in the inventory — never invent specs
 - Always quote prices in TT dollars`;
 
+
+function renderMarkdown(text) {
+  const lines = text.split("\n");
+  const elements = [];
+  let key = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Empty line = spacer
+    if (line.trim() === "") {
+      elements.push(<div key={key++} style={{ height: "0.5rem" }} />);
+      continue;
+    }
+
+    // Heading ## or ###
+    if (line.startsWith("### ")) {
+      elements.push(<div key={key++} style={{ fontWeight: 800, fontSize: "0.95rem", marginTop: "0.75rem", marginBottom: "0.25rem" }}>{formatInline(line.slice(4))}</div>);
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      elements.push(<div key={key++} style={{ fontWeight: 800, fontSize: "1rem", marginTop: "0.75rem", marginBottom: "0.25rem" }}>{formatInline(line.slice(3))}</div>);
+      continue;
+    }
+    if (line.startsWith("# ")) {
+      elements.push(<div key={key++} style={{ fontWeight: 900, fontSize: "1.05rem", marginTop: "0.75rem", marginBottom: "0.25rem" }}>{formatInline(line.slice(2))}</div>);
+      continue;
+    }
+
+    // Bullet - or *
+    if (line.match(/^[-*] /)) {
+      elements.push(
+        <div key={key++} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start", marginBottom: "0.2rem" }}>
+          <span style={{ color: "#4F46E5", fontWeight: 700, flexShrink: 0, marginTop: 2 }}>•</span>
+          <span>{formatInline(line.slice(2))}</span>
+        </div>
+      );
+      continue;
+    }
+
+    // Numbered list
+    const numMatch = line.match(/^(\d+)\. (.+)/);
+    if (numMatch) {
+      elements.push(
+        <div key={key++} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start", marginBottom: "0.2rem" }}>
+          <span style={{ color: "#4F46E5", fontWeight: 700, flexShrink: 0, minWidth: "1.2rem" }}>{numMatch[1]}.</span>
+          <span>{formatInline(numMatch[2])}</span>
+        </div>
+      );
+      continue;
+    }
+
+    // Normal paragraph line
+    elements.push(<div key={key++} style={{ marginBottom: "0.1rem" }}>{formatInline(line)}</div>);
+  }
+
+  return <div style={{ display: "flex", flexDirection: "column" }}>{elements}</div>;
+}
+
+function formatInline(text) {
+  // Handle **bold** and *italic*
+  const parts = [];
+  const regex = /\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`/g;
+  let last = 0;
+  let match;
+  let key = 0;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > last) {
+      parts.push(<span key={key++}>{text.slice(last, match.index)}</span>);
+    }
+    if (match[1] !== undefined) {
+      parts.push(<strong key={key++}>{match[1]}</strong>);
+    } else if (match[2] !== undefined) {
+      parts.push(<em key={key++}>{match[2]}</em>);
+    } else if (match[3] !== undefined) {
+      parts.push(<code key={key++} style={{ background: "#F3F4F6", padding: "0.1rem 0.3rem", borderRadius: 4, fontSize: "0.85em" }}>{match[3]}</code>);
+    }
+    last = regex.lastIndex;
+  }
+
+  if (last < text.length) {
+    parts.push(<span key={key++}>{text.slice(last)}</span>);
+  }
+
+  return parts.length > 0 ? parts : text;
+}
+
 export default function CarMatchAI() {
   const [screen, setScreen] = useState("home");
   const [messages, setMessages] = useState([
@@ -439,9 +527,7 @@ export default function CarMatchAI() {
                   <div key={i} style={{ ...s.msgRow, ...(m.role === "user" ? s.msgRowUser : {}) }}>
                     {m.role === "assistant" && <div style={s.aiAvatar}><Icon.logo /></div>}
                     <div style={{ ...s.bubble, ...(m.role === "user" ? s.bubbleUser : s.bubbleAI) }}>
-                      {m.content.split("\n").map((ln, j, arr) => (
-                        <span key={j}>{ln}{j < arr.length - 1 && <br />}</span>
-                      ))}
+                      {renderMarkdown(m.content)}
                     </div>
                   </div>
                 ))}
