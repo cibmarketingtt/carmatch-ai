@@ -234,12 +234,27 @@ export default function CarMatchAI() {
 
   const openLead = (car) => { setSelectedCar(car); setLead({ name: "", email: "", phone: "" }); setScreen("lead"); };
   const submitLead = async () => {
-    if (!lead.name || !lead.phone) return;
-    setSubmitting(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setSubmitting(false);
-    setScreen("thanks");
-  };
+  if (!lead.name || !lead.phone) return;
+  setSubmitting(true);
+  try {
+    await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        car: `${selectedCar.year} ${selectedCar.brand} ${selectedCar.name}`,
+        dealership: selectedCar.dealership,
+        price: fmt(selectedCar.price),
+      }),
+    });
+  } catch (err) {
+    console.error("Lead submission error:", err);
+  }
+  setSubmitting(false);
+  setScreen("thanks");
+};
 
   const filteredCars = filterCars(activeFilter);
 
