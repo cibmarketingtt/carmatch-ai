@@ -63,6 +63,9 @@ function rowToCar(headers, values) {
     id:         parseInt(get("id")) || Math.random(),
     name:       get("name"),
     image:      get("image"),
+    image2:     get("image2") || null,
+    image3:     get("image3") || null,
+    image4:     get("image4") || null,
     brand,
     type:       get("type"),
     price:      parseInt(get("price")) || 0,
@@ -154,13 +157,54 @@ const SUGGESTIONS = [
 ];
 
 const SMART_GROUPS = [
-  { label: "Most Popular", sub: "What Trinis are buying right now", cars: [1, 2, 3], icon: "trophy", from: "#6366F1", to: "#8B5CF6" },
-  { label: "Best for Families", sub: "Space, safety & comfort for everyone", cars: [2, 4, 5], icon: "users", from: "#F59E0B", to: "#EF4444" },
-  { label: "Save on Fuel", sub: "Spend far less every month", cars: [1, 4, 3], icon: "zap", from: "#10B981", to: "#06B6D4" },
-  { label: "Best Value", sub: "Maximum car for your investment", cars: [3, 5, 7], icon: "dollar", from: "#3B82F6", to: "#6366F1" },
-  { label: "Premium Range", sub: "When only the best will do", cars: [8, 4, 6], icon: "sparkle", from: "#EC4899", to: "#8B5CF6" },
-  { label: "Eco Friendly", sub: "Lower emissions, lower running costs", cars: [4, 1], icon: "leaf", from: "#10B981", to: "#84CC16" },
+  {
+    label: "Best for Families",
+    sub: "Space, safety and comfort for everyone",
+    icon: "users", from: "#F59E0B", to: "#EF4444",
+    match: c => c.seats >= 7 || (c.tags && c.tags.includes("family")),
+  },
+  {
+    label: "First-Time Buyers",
+    sub: "Smart choices for your first brand-new car",
+    icon: "star", from: "#6366F1", to: "#8B5CF6",
+    match: c => (c.tags && c.tags.includes("affordable")) || c.price < 250000,
+  },
+  {
+    label: "Save on Fuel",
+    sub: "Spend less every time you fill up",
+    icon: "zap", from: "#10B981", to: "#06B6D4",
+    match: c => c.tags && c.tags.includes("fuel-efficient"),
+  },
+  {
+    label: "Going Electric",
+    sub: "EVs and hybrids available in T&T now",
+    icon: "leaf", from: "#059669", to: "#34D399",
+    match: c => c.ev === true || (c.fuel && c.fuel.toLowerCase().includes("hybrid")),
+  },
+  {
+    label: "Best Value Under TT$300k",
+    sub: "Maximum car for your money",
+    icon: "dollar", from: "#3B82F6", to: "#6366F1",
+    match: c => c.price < 300000,
+  },
+  {
+    label: "Safety First",
+    sub: "Top crash test ratings across the board",
+    icon: "shield", from: "#DC2626", to: "#F87171",
+    match: c => c.safety && c.safety.includes("5-Star"),
+  },
+  {
+    label: "Work & Commercial",
+    sub: "Built tough for the job",
+    icon: "trophy", from: "#B45309", to: "#F59E0B",
+    match: c => c.type === "Pickup" || (c.tags && c.tags.includes("work")),
+  },
 ];
+
+// Returns up to 3 matching cars from the live inventory for a group
+function getGroupCars(allCars, group) {
+  return allCars.filter(group.match).slice(0, 3);
+}
 
 const fmt = (n) => `TT$${n.toLocaleString()}`;
 
@@ -324,14 +368,31 @@ export default function CarlaAI() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [matches, setMatches] = useState([]);
+  const [showMatchesFloat, setShowMatchesFloat] = useState(false);
   const [activeTab, setActiveTab] = useState("chat");
   const [selectedCar, setSelectedCar] = useState(null);
+  const [bookingIntent, setBookingIntent] = useState("Test Drive");
   const [lead, setLead] = useState({ name: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const [expandedCards, setExpandedCards] = useState(new Set());
+  const [cardImageIndex, setCardImageIndex] = useState({});
   const toggleCard = (id) => setExpandedCards(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
   const chatEndRef = useRef(null);
+
+  const extractChatContext = (msgs) => {
+    const userMsgs = msgs.filter(m => m.role === "user").map(m => m.content).join(" ");
+    const context = [];
+    const budgetMatch = userMsgs.match(/(?:budget|afford|spend|under|around|up to)[^\d]*(\d[\d,]*)/i);
+    if (budgetMatch) context.push(`Budget: TT$${budgetMatch[1]}`);
+    if (/family|kids|children|seats/i.test(userMsgs)) context.push("Needs: Family car");
+    if (/hybrid|ev|electric|fuel.efficien/i.test(userMsgs)) context.push("Interest: Fuel efficiency / EV");
+    if (/offroad|maracas|mountain|4x4/i.test(userMsgs)) context.push("Use case: Off-road / rugged terrain");
+    if (/first.time|new driver/i.test(userMsgs)) context.push("Profile: First-time buyer");
+    if (/luxury|premium|high.end/i.test(userMsgs)) context.push("Preference: Premium / luxury");
+    if (/work|business|commercial/i.test(userMsgs)) context.push("Use case: Work / commercial");
+    return context.length > 0 ? context.join(" | ") : null;
+  };
 
   const handleWizard = (opt) => {
     setWizardDone(true);
@@ -413,10 +474,17 @@ export default function CarlaAI() {
     setLoading(false);
   };
 
-  const openLead = (car) => { setSelectedCar(car); setLead({ name: "", email: "", phone: "" }); setScreen("lead"); };
+  const openLead = (car, intent = "Test Drive") => {
+    setSelectedCar(car);
+    setBookingIntent(intent);
+    setLead({ name: "", email: "", phone: "" });
+    setScreen("lead");
+  };
+
   const submitLead = async () => {
     if (!lead.name || !lead.phone) return;
     setSubmitting(true);
+    const chatContext = extractChatContext(messages);
     try {
       await fetch("/api/lead", {
         method: "POST",
@@ -428,6 +496,8 @@ export default function CarlaAI() {
           car: `${selectedCar.year} ${selectedCar.brand} ${selectedCar.name}`,
           dealership: selectedCar.dealership,
           price: fmt(selectedCar.price),
+          intent: bookingIntent,
+          context: chatContext,
         }),
       });
     } catch (err) {
@@ -453,8 +523,8 @@ export default function CarlaAI() {
           </div>
         </button>
         <div style={s.navRight}>
-          {dataSource === "cache" && <div style={s.dataTag} title={lastUpdated ? "Last synced: " + lastUpdated.toLocaleString() : "Cached data"}>Cached</div>}
-          {dataSource === "fallback" && <div style={{ ...s.dataTag, background: "#FEF3C7", color: "#92400E" }}>Offline mode</div>}
+          {dataSource === "cache" && SHEET_URL !== "YOUR_GOOGLE_SHEET_CSV_URL_HERE" && <div style={s.dataTag} title={lastUpdated ? "Last synced: " + lastUpdated.toLocaleString() : "Cached data"}>Cached</div>}
+          {dataSource === "fallback" && SHEET_URL !== "YOUR_GOOGLE_SHEET_CSV_URL_HERE" && <div style={{ ...s.dataTag, background: "#FEF3C7", color: "#92400E" }}>Offline mode</div>}
           {screen !== "home" && <button style={s.navGhost} onClick={() => setScreen("home")}>Home</button>}
           <button style={s.navGhost} className="nav-browse" onClick={() => { setScreen("home"); setTimeout(() => document.getElementById("browse")?.scrollIntoView({ behavior: "smooth" }), 100); }}>
             <Icon.grid /> Browse Vehicles
@@ -599,6 +669,8 @@ export default function CarlaAI() {
             <div style={s.groupGrid}>
               {SMART_GROUPS.map(g => {
                 const GIcon = Icon[g.icon] || Icon.car;
+                const groupCars = getGroupCars(cars, g);
+                if (groupCars.length === 0) return null;
                 return (
                   <button key={g.label} style={s.groupCard} className="group-card"
                     onClick={() => sendMessage(`Show me the ${g.label} cars available in T&T`)}>
@@ -607,6 +679,7 @@ export default function CarlaAI() {
                     </div>
                     <div style={s.groupLabel}>{g.label}</div>
                     <div style={s.groupSub}>{g.sub}</div>
+                    <div style={s.groupCount}>{groupCars.length} vehicle{groupCars.length !== 1 ? "s" : ""}</div>
                     <div style={{ ...s.groupArrow, color: g.from }}><Icon.arrowRight /></div>
                   </button>
                 );
@@ -637,16 +710,34 @@ export default function CarlaAI() {
             </div>
 
             <div style={s.carGrid}>
-              {filteredCars.map((car, idx) => (
+              {filteredCars.map((car, idx) => {
+                const carImages = [car.image, car.image2, car.image3, car.image4].filter(Boolean);
+                const imgIdx = cardImageIndex[car.id] || 0;
+                const currentImg = carImages[imgIdx] || car.image;
+                return (
                 <div key={car.id} style={s.carCard} className="car-card">
-                  {/* Full bleed image header */}
+                  {/* Full bleed image header with gallery */}
                   <div style={s.cardImageWrap}>
-                    <img src={car.image} alt={car.name} style={s.cardImage} onError={e => { e.target.style.display="none"; e.target.parentNode.style.background=car.gradient; }} />
+                    <img src={currentImg} alt={car.name} style={s.cardImage} onError={e => { e.target.style.display="none"; e.target.parentNode.style.background=car.gradient; }} />
                     <div style={{ ...s.cardImageOverlay, background: `linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 100%)` }} />
                     <div style={s.cardHeaderTop}>
                       <div style={s.cardBrand}>{car.brand}</div>
                       {car.badge && <div style={s.cardBadge}>{car.badge}</div>}
                     </div>
+                    {/* Gallery dots + arrows */}
+                    {carImages.length > 1 && (
+                      <>
+                        <button style={s.imgArrowL} onClick={e => { e.stopPropagation(); setCardImageIndex(prev => ({ ...prev, [car.id]: (imgIdx - 1 + carImages.length) % carImages.length })); }}>&#8249;</button>
+                        <button style={s.imgArrowR} onClick={e => { e.stopPropagation(); setCardImageIndex(prev => ({ ...prev, [car.id]: (imgIdx + 1) % carImages.length })); }}>&#8250;</button>
+                        <div style={s.imgDots}>
+                          {carImages.map((_, di) => (
+                            <span key={di} style={{ ...s.imgDot, opacity: di === imgIdx ? 1 : 0.4, transform: di === imgIdx ? "scale(1.3)" : "scale(1)" }}
+                              onClick={e => { e.stopPropagation(); setCardImageIndex(prev => ({ ...prev, [car.id]: di })); }} />
+                          ))}
+                        </div>
+                        <div style={s.imgCounter}>{imgIdx + 1} / {carImages.length}</div>
+                      </>
+                    )}
                     <div style={s.cardOverlayContent}>
                       <div style={s.cardName}>{car.year} {car.name}</div>
                       <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
@@ -699,17 +790,24 @@ export default function CarlaAI() {
                       <button style={{ ...s.actionAsk, color: car.accent, borderColor: car.accent + "40", background: car.accent + "10" }}
                         className="action-ask"
                         onClick={() => sendMessage(`Tell me about the ${car.year} ${car.brand} ${car.name}.`)}>
-                        Ask AI
+                        Ask Carla
                       </button>
-                      <button style={{ ...s.actionBook, background: car.gradient }}
-                        className="action-book"
-                        onClick={() => openLead(car)}>
-                        Book Test Drive
-                      </button>
+                    </div>
+                    {/* Booking intent buttons */}
+                    <div style={s.intentRow}>
+                      {["Test Drive", "View This Car", "Contact Me"].map(intent => (
+                        <button key={intent}
+                          style={{ ...s.intentBtn, background: car.gradient }}
+                          className="action-book"
+                          onClick={() => openLead(car, intent)}>
+                          {intent}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
@@ -861,11 +959,15 @@ export default function CarlaAI() {
                           ))}
                         </div>
                         <p style={s.cardDesc}>{car.desc}</p>
-                        <div style={s.cardActions}>
-                          <button style={{ ...s.actionBook, background: car.gradient, flex: 1 }}
-                            className="action-book" onClick={() => openLead(car)}>
-                            Book a Test Drive
-                          </button>
+                        <div style={s.intentRow}>
+                          {["Test Drive", "View This Car", "Contact Me"].map(intent => (
+                            <button key={intent}
+                              style={{ ...s.intentBtn, background: car.gradient }}
+                              className="action-book"
+                              onClick={() => openLead(car, intent)}>
+                              {intent}
+                            </button>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -887,7 +989,11 @@ export default function CarlaAI() {
               <div style={s.cardPrice}>{fmt(selectedCar.price)}</div>
             </div>
             <div style={s.formInner}>
-              <div style={s.formEyebrow}>Book a Test Drive</div>
+              {/* Intent badge */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <div style={s.formEyebrow}>{bookingIntent === "Test Drive" ? "Book a Test Drive" : bookingIntent === "View This Car" ? "Book a Viewing" : "Request Contact"}</div>
+                <div style={{ ...s.intentBadge, background: selectedCar.accent + "18", color: selectedCar.accent, borderColor: selectedCar.accent + "35" }}>{bookingIntent}</div>
+              </div>
               <div style={s.formFacts}>
                 {[
                   { icon: <Icon.shield />, val: selectedCar.warranty },
@@ -900,7 +1006,11 @@ export default function CarlaAI() {
                   </div>
                 ))}
               </div>
-              <p style={s.formNote}>A representative from <strong>{selectedCar.dealership}</strong> will contact you to arrange your viewing or test drive at a time that suits you.</p>
+              <p style={s.formNote}>
+                {bookingIntent === "Test Drive" && <>A representative from <strong>{selectedCar.dealership}</strong> will contact you to arrange your test drive at a time that suits you.</>}
+                {bookingIntent === "View This Car" && <>A representative from <strong>{selectedCar.dealership}</strong> will reach out to schedule a viewing at their showroom.</>}
+                {bookingIntent === "Contact Me" && <>A representative from <strong>{selectedCar.dealership}</strong> will call you directly to discuss this vehicle and answer any questions.</>}
+              </p>
               <div style={s.formFields}>
                 {[
                   { key: "name", label: "Full Name", req: true, placeholder: "Your full name", type: "text" },
@@ -916,9 +1026,9 @@ export default function CarlaAI() {
               </div>
               <button style={{ ...s.formSubmit, background: selectedCar.gradient, opacity: !lead.name || !lead.phone ? 0.4 : 1 }}
                 className="action-book" disabled={!lead.name || !lead.phone || submitting} onClick={submitLead}>
-                {submitting ? "Sending Request..." : "Submit Test Drive Request"}
+                {submitting ? "Sending Request..." : bookingIntent === "Test Drive" ? "Submit Test Drive Request" : bookingIntent === "View This Car" ? "Submit Viewing Request" : "Request Contact"}
               </button>
-              <button style={s.formBack} onClick={() => setScreen("chat")}>Go back</button>
+              <button style={s.formBack} onClick={() => setScreen(selectedCar ? "home" : "chat")}>Go back</button>
             </div>
           </div>
         </div>
@@ -938,7 +1048,12 @@ export default function CarlaAI() {
                 <Icon.check />
               </div>
               <h2 style={s.thanksTitle}>Request Received!</h2>
-              <p style={s.thanksSub}>Your test drive request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted. A representative from <strong>{selectedCar.dealership}</strong> will be in contact shortly.</p>
+              <p style={s.thanksSub}>
+                {bookingIntent === "Test Drive" && <>Your test drive request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
+                {bookingIntent === "View This Car" && <>Your viewing request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
+                {bookingIntent === "Contact Me" && <>Your contact request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
+                {" "}A representative from <strong>{selectedCar.dealership}</strong> will be in contact shortly.
+              </p>
               <button style={{ ...s.formSubmit, background: selectedCar.gradient, width: "100%" }}
                 className="action-book" onClick={() => setScreen("home")}>
                 Return to Home
@@ -946,6 +1061,17 @@ export default function CarlaAI() {
             </div>
           </div>
         </div>
+      )}
+      {/* ── FLOATING MATCHES BUTTON ── */}
+      {matches.length > 0 && screen !== "chat" && (
+        <button
+          style={s.floatMatches}
+          className="float-matches"
+          onClick={() => { setScreen("chat"); setActiveTab("matches"); }}
+        >
+          <Icon.bookmark />
+          <span>{matches.length} Match{matches.length > 1 ? "es" : ""}</span>
+        </button>
       )}
     </div>
   );
@@ -1036,6 +1162,7 @@ const s = {
   groupIcon: { width: 36, height: 36, borderRadius: 9, color: white, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "0.2rem", boxShadow: "0 4px 10px rgba(0,0,0,0.15)" },
   groupLabel: { fontWeight: 700, fontSize: "0.92rem", color: gray900 },
   groupSub: { color: gray500, fontSize: "0.78rem", lineHeight: 1.5 },
+  groupCount: { fontSize: "0.68rem", fontWeight: 700, color: gray400, marginTop: "0.1rem" },
   groupArrow: { marginTop: "0.4rem" },
 
   // FILTERS
@@ -1169,6 +1296,21 @@ const s = {
   wizardOr: { display: "flex", alignItems: "center", gap: "0.75rem", margin: "0.25rem 0" },
   wizardOrLine: { flex: 1, height: 1, background: gray200 },
   wizardOrText: { fontSize: "0.72rem", color: gray400, fontWeight: 500, whiteSpace: "nowrap" },
+  // GALLERY
+  imgArrowL: { position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.45)", color: "white", border: "none", borderRadius: "50%", width: 30, height: 30, fontSize: "1.2rem", lineHeight: "1", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2, transition: "background 0.15s" },
+  imgArrowR: { position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.45)", color: "white", border: "none", borderRadius: "50%", width: 30, height: 30, fontSize: "1.2rem", lineHeight: "1", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2, transition: "background 0.15s" },
+  imgDots: { position: "absolute", bottom: 56, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 5, zIndex: 2 },
+  imgDot: { width: 6, height: 6, borderRadius: "50%", background: "white", cursor: "pointer", transition: "all 0.2s" },
+  imgCounter: { position: "absolute", top: 44, right: 10, background: "rgba(0,0,0,0.5)", color: "white", fontSize: "0.65rem", fontWeight: 700, borderRadius: 10, padding: "0.15rem 0.5rem", zIndex: 2 },
+
+  // INTENT BUTTONS
+  intentRow: { display: "flex", gap: "0.4rem" },
+  intentBtn: { flex: 1, color: "white", border: "none", borderRadius: 8, padding: "0.6rem 0.4rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "filter 0.15s", textAlign: "center" },
+  intentBadge: { fontSize: "0.7rem", fontWeight: 700, border: "1px solid", borderRadius: 20, padding: "0.15rem 0.6rem", flexShrink: 0 },
+
+  // FLOATING MATCHES
+  floatMatches: { position: "fixed", bottom: "1.5rem", right: "1.5rem", background: "linear-gradient(135deg, #4F46E5, #7C3AED)", color: "white", border: "none", borderRadius: 50, padding: "0.75rem 1.25rem", fontWeight: 700, fontSize: "0.88rem", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: "0.5rem", boxShadow: "0 8px 24px rgba(79,70,229,0.4)", zIndex: 100, transition: "all 0.2s" },
+
   // THANKS
   thanksPage: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem 1.25rem", background: gray50 },
   thanksCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 18, overflow: "hidden", maxWidth: 440, width: "100%", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" },
@@ -1209,6 +1351,7 @@ const css = `
   .send-btn:hover { filter: brightness(1.15); }
   .tab-browse-btn:hover { background: #EEF2FF !important; border-color: #4F46E5 !important; color: #4F46E5 !important; }
   .wizard-btn:hover { border-color: #4F46E5 !important; background: #EEF2FF !important; color: #4338CA !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.1) !important; }
+  .float-matches:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(79,70,229,0.5) !important; }
   input:focus { border-color: #4F46E5 !important; box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important; }
 
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4F46E5; animation: dotP 1.2s ease infinite; }
