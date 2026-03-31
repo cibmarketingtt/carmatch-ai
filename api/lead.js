@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, phone, car, dealership, price } = req.body;
+  const { name, email, phone, car, dealership, price, intent, context } = req.body;
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const CALLMEBOT_API_KEY = process.env.CALLMEBOT_API_KEY;
@@ -12,8 +12,21 @@ export default async function handler(req, res) {
 
   const results = { email: null, whatsapp: null };
 
+  const intentLabel = intent || "Test Drive";
+  const contextBlock = context
+    ? `<tr><td colspan="2" style="border-top:1px solid #e5e7eb;padding-top:16px;margin-top:8px;"></td></tr>
+       <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;vertical-align:top;">Buyer Context</td><td style="padding:8px 0;font-weight:600;color:#374151;font-size:13px;">${context}</td></tr>`
+    : "";
+
   // ── EMAIL via Resend ──────────────────────────────
   try {
+    const intentColors = {
+      "Test Drive": "#4F46E5",
+      "View This Car": "#0891B2",
+      "Contact Me": "#059669",
+    };
+    const headerColor = intentColors[intentLabel] || "#4F46E5";
+
     const emailRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -23,22 +36,24 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: "Carla AI <onboarding@resend.dev>",
         to: [LEAD_EMAIL],
-        subject: `New Test Drive Request — ${car}`,
+        subject: `New ${intentLabel} Request — ${car}`,
         html: `
-          <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; padding: 24px;">
-            <div style="background: linear-gradient(135deg, #4F46E5, #7C3AED); padding: 20px 24px; border-radius: 12px 12px 0 0;">
-              <h2 style="color: white; margin: 0; font-size: 20px;">New Test Drive Request</h2>
-              <p style="color: rgba(255,255,255,0.8); margin: 4px 0 0; font-size: 14px;">Carla AI — Trinidad & Tobago</p>
+          <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;">
+            <div style="background:${headerColor};padding:20px 24px;border-radius:12px 12px 0 0;">
+              <h2 style="color:white;margin:0;font-size:20px;">New ${intentLabel} Request</h2>
+              <p style="color:rgba(255,255,255,0.8);margin:4px 0 0;font-size:14px;">Carla AI — Trinidad & Tobago</p>
             </div>
-            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px; padding: 24px;">
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px; width: 120px;">Vehicle</td><td style="padding: 8px 0; font-weight: 700; color: #111827;">${car}</td></tr>
-                <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px;">Price</td><td style="padding: 8px 0; font-weight: 700; color: #111827;">${price}</td></tr>
-                <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px;">Dealership</td><td style="padding: 8px 0; font-weight: 700; color: #111827;">${dealership}</td></tr>
-                <tr><td colspan="2" style="border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 8px;"></td></tr>
-                <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px;">Name</td><td style="padding: 8px 0; font-weight: 700; color: #111827;">${name}</td></tr>
-                <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px;">Phone</td><td style="padding: 8px 0; font-weight: 700; color: #111827;">${phone}</td></tr>
-                <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px;">Email</td><td style="padding: 8px 0; font-weight: 700; color: #111827;">${email || "Not provided"}</td></tr>
+            <div style="background:#f9fafb;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:24px;">
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;width:120px;">Request Type</td><td style="padding:8px 0;font-weight:800;color:#111827;">${intentLabel}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Vehicle</td><td style="padding:8px 0;font-weight:700;color:#111827;">${car}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Price</td><td style="padding:8px 0;font-weight:700;color:#111827;">${price}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Dealership</td><td style="padding:8px 0;font-weight:700;color:#111827;">${dealership}</td></tr>
+                <tr><td colspan="2" style="border-top:1px solid #e5e7eb;padding-top:16px;margin-top:8px;"></td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Name</td><td style="padding:8px 0;font-weight:700;color:#111827;">${name}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Phone</td><td style="padding:8px 0;font-weight:700;color:#111827;">${phone}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;">Email</td><td style="padding:8px 0;font-weight:700;color:#111827;">${email || "Not provided"}</td></tr>
+                ${contextBlock}
               </table>
             </div>
           </div>
@@ -52,9 +67,9 @@ export default async function handler(req, res) {
 
   // ── WHATSAPP via CallMeBot ────────────────────────
   try {
-    const message = encodeURIComponent(
-      `New Test Drive Request\n\nVehicle: ${car}\nPrice: ${price}\nDealership: ${dealership}\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email || "Not provided"}`
-    );
+    let waMsg = `New ${intentLabel} Request\n\nVehicle: ${car}\nPrice: ${price}\nDealership: ${dealership}\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email || "Not provided"}`;
+    if (context) waMsg += `\n\nBuyer Context:\n${context}`;
+    const message = encodeURIComponent(waMsg);
     const waRes = await fetch(
       `https://api.callmebot.com/whatsapp.php?phone=${LEAD_PHONE}&text=${message}&apikey=${CALLMEBOT_API_KEY}`
     );
