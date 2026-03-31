@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 
 const Icon = {
-  logo: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+  logo: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 20 L12 8 L21 20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 20 L12 11 L17 20" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55"/><circle cx="12" cy="6.5" r="1.8" fill="currentColor"/></svg>,
   car: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/><path d="M3 11h18"/></svg>,
   chat: () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
   shield: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
   star: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
   dollar: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-  fuel: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 22V8l7-6 7 6v14"/><path d="M17 22V12h4v10"/><path d="M9 12h6v10H9z"/></svg>,
+  fuel: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 22h12V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v17z"/><path d="M15 8h2a2 2 0 0 1 2 2v6a1 1 0 0 0 2 0V9l-3-3"/><line x1="3" y1="11" x2="15" y2="11"/></svg>,
   send: () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
   chevDown: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>,
   chevUp: () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>,
@@ -18,19 +18,128 @@ const Icon = {
   leaf: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>,
   trophy: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="8 11 12 15 16 11"/><path d="M3 7h3v10H3z"/><path d="M18 7h3v10h-3z"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 7V3h10v4"/></svg>,
   sparkle: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3c-1 3-3.5 5-6 6 2.5 1 5 3 6 6 1-3 3.5-5 6-6-2.5-1-5-3-6-6z"/></svg>,
+  bookmark: () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>,
+  grid: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>,
 };
 
-const CARS = [
-  { id: 1, name: "Corolla Cross", brand: "Toyota", type: "SUV", price: 320000, year: 2024, fuel: "Hybrid", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["Backup Camera", "Lane Assist", "Apple CarPlay", "Android Auto", "Adaptive Cruise Control"], tags: ["fuel-efficient", "family", "safety", "tech"], ev: false, dealership: "Toyota Trinidad", desc: "Trinidad's best-selling hybrid SUV. Exceptional fuel economy delivers real monthly savings every time you pass a petrol station.", monthlyFuel: "~TT$800 / month", badge: "Best Seller", gradient: "linear-gradient(135deg, #DC2626, #F87171)", accent: "#DC2626" },
-  { id: 2, name: "X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360° Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic — it handles all of it.", monthlyFuel: "~TT$1,200 / month", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
-  { id: 3, name: "Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "~TT$900 / month", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
-  { id: 4, name: "Outlander PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range — enough to drive Port of Spain to San Fernando and back on a single charge. Charge at home for ~TT$60.", monthlyFuel: "~TT$300 / month", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
-  { id: 5, name: "Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360° Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense — outstanding long-term value.", monthlyFuel: "~TT$1,100 / month", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
-  { id: 6, name: "Hilux", brand: "Toyota", type: "Pickup", price: 385000, year: 2024, fuel: "Diesel", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["4x4 Drive", "Tow Bar", "Bed Liner", "Apple CarPlay", "Multi-Terrain Select"], tags: ["offroad", "towing", "durable", "work"], ev: false, dealership: "Toyota Trinidad", desc: "Built for everything Trinidad throws at it. Construction sites, beach limes, mountain roads — the Hilux does not stop.", monthlyFuel: "~TT$1,400 / month", badge: "Most Durable", gradient: "linear-gradient(135deg, #B45309, #F59E0B)", accent: "#B45309" },
-  { id: 7, name: "Tucson", brand: "Hyundai", type: "SUV", price: 275000, year: 2024, fuel: "Petrol", seats: 5, warranty: "5 years / 100,000 km", safety: "5-Star NHTSA", features: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay", "Safe Exit Assist", "Remote Start"], tags: ["tech", "safety", "style", "family", "affordable"], ev: false, dealership: "Hyundai TT", desc: "Award-winning design. Panoramic sunroof as standard. Premium technology usually found in vehicles at twice the price.", monthlyFuel: "~TT$1,100 / month", badge: "Editor's Choice", gradient: "linear-gradient(135deg, #0891B2, #67E8F9)", accent: "#0891B2" },
-  { id: 8, name: "CX-5", brand: "Mazda", type: "SUV", price: 310000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / unlimited km", safety: "5-Star NHTSA", features: ["Leather Seats", "Bose Sound System", "Head-Up Display", "Apple CarPlay", "Radar Cruise Control"], tags: ["luxury", "style", "safety", "sporty", "tech"], ev: false, dealership: "Mazda TT", desc: "The most refined driving experience under TT$350,000. Premium leather, Bose audio, and a design that commands attention.", monthlyFuel: "~TT$1,150 / month", badge: "Most Premium", gradient: "linear-gradient(135deg, #374151, #9CA3AF)", accent: "#374151" },
+// ─── GOOGLE SHEETS CONFIG ─────────────────────────────────────────────────────
+// 👇 PASTE YOUR PUBLISHED GOOGLE SHEET CSV URL HERE
+const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE";
+// How to get this URL:
+// 1. Open your Google Sheet
+// 2. File → Share → Publish to web
+// 3. Select "Comma-separated values (.csv)"
+// 4. Click Publish and copy the URL
+// 5. Paste it above, replacing YOUR_GOOGLE_SHEET_CSV_URL_HERE
+
+const CACHE_KEY = "carla_ai_cars_cache";
+const CACHE_TS_KEY = "carla_ai_cars_timestamp";
+
+// Parse a CSV row respecting quoted fields with commas inside
+function parseCSVRow(row) {
+  const result = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < row.length; i++) {
+    const ch = row[i];
+    if (ch === '"') { inQuotes = !inQuotes; }
+    else if (ch === "," && !inQuotes) { result.push(current.trim()); current = ""; }
+    else { current += ch; }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+// Convert a CSV row array into a car object matching the app's data shape
+function rowToCar(headers, values) {
+  const get = (key) => (values[headers.indexOf(key)] || "").replace(/^"|"$/g, "").trim();
+  const features = get("features").split("|").map(f => f.trim()).filter(Boolean);
+  const tags = get("tags").split("|").map(t => t.trim()).filter(Boolean);
+  const brand = get("brand");
+  const auto = brandGradient(brand);
+  const gradient = get("gradient") || auto.gradient;
+  const accent   = get("accent")   || auto.accent;
+  return {
+    id:         parseInt(get("id")) || Math.random(),
+    name:       get("name"),
+    image:      get("image"),
+    brand,
+    type:       get("type"),
+    price:      parseInt(get("price")) || 0,
+    year:       parseInt(get("year")) || 2024,
+    fuel:       get("fuel"),
+    seats:      parseInt(get("seats")) || 5,
+    warranty:   get("warranty"),
+    safety:     get("safety"),
+    features,
+    tags,
+    ev:         get("ev") === "true",
+    evRange:    get("evRange") ? parseInt(get("evRange")) : null,
+    dealership: get("dealership"),
+    desc:       get("desc"),
+    monthlyFuel:get("monthlyFuel"),
+    badge:      get("badge"),
+    gradient,
+    accent,
+  };
+}
+
+async function fetchCarsFromSheet() {
+  const url = SHEET_URL + "&t=" + Date.now(); // cache-bust
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Sheet fetch failed: " + res.status);
+  const csv = await res.text();
+  const rows = csv.trim().split("\n");
+  const headers = parseCSVRow(rows[0]);
+  const cars = rows.slice(1).filter(r => r.trim()).map(r => rowToCar(headers, parseCSVRow(r)));
+  return cars;
+}
+
+// ─── GRADIENT GENERATOR ──────────────────────────────────────────────────────
+// Generates a consistent gradient from a string (brand name)
+// Same brand = same colour every time. No manual colour picking needed.
+function brandGradient(str = "") {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  // Map hash to a curated set of rich, automotive-appropriate hues
+  const palettes = [
+    { from: "#DC2626", to: "#F87171", accent: "#DC2626" }, // red
+    { from: "#7C3AED", to: "#A78BFA", accent: "#7C3AED" }, // violet
+    { from: "#1D4ED8", to: "#60A5FA", accent: "#1D4ED8" }, // blue
+    { from: "#059669", to: "#34D399", accent: "#059669" }, // green
+    { from: "#D97706", to: "#FCD34D", accent: "#D97706" }, // amber
+    { from: "#B45309", to: "#F59E0B", accent: "#B45309" }, // orange
+    { from: "#0891B2", to: "#67E8F9", accent: "#0891B2" }, // cyan
+    { from: "#374151", to: "#9CA3AF", accent: "#374151" }, // slate
+    { from: "#BE185D", to: "#F472B6", accent: "#BE185D" }, // pink
+    { from: "#1E40AF", to: "#93C5FD", accent: "#1E40AF" }, // indigo
+    { from: "#065F46", to: "#6EE7B7", accent: "#065F46" }, // emerald
+    { from: "#92400E", to: "#D97706", accent: "#92400E" }, // brown
+  ];
+  const idx = Math.abs(hash) % palettes.length;
+  const p = palettes[idx];
+  return {
+    gradient: `linear-gradient(135deg, ${p.from}, ${p.to})`,
+    accent: p.accent,
+  };
+}
+
+// ─── FALLBACK CAR DATA (used when sheet unavailable & cache empty) ────────────
+const FALLBACK_CARS = [
+
+  { id: 1, name: "Corolla Cross", image: "https://placehold.co/800x400/DC2626/ffffff?text=Toyota+Corolla+Cross", brand: "Toyota", type: "SUV", price: 320000, year: 2024, fuel: "Hybrid", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["Backup Camera", "Lane Assist", "Apple CarPlay", "Android Auto", "Adaptive Cruise Control"], tags: ["fuel-efficient", "family", "safety", "tech"], ev: false, dealership: "Toyota Trinidad", desc: "Trinidad's best-selling hybrid SUV. Exceptional fuel economy delivers real monthly savings every time you pass a petrol station.", monthlyFuel: "TT$5,800", badge: "Best Seller", gradient: "linear-gradient(135deg, #DC2626, #F87171)", accent: "#DC2626" },
+  { id: 2, name: "X-Trail", image: "https://placehold.co/800x400/7C3AED/ffffff?text=Nissan+X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360° Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
+  { id: 3, name: "Civic", image: "https://placehold.co/800x400/1D4ED8/ffffff?text=Honda+Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "TT$3,800", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
+  { id: 4, name: "Outlander PHEV", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$7,800", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
+  { id: 5, name: "Sportage", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360° Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense — outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
+  { id: 6, name: "Hilux", image: "https://placehold.co/800x400/B45309/ffffff?text=Toyota+Hilux", brand: "Toyota", type: "Pickup", price: 385000, year: 2024, fuel: "Diesel", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["4x4 Drive", "Tow Bar", "Bed Liner", "Apple CarPlay", "Multi-Terrain Select"], tags: ["offroad", "towing", "durable", "work"], ev: false, dealership: "Toyota Trinidad", desc: "Built for everything Trinidad throws at it. Construction sites, beach limes, mountain roads. The Hilux does not stop.", monthlyFuel: "TT$6,980", badge: "Most Durable", gradient: "linear-gradient(135deg, #B45309, #F59E0B)", accent: "#B45309" },
+  { id: 7, name: "Tucson", image: "https://placehold.co/800x400/0891B2/ffffff?text=Hyundai+Tucson", brand: "Hyundai", type: "SUV", price: 275000, year: 2024, fuel: "Petrol", seats: 5, warranty: "5 years / 100,000 km", safety: "5-Star NHTSA", features: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay", "Safe Exit Assist", "Remote Start"], tags: ["tech", "safety", "style", "family", "affordable"], ev: false, dealership: "Hyundai TT", desc: "Award-winning design. Panoramic sunroof as standard. Premium technology usually found in vehicles at twice the price.", monthlyFuel: "TT$4,800", badge: "Editor's Choice", gradient: "linear-gradient(135deg, #0891B2, #67E8F9)", accent: "#0891B2" },
+  { id: 8, name: "CX-5", image: "https://placehold.co/800x400/374151/ffffff?text=Mazda+CX-5", brand: "Mazda", type: "SUV", price: 310000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / unlimited km", safety: "5-Star NHTSA", features: ["Leather Seats", "Bose Sound System", "Head-Up Display", "Apple CarPlay", "Radar Cruise Control"], tags: ["luxury", "style", "safety", "sporty", "tech"], ev: false, dealership: "Mazda TT", desc: "The most refined driving experience under TT$350,000. Premium leather, Bose audio and a design that commands attention.", monthlyFuel: "TT$5,620", badge: "Most Premium", gradient: "linear-gradient(135deg, #374151, #9CA3AF)", accent: "#374151" },
 ];
 
+// ─── FILTER FUNCTION (works with any cars array) ──────────────────────────────
 const FILTERS = ["All", "SUV", "Sedan", "Pickup", "Hybrid / EV", "Under TT$300k", "7 Seats"];
 
 const SUGGESTIONS = [
@@ -55,39 +164,46 @@ const SMART_GROUPS = [
 
 const fmt = (n) => `TT$${n.toLocaleString()}`;
 
-function filterCars(f) {
-  if (f === "All") return CARS;
-  if (f === "SUV") return CARS.filter(c => c.type === "SUV");
-  if (f === "Sedan") return CARS.filter(c => c.type === "Sedan");
-  if (f === "Pickup") return CARS.filter(c => c.type === "Pickup");
-  if (f === "Hybrid / EV") return CARS.filter(c => c.fuel.toLowerCase().includes("hybrid") || c.ev);
-  if (f === "Under TT$300k") return CARS.filter(c => c.price < 300000);
-  if (f === "7 Seats") return CARS.filter(c => c.seats >= 7);
-  return CARS;
+function filterCars(cars, f) {
+  if (f === "All") return cars;
+  if (f === "SUV") return cars.filter(c => c.type === "SUV");
+  if (f === "Sedan") return cars.filter(c => c.type === "Sedan");
+  if (f === "Pickup") return cars.filter(c => c.type === "Pickup");
+  if (f === "Hybrid / EV") return cars.filter(c => c.fuel.toLowerCase().includes("hybrid") || c.ev);
+  if (f === "Under TT$300k") return cars.filter(c => c.price < 300000);
+  if (f === "7 Seats") return cars.filter(c => c.seats >= 7);
+  return cars;
 }
 
-const SYSTEM_PROMPT = `You are CarMatch AI, a professional and personable car advisor for Trinidad and Tobago. Help people find the right vehicle with clear, honest, engaging guidance — like a trusted expert who truly understands cars and life in TT.
+function buildSystemPrompt(carsData) { return `You are Carla AI, Trinidad and Tobago's AI car advisor. You are friendly, knowledgeable and genuinely helpful. Your personality is warm, casual and genuinely helpful — like a trusted friend who happens to know everything about cars in T&T.
+
+CONVERSATION APPROACH:
+- Start by understanding the user's situation before recommending. Ask ONE focused follow-up question at a time if you need more info.
+- If a user picks a quick-start option (like "Family car" or "Best value"), acknowledge it warmly then ask one clarifying question (e.g. "Nice! How many seats do you typically need?") before recommending.
+- Always make the user feel like they can ask ANYTHING — even things they think are off-topic. Remind them you can answer questions about financing, road conditions, fuel costs, insurance, EV charging, or anything car-related in T&T.
+- Never make the user feel like they are filling out a form. Keep it conversational and light.
 
 Trinidad context to weave in naturally:
-- Average daily commute: 20–40 km
+- Average daily commute: 20-40 km
 - Port of Spain to San Fernando: ~58 km
 - Port of Spain to Maracas Bay: ~25 km
 - Petrol price: ~TT$6.97/litre (subsidised)
 - Home electricity: ~TT$0.21/kWh
-- Home EV charge: ~TT$50–80 for a full charge
-- Full petrol tank: ~TT$300–500 depending on car
+- Home EV charge: ~TT$50-80 for a full charge
+- Full petrol tank: ~TT$300-500 depending on car
 
 Car inventory:
-${JSON.stringify(CARS.map(c => ({ id: c.id, name: `${c.brand} ${c.name}`, price: c.price, fuel: c.fuel, seats: c.seats, warranty: c.warranty, safety: c.safety, tags: c.tags, ev: c.ev, evRange: c.evRange || null, monthlyFuel: c.monthlyFuel })))}
+${JSON.stringify(carsData.map(c => ({ id: c.id, name: c.brand + " " + c.name, price: c.price, fuel: c.fuel, seats: c.seats, warranty: c.warranty, safety: c.safety, tags: c.tags, ev: c.ev, evRange: c.evRange || null, monthlyFuel: c.monthlyFuel })))}
 
 Guidelines:
-- Be warm, confident and clear — no jargon
+- Be warm, casual and clear — no jargon
 - Ground EV/hybrid savings in real TT distances and dollar amounts
 - Always lead recommendations with Price, Warranty and Safety
 - Keep answers concise and scannable
+- Remind users you can answer broader questions about financing, road suitability, insurance, import info
 - Guide interested buyers toward booking a test drive
 - Only reference cars in the inventory — never invent specs
-- Always quote prices in TT dollars`;
+- Always quote prices in T&T dollars`; }
 
 
 function renderMarkdown(text) {
@@ -177,11 +293,34 @@ function formatInline(text) {
   return parts.length > 0 ? parts : text;
 }
 
-export default function CarMatchAI() {
+export default function CarlaAI() {
+  const WIZARD_OPTIONS = [
+    { label: "First-time buyer", prompt: "I am buying my first brand-new car in Trinidad. Help me figure out what to get from a certified dealer." },
+    { label: "Need a family car", prompt: "I need a brand-new family car from a certified dealer in Trinidad. Space, safety and value matter most." },
+    { label: "I have a budget in mind", prompt: "I want to find the best brand-new car for my budget from a certified T&T dealership." },
+    { label: "Curious about EVs / Hybrids", prompt: "Tell me about new electric and hybrid cars available from certified dealers in Trinidad — are they worth it?" },
+    { label: "Upgrading my current car", prompt: "I am looking to upgrade to a brand-new car in Trinidad. What are my options from certified dealerships?" },
+    { label: "Just browsing", prompt: "I'm exploring what brand-new cars are available from certified dealers in Trinidad. Help me understand my options." },
+  ];
+
+  // ── CAR DATA STATE ──────────────────────────────────────────────────────────
+  const [cars, setCars] = useState(() => {
+    // Layer 2: try localStorage cache first for instant render
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) return JSON.parse(cached);
+    } catch {}
+    // Layer 3: fall back to hardcoded data
+    return FALLBACK_CARS;
+  });
+  const [dataSource, setDataSource] = useState("loading"); // "sheet" | "cache" | "fallback" | "loading"
+  const [lastUpdated, setLastUpdated] = useState(null);
+
   const [screen, setScreen] = useState("home");
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Good day! I'm CarMatch AI — your personal car advisor for Trinidad & Tobago.\n\nWhether you know exactly what you want or have no idea where to start, I'm here to help. Tell me your budget, your lifestyle, or simply ask me anything." },
+    { role: "assistant", content: "Hi there! I'm Carla, your automotive AI companion.\n\nI can help you compare models, explore features, understand financing and warranty options — all for brand-new cars from certified dealerships across T&T.\n\n**Tell me, how can I help you find the right car?**" },
   ]);
+  const [wizardDone, setWizardDone] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [matches, setMatches] = useState([]);
@@ -190,8 +329,50 @@ export default function CarMatchAI() {
   const [lead, setLead] = useState({ name: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [expandedCard, setExpandedCard] = useState(null);
+  const [expandedCards, setExpandedCards] = useState(new Set());
+  const toggleCard = (id) => setExpandedCards(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
   const chatEndRef = useRef(null);
+
+  const handleWizard = (opt) => {
+    setWizardDone(true);
+    sendMessage(opt.prompt);
+  };
+
+  // ── FETCH FROM GOOGLE SHEET ─────────────────────────────────────────────────
+  useEffect(() => {
+    if (!SHEET_URL || SHEET_URL === "YOUR_GOOGLE_SHEET_CSV_URL_HERE") {
+      // No sheet configured — use cache or fallback
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        const ts = localStorage.getItem(CACHE_TS_KEY);
+        if (cached) { setDataSource("cache"); setLastUpdated(ts ? new Date(parseInt(ts)) : null); }
+        else setDataSource("fallback");
+      } catch { setDataSource("fallback"); }
+      return;
+    }
+    fetchCarsFromSheet()
+      .then(fetchedCars => {
+        if (fetchedCars && fetchedCars.length > 0) {
+          setCars(fetchedCars);
+          setDataSource("sheet");
+          const now = Date.now();
+          setLastUpdated(new Date(now));
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(fetchedCars));
+            localStorage.setItem(CACHE_TS_KEY, String(now));
+          } catch {}
+        }
+      })
+      .catch(() => {
+        // Fetch failed — check if we already have cache or fallback loaded
+        try {
+          const cached = localStorage.getItem(CACHE_KEY);
+          const ts = localStorage.getItem(CACHE_TS_KEY);
+          if (cached) { setDataSource("cache"); setLastUpdated(ts ? new Date(parseInt(ts)) : null); }
+          else setDataSource("fallback");
+        } catch { setDataSource("fallback"); }
+      });
+  }, []);
 
   useEffect(() => {
     if (screen === "chat") chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -212,7 +393,7 @@ export default function CarMatchAI() {
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 1000,
-          system: SYSTEM_PROMPT,
+          system: buildSystemPrompt(cars),
           messages: history.map(m => ({ role: m.role, content: m.content })),
         }),
       });
@@ -220,7 +401,7 @@ export default function CarMatchAI() {
       const reply = data.content?.map(b => b.text || "").join("") || "I apologise — something went wrong. Please try again.";
       const updated = [...history, { role: "assistant", content: reply }];
       setMessages(updated);
-      const mentioned = CARS.filter(c =>
+      const mentioned = cars.filter(c =>
         reply.toLowerCase().includes(c.name.toLowerCase()) ||
         reply.toLowerCase().includes(c.brand.toLowerCase())
       );
@@ -234,29 +415,29 @@ export default function CarMatchAI() {
 
   const openLead = (car) => { setSelectedCar(car); setLead({ name: "", email: "", phone: "" }); setScreen("lead"); };
   const submitLead = async () => {
-  if (!lead.name || !lead.phone) return;
-  setSubmitting(true);
-  try {
-    await fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-        car: `${selectedCar.year} ${selectedCar.brand} ${selectedCar.name}`,
-        dealership: selectedCar.dealership,
-        price: fmt(selectedCar.price),
-      }),
-    });
-  } catch (err) {
-    console.error("Lead submission error:", err);
-  }
-  setSubmitting(false);
-  setScreen("thanks");
-};
+    if (!lead.name || !lead.phone) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: lead.name,
+          email: lead.email,
+          phone: lead.phone,
+          car: `${selectedCar.year} ${selectedCar.brand} ${selectedCar.name}`,
+          dealership: selectedCar.dealership,
+          price: fmt(selectedCar.price),
+        }),
+      });
+    } catch (err) {
+      console.error("Lead submission error:", err);
+    }
+    setSubmitting(false);
+    setScreen("thanks");
+  };
 
-  const filteredCars = filterCars(activeFilter);
+  const filteredCars = filterCars(cars, activeFilter);
 
   return (
     <div style={s.root}>
@@ -267,12 +448,17 @@ export default function CarMatchAI() {
         <button style={s.logoBtn} onClick={() => setScreen("home")}>
           <div style={s.logoMark}><Icon.logo /></div>
           <div>
-            <div style={s.logoName}>CarMatch<span style={s.logoAccent}>AI</span></div>
-            <div style={s.logoSub}>Trinidad & Tobago</div>
+            <div style={s.logoName}>Carla<span style={s.logoAccent}> AI</span></div>
+            <div style={s.logoSub}>Trinidad & Tobago's AI Car Advisor</div>
           </div>
         </button>
         <div style={s.navRight}>
+          {dataSource === "cache" && <div style={s.dataTag} title={lastUpdated ? "Last synced: " + lastUpdated.toLocaleString() : "Cached data"}>Cached</div>}
+          {dataSource === "fallback" && <div style={{ ...s.dataTag, background: "#FEF3C7", color: "#92400E" }}>Offline mode</div>}
           {screen !== "home" && <button style={s.navGhost} onClick={() => setScreen("home")}>Home</button>}
+          <button style={s.navGhost} className="nav-browse" onClick={() => { setScreen("home"); setTimeout(() => document.getElementById("browse")?.scrollIntoView({ behavior: "smooth" }), 100); }}>
+            <Icon.grid /> Browse Vehicles
+          </button>
           <button style={s.navPrimary} className="nav-cta" onClick={() => setScreen("chat")}>Start Matching</button>
         </div>
       </nav>
@@ -295,19 +481,31 @@ export default function CarMatchAI() {
               <div style={s.heroLeft}>
                 <div style={s.heroPill}>
                   <span style={s.pillDot} />
-                  Trinidad & Tobago's Car Matching Platform
+                  The Only AI Car Advisor in Trinidad and Tobago
                 </div>
                 <h1 style={s.heroTitle}>
-                  The Smarter Way<br />
-                  to Find Your<br />
-                  <span style={s.heroGradText}>Next Car</span>
+                  Find Your New Car<br />
+                  <span style={s.heroGradText}>in Trinidad & Tobago</span>
                 </h1>
                 <p style={s.heroBody}>
-                  Not sure which car to buy? CarMatch AI compares price, warranty, safety and features across every major vehicle in TT — and guides you to the right choice.
+                  Tell Carla your preferences — budget, lifestyle and family size. Our AI finds the best brand-new car from certified dealerships across Trinidad and Tobago. Free to use, zero pressure.
                 </p>
+                <div style={s.heroCapabilities}>
+                  {[
+                    "Brand-new cars only",
+                    "Authorized dealers",
+                    "Real prices and financing estimates",
+                    "Safety & warranty guidance",
+                  ].map(text => (
+                    <div key={text} style={s.heroCap}>
+                      <svg style={s.heroCapCheck} viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" stroke="#4F46E5" strokeOpacity="0.25"/><path d="M5 8l2.2 2.2L11 5.8" stroke="#4F46E5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      <span style={s.heroCapText}>{text}</span>
+                    </div>
+                  ))}
+                </div>
                 <div style={s.heroButtons}>
                   <button style={s.heroCta} className="hero-cta" onClick={() => setScreen("chat")}>
-                    Talk to CarMatch AI
+                    Talk to Carla AI
                     <Icon.arrowRight />
                   </button>
                   <button style={s.heroSecondary} className="hero-sec"
@@ -319,9 +517,9 @@ export default function CarMatchAI() {
                 {/* Stats row */}
                 <div style={s.statsRow}>
                   {[
-                    { val: "8+", label: "Vehicles Listed" },
+                    { val: "8+", label: "New Vehicles" },
                     { val: "Free", label: "To Use" },
-                    { val: "TT", label: "Market Focused" },
+                    { val: "100%", label: "Certified Dealers" },
                   ].map(st => (
                     <div key={st.label} style={s.statItem}>
                       <div style={s.statVal}>{st.val}</div>
@@ -338,13 +536,16 @@ export default function CarMatchAI() {
                   <div style={s.widgetHeader}>
                     <div style={s.widgetAvatar}><Icon.logo /></div>
                     <div>
-                      <div style={s.widgetName}>CarMatch AI</div>
+                      <div style={s.widgetName}>Carla AI</div>
                       <div style={s.widgetStatus}><span style={s.onlineDot} /> Available now</div>
                     </div>
                     <div style={s.widgetBadge}>AI</div>
                   </div>
                   <div style={s.widgetMsg}>
-                    Good day! Tell me your budget and what you need the car for — I'll find your best matches across every major brand in TT.
+                    Hi, I'm Carla! Your automotive AI companion. Tell me your preferences: budget, lifestyle, family size. I'll match you to the perfect brand-new car that suits your needs.
+                  </div>
+                  <div style={s.widgetHint}>
+                    Ask me anything: features, financing, which cars suit T&T roads, EV charging, warranty comparisons...
                   </div>
                   <div style={s.widgetChips}>
                     {SUGGESTIONS.slice(0, 3).map((q, i) => (
@@ -354,7 +555,7 @@ export default function CarMatchAI() {
                     ))}
                   </div>
                   <div style={s.widgetInput}>
-                    <input style={s.widgetInputField} placeholder="Ask anything about cars in TT..."
+                    <input style={s.widgetInputField} placeholder="Ask anything about cars in T&T..."
                       onKeyDown={e => { if (e.key === "Enter" && e.target.value.trim()) { sendMessage(e.target.value); e.target.value = ""; } }} />
                     <button style={s.widgetSend} className="w-send"
                       onClick={e => { const i = e.currentTarget.previousSibling; if (i.value.trim()) { sendMessage(i.value); i.value = ""; } }}>
@@ -366,24 +567,24 @@ export default function CarMatchAI() {
             </div>
           </section>
 
-          {/* TRUST STRIP */}
-          <section style={s.trustStrip} className="fade-up-2">
-            <div style={s.trustInner}>
-              {[
-                { Icon: Icon.dollar, label: "Transparent Pricing", sub: "Real TT prices, always" },
-                { Icon: Icon.shield, label: "Warranty Info", sub: "Full coverage details" },
-                { Icon: Icon.star, label: "Safety Ratings", sub: "Crash test results explained" },
-                { Icon: Icon.zap, label: "AI Matching", sub: "Personalised guidance" },
-                { Icon: Icon.car, label: "All Major Brands", sub: "Every TT dealership" },
-              ].map(t => (
-                <div key={t.label} style={s.trustItem}>
-                  <div style={s.trustIcon}><t.Icon /></div>
-                  <div>
-                    <div style={s.trustLabel}>{t.label}</div>
-                    <div style={s.trustSub}>{t.sub}</div>
+          {/* HOW IT WORKS */}
+          <section style={s.howSection} className="fade-up-2">
+            <div style={s.howInner}>
+              <div style={s.eyebrow}>How Carla AI Works</div>
+              <h2 style={s.sectionTitle}>Three steps to your next car</h2>
+              <div style={s.howGrid}>
+                {[
+                  { step: "01", title: "Tell us your preferences", desc: "Share your budget, lifestyle and what matters most — or just describe what you need in plain English. No forms, just a conversation." },
+                  { step: "02", title: "AI finds your best match", desc: "Carla AI compares every brand-new car available from certified T&T dealerships — price, warranty, fuel costs, safety — and surfaces the ones that fit your life." },
+                  { step: "03", title: "Connect with a certified dealer", desc: "Found the one? Request a test drive directly from the app. A certified TT dealer rep will reach out to confirm at a time that suits you." },
+                ].map(h => (
+                  <div key={h.step} style={s.howCard}>
+                    <div style={s.howStep}>{h.step}</div>
+                    <div style={s.howTitle}>{h.title}</div>
+                    <div style={s.howDesc}>{h.desc}</div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </section>
 
@@ -400,7 +601,7 @@ export default function CarMatchAI() {
                 const GIcon = Icon[g.icon] || Icon.car;
                 return (
                   <button key={g.label} style={s.groupCard} className="group-card"
-                    onClick={() => sendMessage(`Show me the ${g.label} cars available in TT`)}>
+                    onClick={() => sendMessage(`Show me the ${g.label} cars available in T&T`)}>
                     <div style={{ ...s.groupIcon, background: `linear-gradient(135deg, ${g.from}, ${g.to})` }}>
                       <GIcon />
                     </div>
@@ -421,7 +622,7 @@ export default function CarMatchAI() {
                 <h2 style={s.sectionTitle}>Browse & Compare</h2>
               </div>
               <button style={s.sectionBtn} className="hero-cta" onClick={() => setScreen("chat")}>
-                Let AI Match Me <Icon.arrowRight />
+                Let Carla Match Me <Icon.arrowRight />
               </button>
             </div>
 
@@ -438,15 +639,22 @@ export default function CarMatchAI() {
             <div style={s.carGrid}>
               {filteredCars.map((car, idx) => (
                 <div key={car.id} style={s.carCard} className="car-card">
-                  {/* Gradient header */}
-                  <div style={{ ...s.cardHeader, background: car.gradient }}>
+                  {/* Full bleed image header */}
+                  <div style={s.cardImageWrap}>
+                    <img src={car.image} alt={car.name} style={s.cardImage} onError={e => { e.target.style.display="none"; e.target.parentNode.style.background=car.gradient; }} />
+                    <div style={{ ...s.cardImageOverlay, background: `linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 100%)` }} />
                     <div style={s.cardHeaderTop}>
                       <div style={s.cardBrand}>{car.brand}</div>
                       {car.badge && <div style={s.cardBadge}>{car.badge}</div>}
                     </div>
-                    <div style={s.cardName}>{car.year} {car.name}</div>
-                    <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
-                    <div style={s.cardPrice}>{fmt(car.price)}</div>
+                    <div style={s.cardOverlayContent}>
+                      <div style={s.cardName}>{car.year} {car.name}</div>
+                      <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
+                      <div style={s.cardPriceRow}>
+                        <div style={s.cardPrice}>{fmt(car.price)}</div>
+                        <div style={s.cardMonthly}>{car.monthlyFuel} /mo est.</div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Key facts */}
@@ -455,7 +663,7 @@ export default function CarMatchAI() {
                       {[
                         { icon: <Icon.shield />, label: "Warranty", val: car.warranty },
                         { icon: <Icon.star />, label: "Safety", val: car.safety },
-                        { icon: <Icon.fuel />, label: "Monthly Fuel", val: car.monthlyFuel },
+                        { icon: <Icon.fuel />, label: "Fuel Type", val: car.fuel },
                         { icon: <Icon.users />, label: "Seats", val: `${car.seats} passengers` },
                       ].map(k => (
                         <div key={k.label} style={s.keyBox}>
@@ -468,7 +676,7 @@ export default function CarMatchAI() {
 
                     <p style={s.cardDesc}>{car.desc}</p>
 
-                    {expandedCard === car.id && (
+                    {expandedCards.has(car.id) && (
                       <div style={s.expandBox} className="fade-up">
                         <div style={s.expandTitle}>Key Features</div>
                         <div style={s.featTags}>
@@ -477,7 +685,7 @@ export default function CarMatchAI() {
                           ))}
                         </div>
                         <div style={s.expandDetails}>
-                          <div style={s.expandRow}><span style={s.expandKey}>Dealership</span><span style={s.expandVal}>{car.dealership}</span></div>
+                          <div style={s.expandRow}><span style={s.expandKey}>Certified Dealer</span><span style={s.expandVal}>{car.dealership}</span></div>
                           {car.evRange && <div style={s.expandRow}><span style={s.expandKey}>Electric Range</span><span style={s.expandVal}>{car.evRange} km per charge</span></div>}
                         </div>
                       </div>
@@ -485,12 +693,12 @@ export default function CarMatchAI() {
 
                     <div style={s.cardActions}>
                       <button style={s.actionGhost} className="action-ghost"
-                        onClick={() => setExpandedCard(expandedCard === car.id ? null : car.id)}>
-                        {expandedCard === car.id ? <><Icon.chevUp /> Less</> : <><Icon.chevDown /> More</>}
+                        onClick={() => toggleCard(car.id)}>
+                        {expandedCards.has(car.id) ? <><Icon.chevUp /> Less</> : <><Icon.chevDown /> Features</>}
                       </button>
                       <button style={{ ...s.actionAsk, color: car.accent, borderColor: car.accent + "40", background: car.accent + "10" }}
                         className="action-ask"
-                        onClick={() => sendMessage(`Tell me about the ${car.year} ${car.brand} ${car.name} — is it a good choice in Trinidad?`)}>
+                        onClick={() => sendMessage(`Tell me about the ${car.year} ${car.brand} ${car.name}.`)}>
                         Ask AI
                       </button>
                       <button style={{ ...s.actionBook, background: car.gradient }}
@@ -511,11 +719,11 @@ export default function CarMatchAI() {
               <div style={s.footerLogo}>
                 <div style={s.logoMark}><Icon.logo /></div>
                 <div>
-                  <div style={s.logoName}>CarMatch<span style={s.logoAccent}>AI</span></div>
-                  <div style={s.logoSub}>Trinidad & Tobago</div>
+                  <div style={s.logoName}>Carla<span style={s.logoAccent}> AI</span></div>
+                  <div style={s.logoSub}>Trinidad & Tobago's AI Car Advisor</div>
                 </div>
               </div>
-              <p style={s.footerText}>Free to use · Connecting car buyers with the right vehicle and dealership across Trinidad & Tobago.</p>
+              <p style={s.footerText}>Free to use. Helping car buyers find brand-new vehicles from certified dealerships across Trinidad and Tobago.</p>
             </div>
           </footer>
         </div>
@@ -531,8 +739,9 @@ export default function CarMatchAI() {
               <Icon.chat /> Chat
             </button>
             <button style={{ ...s.tabBtn, ...(activeTab === "matches" ? s.tabOn : s.tabOff) }} onClick={() => setActiveTab("matches")}>
-              <Icon.car /> My Matches {matches.length > 0 && <span style={s.badge}>{matches.length}</span>}
+              <Icon.bookmark /> My Matches {matches.length > 0 && <span style={s.badge}>{matches.length}</span>}
             </button>
+
           </div>
 
           {activeTab === "chat" && (
@@ -557,11 +766,30 @@ export default function CarMatchAI() {
                 <div ref={chatEndRef} />
               </div>
 
-              {messages.length <= 2 && (
+              {/* WIZARD — shown until user picks an option or types freely */}
+              {!wizardDone && messages.length <= 2 && !loading && (
+                <div style={s.wizardArea}>
+                  <div style={s.wizardGrid}>
+                    {WIZARD_OPTIONS.map((opt, i) => (
+                      <button key={i} style={s.wizardBtn} className="wizard-btn" onClick={() => handleWizard(opt)}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div style={s.wizardOr}>
+                    <span style={s.wizardOrLine} />
+                    <span style={s.wizardOrText}>or just type your question below</span>
+                    <span style={s.wizardOrLine} />
+                  </div>
+                </div>
+              )}
+
+              {/* After wizard — show quick suggestions as compact chips */}
+              {wizardDone && messages.length <= 4 && (
                 <div style={s.chipsArea}>
-                  <div style={s.chipsLabel}>Suggested questions</div>
+                  <div style={s.chipsLabel}>You can also ask me about →</div>
                   <div style={s.chipsScroll}>
-                    {SUGGESTIONS.map((q, i) => (
+                    {["Financing options in T&T", "Insurance tips", "Best car for Maracas road", "EV charging costs", "Import duties explained"].map((q, i) => (
                       <button key={i} style={s.chip} className="chip" onClick={() => sendMessage(q)}>{q}</button>
                     ))}
                   </div>
@@ -594,28 +822,35 @@ export default function CarMatchAI() {
                 <div style={s.noMatch}>
                   <div style={s.noMatchIcon}><Icon.car /></div>
                   <h3 style={s.noMatchTitle}>No vehicles matched yet</h3>
-                  <p style={s.noMatchBody}>Chat with CarMatch AI and vehicles will appear here as you go.</p>
+                  <p style={s.noMatchBody}>Chat with Carla AI and vehicles will appear here as you go.</p>
                   <button style={s.noMatchBtn} className="hero-cta" onClick={() => setActiveTab("chat")}>Start a Conversation</button>
                 </div>
               ) : (
                 <div style={s.matchList}>
                   {matches.map(car => (
                     <div key={car.id} style={s.carCard} className="car-card">
-                      <div style={{ ...s.cardHeader, background: car.gradient }}>
+                      <div style={s.cardImageWrap}>
+                        <img src={car.image} alt={car.name} style={s.cardImage} onError={e => { e.target.style.display="none"; e.target.parentNode.style.background=car.gradient; }} />
+                        <div style={{ ...s.cardImageOverlay, background: `linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 100%)` }} />
                         <div style={s.cardHeaderTop}>
                           <div style={s.cardBrand}>{car.brand}</div>
                           {car.badge && <div style={s.cardBadge}>{car.badge}</div>}
                         </div>
-                        <div style={s.cardName}>{car.year} {car.name}</div>
-                        <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
-                        <div style={s.cardPrice}>{fmt(car.price)}</div>
+                        <div style={s.cardOverlayContent}>
+                          <div style={s.cardName}>{car.year} {car.name}</div>
+                          <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
+                          <div style={s.cardPriceRow}>
+                            <div style={s.cardPrice}>{fmt(car.price)}</div>
+                            <div style={s.cardMonthly}>{car.monthlyFuel} /mo est.</div>
+                          </div>
+                        </div>
                       </div>
                       <div style={s.cardBody}>
                         <div style={s.keyGrid}>
                           {[
                             { icon: <Icon.shield />, label: "Warranty", val: car.warranty },
                             { icon: <Icon.star />, label: "Safety", val: car.safety },
-                            { icon: <Icon.fuel />, label: "Monthly Fuel", val: car.monthlyFuel },
+                            { icon: <Icon.fuel />, label: "Fuel Type", val: car.fuel },
                             { icon: <Icon.users />, label: "Seats", val: `${car.seats} passengers` },
                           ].map(k => (
                             <div key={k.label} style={s.keyBox}>
@@ -734,14 +969,15 @@ const s = {
   root: { minHeight: "100vh", background: white, color: gray900, fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif", display: "flex", flexDirection: "column" },
 
   // NAV
-  nav: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.85rem 1.5rem", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${gray200}`, position: "sticky", top: 0, zIndex: 50, boxShadow: "0 1px 3px rgba(0,0,0,0.05)" },
+  nav: { display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "0", padding: "0.85rem 1.5rem", background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${gray200}`, position: "sticky", top: 0, zIndex: 50, boxShadow: "0 1px 3px rgba(0,0,0,0.05)" },
   logoBtn: { background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.65rem", padding: 0 },
-  logoMark: { width: 36, height: 36, borderRadius: 9, background: "linear-gradient(135deg, #4F46E5, #7C3AED)", color: white, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 12px rgba(79,70,229,0.35)" },
-  logoName: { fontSize: "1.05rem", fontWeight: 800, color: gray900, letterSpacing: "-0.02em", lineHeight: 1.2 },
+  logoMark: { width: 38, height: 38, borderRadius: 10, background: "#0F172A", color: white, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 14px rgba(15,23,42,0.22)" },
+  logoName: { fontSize: "1.1rem", fontWeight: 800, color: gray900, letterSpacing: "-0.025em", lineHeight: 1.15, textAlign: "left" },
   logoAccent: { background: "linear-gradient(90deg, #4F46E5, #7C3AED)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  logoSub: { fontSize: "0.62rem", color: gray400, fontWeight: 500, letterSpacing: "0.04em" },
-  navRight: { display: "flex", gap: "0.5rem", alignItems: "center" },
-  navGhost: { background: "none", border: `1px solid ${gray200}`, color: gray600, borderRadius: 8, padding: "0.45rem 0.9rem", cursor: "pointer", fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 500 },
+  logoSub: { fontSize: "0.62rem", color: gray400, fontWeight: 500, letterSpacing: "0.04em", textAlign: "left" },
+  navRight: { display: "flex", gap: "0.5rem", alignItems: "center", marginLeft: "auto" },
+  navGhost: { background: "none", border: `1px solid ${gray200}`, color: gray600, borderRadius: 8, padding: "0.45rem 0.9rem", cursor: "pointer", fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 500, display: "flex", alignItems: "center", gap: "0.35rem" },
+  dataTag: { fontSize: "0.65rem", fontWeight: 700, background: "#DCFCE7", color: "#166534", borderRadius: 20, padding: "0.2rem 0.65rem", letterSpacing: "0.04em" },
   navPrimary: { background: "linear-gradient(135deg, #4F46E5, #7C3AED)", color: white, border: "none", borderRadius: 8, padding: "0.5rem 1.1rem", fontWeight: 700, fontSize: "0.88rem", cursor: "pointer", fontFamily: "inherit", boxShadow: "0 4px 12px rgba(79,70,229,0.3)" },
 
   // HOME
@@ -785,18 +1021,12 @@ const s = {
   widgetInputField: { flex: 1, background: gray50, border: `1.5px solid ${gray200}`, borderRadius: 10, padding: "0.68rem 0.9rem", color: gray900, fontSize: "0.88rem", fontFamily: "inherit", outline: "none" },
   widgetSend: { background: "linear-gradient(135deg, #4F46E5, #7C3AED)", color: white, border: "none", borderRadius: 10, padding: "0.68rem 0.9rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(79,70,229,0.3)" },
 
-  // TRUST
-  trustStrip: { background: gray900, padding: "1.25rem 1.5rem" },
-  trustInner: { maxWidth: 980, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1.25rem 2.5rem" },
-  trustItem: { display: "flex", alignItems: "center", gap: "0.65rem" },
-  trustIcon: { width: 32, height: 32, borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: white, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
-  trustLabel: { fontSize: "0.83rem", fontWeight: 700, color: white, lineHeight: 1.2 },
-  trustSub: { fontSize: "0.7rem", color: gray400, marginTop: 1 },
+
 
   // SECTIONS
   section: { padding: "2.5rem 1.5rem", maxWidth: 980, margin: "0 auto", width: "100%" },
   sectionHead: { display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "1.5rem", gap: "1rem", flexWrap: "wrap" },
-  eyebrow: { fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.2em", background: "linear-gradient(90deg, #4F46E5, #7C3AED)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "0.3rem" },
+  eyebrow: { fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.14em", color: gray500, textTransform: "uppercase", marginBottom: "0.4rem" },
   sectionTitle: { fontSize: "1.5rem", fontWeight: 800, color: gray900, margin: 0, letterSpacing: "-0.025em" },
   sectionBtn: { background: "linear-gradient(135deg, #4F46E5, #7C3AED)", color: white, border: "none", borderRadius: 9, padding: "0.65rem 1.2rem", fontWeight: 700, fontSize: "0.85rem", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: "0.4rem", boxShadow: "0 4px 12px rgba(79,70,229,0.25)", flexShrink: 0 },
 
@@ -815,15 +1045,21 @@ const s = {
   filterOff: { background: gray100, color: gray600 },
 
   // CAR CARDS
-  carGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: "1.1rem" },
-  carCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", transition: "all 0.22s" },
+  carGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: "1.1rem", alignItems: "start" },
+  carCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", transition: "all 0.22s", alignSelf: "start" },
+  cardImageWrap: { position: "relative", height: 200, overflow: "hidden", background: "#1a1a2e", flexShrink: 0 },
+  cardImage: { width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transition: "transform 0.4s ease" },
+  cardImageOverlay: { position: "absolute", inset: 0, pointerEvents: "none" },
+  cardOverlayContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: "1rem 1.15rem 1rem", color: white },
   cardHeader: { padding: "1.25rem 1.15rem 1.1rem", color: white, position: "relative" },
-  cardHeaderTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" },
-  cardBrand: { fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.85 },
+  cardHeaderTop: { position: "absolute", top: 0, left: 0, right: 0, display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "1rem 1.15rem", zIndex: 1 },
+  cardBrand: { fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: white, textShadow: "0 1px 4px rgba(0,0,0,0.5)" },
   cardBadge: { background: "rgba(255,255,255,0.25)", backdropFilter: "blur(8px)", borderRadius: 20, padding: "0.18rem 0.6rem", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.04em" },
   cardName: { fontSize: "1.25rem", fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: "0.3rem" },
   cardType: { fontSize: "0.76rem", opacity: 0.8, fontWeight: 500 },
-  cardPrice: { fontSize: "1.3rem", fontWeight: 900, letterSpacing: "-0.02em", marginTop: "0.6rem" },
+  cardPriceRow: { display: "flex", alignItems: "baseline", gap: "0.65rem", marginTop: "0.6rem", flexWrap: "wrap" },
+  cardPrice: { fontSize: "1.3rem", fontWeight: 900, letterSpacing: "-0.02em" },
+  cardMonthly: { fontSize: "0.78rem", fontWeight: 700, opacity: 0.88, letterSpacing: "0.01em" },
 
   cardBody: { padding: "1rem 1.1rem 1.1rem", display: "flex", flexDirection: "column", gap: "0.85rem", flex: 1 },
   keyGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" },
@@ -858,6 +1094,8 @@ const s = {
   tabs: { display: "flex", borderBottom: `1px solid ${gray200}`, background: white, flexShrink: 0 },
   tabBtn: { flex: 1, padding: "0.8rem", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: "0.88rem", fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", borderBottom: "2px solid transparent", transition: "all 0.15s" },
   tabOn: { color: blue, borderBottomColor: blue },
+  tabSpacer: { flex: 1 },
+  tabBrowseBtn: { background: "none", border: `1px solid ${gray200}`, color: gray600, borderRadius: 7, padding: "0.4rem 0.9rem", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: "0.4rem", margin: "0.55rem 1rem 0.55rem 0", transition: "all 0.15s" },
   tabOff: { color: gray400 },
   badge: { background: "linear-gradient(135deg, #4F46E5, #7C3AED)", color: white, borderRadius: 20, padding: "0.1rem 0.45rem", fontSize: "0.68rem", fontWeight: 700, fontFamily: "monospace" },
 
@@ -905,6 +1143,32 @@ const s = {
   formSubmit: { color: white, border: "none", borderRadius: 10, padding: "1rem", fontSize: "0.95rem", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "filter 0.15s" },
   formBack: { background: "none", border: "none", color: gray400, cursor: "pointer", fontFamily: "inherit", fontSize: "0.83rem", padding: 0, alignSelf: "flex-start", textDecoration: "underline" },
 
+
+  // HERO CAPABILITIES
+  heroCapabilities: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "0.25rem" },
+  heroCap: { display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.88rem", fontWeight: 500, color: gray700 },
+  heroCapCheck: { width: 16, height: 16, flexShrink: 0 },
+  heroCapText: { lineHeight: 1.4 },
+
+  // WIDGET HINT
+  widgetHint: { background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 8, padding: "0.6rem 0.85rem", fontSize: "0.77rem", color: "#92400E", lineHeight: 1.55 },
+
+  // HOW IT WORKS
+  howSection: { background: gray50, borderTop: `1px solid ${gray200}`, borderBottom: `1px solid ${gray200}`, padding: "2.5rem 1.5rem" },
+  howInner: { maxWidth: 980, margin: "0 auto" },
+  howGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem", marginTop: "1.5rem" },
+  howCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 14, padding: "1.4rem", display: "flex", flexDirection: "column", gap: "0.6rem", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" },
+  howStep: { fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.08em", color: gray400 },
+  howTitle: { fontSize: "1rem", fontWeight: 800, color: gray900, letterSpacing: "-0.015em" },
+  howDesc: { fontSize: "0.85rem", color: gray500, lineHeight: 1.7 },
+
+  // WIZARD
+  wizardArea: { padding: "0 1rem 0.75rem", flexShrink: 0 },
+  wizardGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.45rem", marginBottom: "0.75rem" },
+  wizardBtn: { background: white, border: `1.5px solid ${gray200}`, color: gray700, borderRadius: 10, padding: "0.65rem 0.75rem", fontSize: "0.82rem", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, textAlign: "left", lineHeight: 1.4, transition: "all 0.15s" },
+  wizardOr: { display: "flex", alignItems: "center", gap: "0.75rem", margin: "0.25rem 0" },
+  wizardOrLine: { flex: 1, height: 1, background: gray200 },
+  wizardOrText: { fontSize: "0.72rem", color: gray400, fontWeight: 500, whiteSpace: "nowrap" },
   // THANKS
   thanksPage: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem 1.25rem", background: gray50 },
   thanksCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 18, overflow: "hidden", maxWidth: 440, width: "100%", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" },
@@ -929,18 +1193,22 @@ const css = `
   @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.4} }
 
   .nav-cta:hover    { filter: brightness(1.1); transform: translateY(-1px); }
+  .nav-browse:hover { background: #EEF2FF !important; border-color: #4F46E5 !important; color: #4F46E5 !important; }
   .hero-cta:hover   { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(79,70,229,0.4) !important; }
   .hero-sec:hover   { background: #F3F4F6 !important; }
   .w-chip:hover     { border-color: #4F46E5 !important; background: #EEF2FF !important; color: #4338CA !important; }
   .w-send:hover     { filter: brightness(1.15); }
   .group-card:hover { border-color: #A5B4FC !important; box-shadow: 0 8px 24px rgba(79,70,229,0.12) !important; transform: translateY(-3px); }
   .car-card:hover   { border-color: #A5B4FC !important; box-shadow: 0 10px 30px rgba(79,70,229,0.1) !important; transform: translateY(-3px); }
+  .car-card:hover img { transform: scale(1.04); }
   .action-ghost:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; }
   .action-ask:hover { filter: brightness(0.92); }
   .action-book:hover { filter: brightness(0.88); }
   .chip:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
   .nudge:hover { background: linear-gradient(135deg, #E0E7FF, #EDE9FE) !important; }
   .send-btn:hover { filter: brightness(1.15); }
+  .tab-browse-btn:hover { background: #EEF2FF !important; border-color: #4F46E5 !important; color: #4F46E5 !important; }
+  .wizard-btn:hover { border-color: #4F46E5 !important; background: #EEF2FF !important; color: #4338CA !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.1) !important; }
   input:focus { border-color: #4F46E5 !important; box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important; }
 
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4F46E5; animation: dotP 1.2s ease infinite; }
@@ -950,5 +1218,7 @@ const css = `
     .carGrid { grid-template-columns: 1fr !important; }
     .groupGrid { grid-template-columns: 1fr 1fr !important; }
     .heroInner { flex-direction: column !important; }
+    .wizardGrid { grid-template-columns: 1fr !important; }
+    .heroCapabilities { grid-template-columns: 1fr !important; }
   }
 `;
