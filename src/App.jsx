@@ -352,13 +352,13 @@ function CompareOverlay({ carA, carB, onClose }) {
   return (
     <div style={{
       position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200,
-      display: "flex", alignItems: "flex-end", justifyContent: "center",
-      backdropFilter: "blur(4px)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      backdropFilter: "blur(4px)", padding: "1rem",
     }} onClick={onClose}>
       <div style={{
-        background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 680,
+        background: "white", borderRadius: 20, width: "100%", maxWidth: 680,
         maxHeight: "90vh", display: "flex", flexDirection: "column",
-        boxShadow: "0 -8px 40px rgba(0,0,0,0.2)",
+        boxShadow: "0 8px 40px rgba(0,0,0,0.25)",
         animation: "slideUp 0.28s ease",
       }} onClick={e => e.stopPropagation()}>
 
@@ -860,7 +860,7 @@ export default function CarlaAI() {
   const sharedCardProps = {
     expandedCards, toggleCard, cardImageIndex, setCardImageIndex,
     onBook: openLead,
-    onAsk: (car) => sendMessage(`Tell me about the ${car.year} ${car.brand} ${car.name}.`),
+    onAsk: (car) => { setActiveTab("chat"); sendMessage(`Tell me about the ${car.year} ${car.brand} ${car.name}.`); },
     compareMode, compareCarId: compareCarA?.id,
     onCompareStart: handleCompareStart,
     onCompareSelect: handleCompareSelect,
