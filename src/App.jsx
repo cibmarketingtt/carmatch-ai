@@ -121,7 +121,7 @@ function brandGradient(str = "") {
 
 const FALLBACK_CARS = [
   { id: 1, name: "Corolla Cross", image: "https://placehold.co/800x400/DC2626/ffffff?text=Toyota+Corolla+Cross", brand: "Toyota", type: "SUV", price: 320000, year: 2024, fuel: "Hybrid", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["Backup Camera", "Lane Assist", "Apple CarPlay", "Android Auto", "Adaptive Cruise Control"], tags: ["fuel-efficient", "family", "safety", "tech"], ev: false, dealership: "Toyota Trinidad", desc: "Trinidad's best-selling hybrid SUV. Exceptional fuel economy delivers real monthly savings every time you pass a petrol station.", monthlyFuel: "TT$2,400", badge: "Best Seller", gradient: "linear-gradient(135deg, #DC2626, #F87171)", accent: "#DC2626" },
-  { id: 2, name: "X-Trail", image: "https://www-asia.nissan-cdn.net/content/dam/Nissan/AU/Images/about-nissan/news/2024/09/X-Trail_24_ST-L_R_Front34_ChampagneSilver_RGB-20240904-021901.jpg.ximg.l_8_h.smart.jpg", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360 Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
+  { id: 2, name: "X-Trail", image: "https://placehold.co/800x400/7C3AED/ffffff?text=Nissan+X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360 Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
   { id: 3, name: "Civic", image: "https://placehold.co/800x400/1D4ED8/ffffff?text=Honda+Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "TT$3,800", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
   { id: 4, name: "Outlander PHEV", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$1,200", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
   { id: 5, name: "Sportage", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360 Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense — outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
@@ -176,23 +176,28 @@ function filterCars(cars, f) {
 function extractMatchesFromReply(reply, allCars, messages) {
   const replyLower = reply.toLowerCase();
 
+  // Also scan all previous assistant messages so mentions accumulate properly
+  const allAssistantText = messages
+    .filter(m => m.role === "assistant")
+    .map(m => m.content)
+    .join(" ")
+    .toLowerCase();
+
   // Build user needs filter from full conversation
   const userText = messages.filter(m => m.role === "user").map(m => m.content).join(" ").toLowerCase();
   const needsSeats = userText.match(/(\d+)\s*seat/)?.[1] ? parseInt(userText.match(/(\d+)\s*seat/)[1]) : null;
   const needsUnder = userText.match(/under\s*(?:tt\$?)?\s*(\d[\d,]*)/i)?.[1] ? parseInt(userText.match(/under\s*(?:tt\$?)?\s*(\d[\d,]*)/i)[1].replace(/,/g, "")) : null;
   const needsFuelEff = /hybrid|ev|electric|fuel.efficien/i.test(userText);
-  const needsFamily = /family|kids|children/i.test(userText);
-  const needsOffroad = /offroad|maracas|mountain|4x4/i.test(userText);
 
-  // Step 1: find all brands mentioned in the reply
+  // Step 1: find cars mentioned in THIS reply (for inline cards)
   const mentionedBrands = new Set();
   const mentionedModelIds = new Set();
 
   allCars.forEach(c => {
     const fullName = `${c.brand} ${c.name}`.toLowerCase();
     if (replyLower.includes(fullName)) {
-      mentionedModelIds.add(c.id); // exact model match
-    } else if (replyLower.includes(c.brand.toLowerCase())) {
+      mentionedModelIds.add(c.id);
+    } else if (replyLower.includes(c.brand.toLowerCase()) || replyLower.includes(c.name.toLowerCase())) {
       mentionedBrands.add(c.brand.toLowerCase());
     }
   });
@@ -200,15 +205,14 @@ function extractMatchesFromReply(reply, allCars, messages) {
   // Step 2: for brands without a specific model match, include all their models
   let candidates = allCars.filter(c => {
     if (mentionedModelIds.has(c.id)) return true;
-    if (mentionedBrands.has(c.brand.toLowerCase()) && !mentionedModelIds.has(c.id)) {
-      // only include brand-level matches if no specific model of that brand was mentioned
+    if (mentionedBrands.has(c.brand.toLowerCase())) {
       const brandHasExactMatch = allCars.some(other => other.brand === c.brand && mentionedModelIds.has(other.id));
       return !brandHasExactMatch;
     }
     return false;
   });
 
-  // Step 3: apply conversation-derived filters to narrow candidates
+  // Step 3: apply conversation-derived filters
   if (needsSeats) candidates = candidates.filter(c => c.seats >= needsSeats);
   if (needsUnder) candidates = candidates.filter(c => c.price <= needsUnder);
   if (needsFuelEff) candidates = candidates.sort((a, b) => {
@@ -1574,9 +1578,9 @@ const s = {
 
   // CHAT
   chatPage: { flex: 1, display: "flex", flexDirection: "column", height: "calc(100vh - 57px)", minHeight: 0, overflow: "hidden" },
-  tabs: { background: white, borderBottom: `1px solid ${gray200}`, flexShrink: 0, padding: "0 1rem" },
-  tabsInner: { display: "flex", gap: "0.25rem", maxWidth: 980, margin: "0 auto" },
-  tabBtn: { flex: "0 0 auto", padding: "0.9rem 1.25rem", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: "0.88rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.5rem", borderBottom: "2.5px solid transparent", transition: "all 0.18s", color: gray400, letterSpacing: "-0.01em" },
+  tabs: { background: white, borderBottom: `1px solid ${gray200}`, flexShrink: 0 },
+  tabsInner: { display: "flex" },
+  tabBtn: { flex: 1, padding: "0.9rem 1rem", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: "0.88rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", borderBottom: "2.5px solid transparent", transition: "all 0.18s", color: gray400, letterSpacing: "-0.01em" },
   tabOn: { color: blue, borderBottomColor: blue },
   tabOff: { color: gray400 },
   tabIconWrap: { width: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.18s", flexShrink: 0 },
