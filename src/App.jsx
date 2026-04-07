@@ -535,7 +535,6 @@ function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
   const prev = () => setIdx(i => (i - 1 + images.length) % images.length);
   const next = () => setIdx(i => (i + 1) % images.length);
 
-  // Keyboard navigation
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "ArrowLeft") prev();
@@ -546,7 +545,6 @@ function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Touch swipe
   const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
     if (touchStartX.current === null) return;
@@ -558,104 +556,111 @@ function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
   return (
     <div
       style={{
-        position: "fixed", inset: 0, background: "rgba(0,0,0,0.93)", zIndex: 300,
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        position: "fixed", inset: 0, zIndex: 300,
+        background: "rgba(0,0,0,0.72)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "1.5rem",
+        backdropFilter: "blur(6px)",
       }}
       onClick={onClose}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {/* Top bar */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "1rem 1.25rem",
-        background: "linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)",
-        zIndex: 2,
-      }} onClick={e => e.stopPropagation()}>
-        <div style={{ color: "white", fontWeight: 700, fontSize: "0.95rem", letterSpacing: "-0.01em" }}>
-          {carName}
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.85rem", fontWeight: 600, fontFamily: "monospace" }}>
-            {idx + 1} / {images.length}
-          </div>
-          <button onClick={onClose} style={{
-            background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 8,
-            padding: "0.4rem", cursor: "pointer", color: "white",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            backdropFilter: "blur(4px)",
-          }}>
-            <Icon.x />
-          </button>
-        </div>
-      </div>
-
-      {/* Main image */}
-      <div style={{ position: "relative", width: "100%", maxWidth: 900, padding: "0 4rem", boxSizing: "border-box" }}
-        onClick={e => e.stopPropagation()}>
-        <img
-          src={images[idx]}
-          alt={`${carName} — photo ${idx + 1}`}
-          style={{
-            width: "100%", maxHeight: "75vh", objectFit: "contain",
-            borderRadius: 12, display: "block",
-            boxShadow: "0 8px 48px rgba(0,0,0,0.6)",
-          }}
-          onError={e => { e.target.style.opacity = "0.3"; }}
-        />
-      </div>
-
-      {/* Prev arrow */}
-      {images.length > 1 && (
-        <button
-          onClick={e => { e.stopPropagation(); prev(); }}
-          style={{
-            position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)",
-            background: "rgba(255,255,255,0.15)", backdropFilter: "blur(6px)",
-            border: "none", borderRadius: "50%", width: 48, height: 48,
-            color: "white", fontSize: "1.5rem", cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            transition: "background 0.15s",
-          }}
-          className="lightbox-arrow"
-        >&#8249;</button>
-      )}
-
-      {/* Next arrow */}
-      {images.length > 1 && (
-        <button
-          onClick={e => { e.stopPropagation(); next(); }}
-          style={{
-            position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)",
-            background: "rgba(255,255,255,0.15)", backdropFilter: "blur(6px)",
-            border: "none", borderRadius: "50%", width: 48, height: 48,
-            color: "white", fontSize: "1.5rem", cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            transition: "background 0.15s",
-          }}
-          className="lightbox-arrow"
-        >&#8250;</button>
-      )}
-
-      {/* Dot indicators */}
-      {images.length > 1 && (
+      <div
+        style={{
+          background: "#111827",
+          borderRadius: 16,
+          width: "100%",
+          maxWidth: 820,
+          overflow: "hidden",
+          boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
+          display: "flex",
+          flexDirection: "column",
+          animation: "slideUp 0.22s ease",
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
         <div style={{
-          position: "absolute", bottom: "1.5rem", left: 0, right: 0,
-          display: "flex", justifyContent: "center", gap: 6,
-        }} onClick={e => e.stopPropagation()}>
-          {images.map((_, i) => (
-            <span key={i}
-              onClick={() => setIdx(i)}
-              style={{
-                width: i === idx ? 20 : 7, height: 7, borderRadius: 4,
-                background: i === idx ? "white" : "rgba(255,255,255,0.35)",
-                cursor: "pointer", transition: "all 0.2s",
-              }}
-            />
-          ))}
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "0.85rem 1.1rem",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}>
+          <div style={{ color: "white", fontWeight: 700, fontSize: "0.9rem", letterSpacing: "-0.01em" }}>
+            {carName}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+            {images.length > 1 && (
+              <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", fontWeight: 600, fontFamily: "monospace" }}>
+                {idx + 1} / {images.length}
+              </div>
+            )}
+            <button onClick={onClose} style={{
+              background: "rgba(255,255,255,0.1)", border: "none", borderRadius: 7,
+              padding: "0.35rem", cursor: "pointer", color: "white",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <Icon.x />
+            </button>
+          </div>
         </div>
-      )}
+
+        {/* Image */}
+        <div style={{ position: "relative", background: "#0a0a0f" }}>
+          <img
+            src={images[idx]}
+            alt={`${carName} photo ${idx + 1}`}
+            style={{
+              width: "100%",
+              maxHeight: "58vh",
+              objectFit: "contain",
+              display: "block",
+            }}
+            onError={e => { e.target.style.opacity = "0.15"; }}
+          />
+          {images.length > 1 && (
+            <button onClick={e => { e.stopPropagation(); prev(); }}
+              style={{
+                position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)",
+                background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: "50%", width: 40, height: 40, color: "white",
+                fontSize: "1.3rem", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+              className="lightbox-arrow"
+            >&#8249;</button>
+          )}
+          {images.length > 1 && (
+            <button onClick={e => { e.stopPropagation(); next(); }}
+              style={{
+                position: "absolute", right: "0.75rem", top: "50%", transform: "translateY(-50%)",
+                background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: "50%", width: 40, height: 40, color: "white",
+                fontSize: "1.3rem", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+              className="lightbox-arrow"
+            >&#8250;</button>
+          )}
+        </div>
+
+        {/* Dots */}
+        {images.length > 1 && (
+          <div style={{
+            display: "flex", justifyContent: "center", gap: 6,
+            padding: "0.75rem",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+          }}>
+            {images.map((_, i) => (
+              <span key={i} onClick={() => setIdx(i)} style={{
+                width: i === idx ? 20 : 7, height: 7, borderRadius: 4,
+                background: i === idx ? "white" : "rgba(255,255,255,0.25)",
+                cursor: "pointer", transition: "all 0.2s", display: "inline-block",
+              }} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -764,6 +769,8 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
           View Photos
           {carImages.length > 1 && <span style={{ opacity: 0.65, fontWeight: 500 }}>· {carImages.length}</span>}
         </button>
+
+        {isExpanded && (
           <div style={s.expandBox} className="fade-up">
             <div style={s.expandTitle}>Key Features</div>
             <div style={s.featTags}>
