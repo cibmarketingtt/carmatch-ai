@@ -490,7 +490,7 @@ function CompareOverlay({ carA, carB, onClose }) {
         </div>
 
         {/* Car headers */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", padding: "1rem 1.5rem 0", flexShrink: 0 }}>
+        <div>
           {[carA, carB].map(car => (
             <div key={car.id} style={{ background: car.gradient, borderRadius: 12, padding: "0.85rem 1rem", color: "white" }}>
               <div style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", opacity: 0.8 }}>{car.brand}</div>
@@ -541,8 +541,8 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
   );
 
   const SpecRow = ({ label, value }) => value ? (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0.5rem 0", borderBottom: "1px solid #F9FAFB", gap: "1rem" }}>
-      <span style={{ fontSize: "0.85rem", color: "#6B7280", flexShrink: 0 }}>{label}</span>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0.6rem 0", borderBottom: "1px solid #F3F4F6", gap: "1.5rem" }}>
+      <span style={{ fontSize: "0.85rem", color: "#6B7280", flexShrink: 0, minWidth: 160 }}>{label}</span>
       <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#111827", textAlign: "right" }}>{value}</span>
     </div>
   ) : null;
@@ -646,7 +646,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
 
           {/* OVERVIEW */}
           <Section title="Overview">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
+            <div>
               <SpecRow label="Make" value={car.brand} />
               <SpecRow label="Model" value={car.name} />
               <SpecRow label="Year" value={car.year?.toString()} />
@@ -658,7 +658,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
 
           {/* DRIVETRAIN & PERFORMANCE */}
           <Section title="Drivetrain">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
+            <div>
               <SpecRow label="Fuel Type" value={car.fuel} />
               <SpecRow label="Drivetrain" value={car.drivetrain} />
               <SpecRow label="Transmission" value={car.transmission} />
@@ -668,7 +668,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
 
           {/* SAFETY */}
           <Section title="Safety">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "0.75rem" }}>
+            <div>
               <SpecRow label="Safety Rating" value={car.safety} />
               <SpecRow label="Rating Body" value={
                 car.safety?.includes("ANCAP") ? "ANCAP (Australasian)" :
@@ -701,7 +701,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
 
           {/* WARRANTY & OWNERSHIP */}
           <Section title="Warranty and Ownership">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "0.75rem" }}>
+            <div>
               <SpecRow label="Warranty" value={car.warranty} />
               <SpecRow label="Certified Dealer" value={car.dealership} />
               <SpecRow label="Vehicle Status" value="New — dealership stock" />
@@ -714,7 +714,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
 
           {/* FUEL ECONOMY */}
           <Section title="Fuel Economy and Running Costs">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "0.85rem" }}>
+            <div>
               <SpecRow label="Est. Monthly Fuel Cost" value={car.monthlyFuel ? `${car.monthlyFuel} /mo` : null} />
               <SpecRow label="Fuel Type" value={car.fuel} />
               {car.ev && <SpecRow label="Home Charge Cost" value="~TT$50–80 per full charge" />}
