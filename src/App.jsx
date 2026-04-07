@@ -913,7 +913,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
           onClose={() => setDetailOpen(false)}
           onBook={onBook}
           onFeatureAsk={onFeatureAsk}
-          onViewPhotos={() => { setDetailOpen(false); setLightboxOpen(true); }}
+          onViewPhotos={() => { setLightboxOpen(true); }}
         />
       )}
       {lightboxOpen && (
