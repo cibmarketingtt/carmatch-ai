@@ -76,6 +76,8 @@ function rowToCar(headers, values) {
     tags,
     ev:         get("ev") === "true",
     evRange:    get("evRange") ? parseInt(get("evRange")) : null,
+    drivetrain: get("drivetrain") || null,
+    transmission: get("transmission") || null,
     dealership: get("dealership"),
     desc:       get("desc"),
     monthlyFuel:get("monthlyFuel"),
@@ -124,14 +126,14 @@ function brandGradient(str = "") {
 }
 
 const FALLBACK_CARS = [
-  { id: 1, name: "Corolla Cross", image: "https://placehold.co/800x400/DC2626/ffffff?text=Toyota+Corolla+Cross", brand: "Toyota", type: "SUV", price: 320000, year: 2024, fuel: "Hybrid", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["Backup Camera", "Lane Assist", "Apple CarPlay", "Android Auto", "Adaptive Cruise Control"], tags: ["fuel-efficient", "family", "safety", "tech"], ev: false, dealership: "Toyota Trinidad", desc: "Trinidad's best-selling hybrid SUV. Exceptional fuel economy delivers real monthly savings every time you pass a petrol station.", monthlyFuel: "TT$2,400", badge: "Best Seller", gradient: "linear-gradient(135deg, #DC2626, #F87171)", accent: "#DC2626" },
-  { id: 2, name: "X-Trail", image: "https://placehold.co/800x400/7C3AED/ffffff?text=Nissan+X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360 Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
-  { id: 3, name: "Civic", image: "https://placehold.co/800x400/1D4ED8/ffffff?text=Honda+Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "TT$3,800", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
-  { id: 4, name: "Outlander PHEV", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$1,200", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
-  { id: 5, name: "Sportage", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360 Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense — outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
-  { id: 6, name: "Hilux", image: "https://placehold.co/800x400/B45309/ffffff?text=Toyota+Hilux", brand: "Toyota", type: "Pickup", price: 385000, year: 2024, fuel: "Diesel", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["4x4 Drive", "Tow Bar", "Bed Liner", "Apple CarPlay", "Multi-Terrain Select"], tags: ["offroad", "towing", "durable", "work"], ev: false, dealership: "Toyota Trinidad", desc: "Built for everything Trinidad throws at it. Construction sites, beach limes, mountain roads. The Hilux does not stop.", monthlyFuel: "TT$6,980", badge: "Most Durable", gradient: "linear-gradient(135deg, #B45309, #F59E0B)", accent: "#B45309" },
-  { id: 7, name: "Tucson", image: "https://placehold.co/800x400/0891B2/ffffff?text=Hyundai+Tucson", brand: "Hyundai", type: "SUV", price: 275000, year: 2024, fuel: "Petrol", seats: 5, warranty: "5 years / 100,000 km", safety: "5-Star NHTSA", features: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay", "Safe Exit Assist", "Remote Start"], tags: ["tech", "safety", "style", "family", "affordable"], ev: false, dealership: "Hyundai TT", desc: "Award-winning design. Panoramic sunroof as standard. Premium technology usually found in vehicles at twice the price.", monthlyFuel: "TT$4,800", badge: "Editor's Choice", gradient: "linear-gradient(135deg, #0891B2, #67E8F9)", accent: "#0891B2" },
-  { id: 8, name: "CX-5", image: "https://placehold.co/800x400/374151/ffffff?text=Mazda+CX-5", brand: "Mazda", type: "SUV", price: 310000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / unlimited km", safety: "5-Star NHTSA", features: ["Leather Seats", "Bose Sound System", "Head-Up Display", "Apple CarPlay", "Radar Cruise Control"], tags: ["luxury", "style", "safety", "sporty", "tech"], ev: false, dealership: "Mazda TT", desc: "The most refined driving experience under TT$350,000. Premium leather, Bose audio and a design that commands attention.", monthlyFuel: "TT$5,620", badge: "Most Premium", gradient: "linear-gradient(135deg, #374151, #9CA3AF)", accent: "#374151" },
+  { id: 1, name: "Corolla Cross", drivetrain: "FWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/DC2626/ffffff?text=Toyota+Corolla+Cross", brand: "Toyota", type: "SUV", price: 320000, year: 2024, fuel: "Hybrid", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["Backup Camera", "Lane Assist", "Apple CarPlay", "Android Auto", "Adaptive Cruise Control"], tags: ["fuel-efficient", "family", "safety", "tech"], ev: false, dealership: "Toyota Trinidad", desc: "Trinidad's best-selling hybrid SUV. Exceptional fuel economy delivers real monthly savings every time you pass a petrol station.", monthlyFuel: "TT$2,400", badge: "Best Seller", gradient: "linear-gradient(135deg, #DC2626, #F87171)", accent: "#DC2626" },
+  { id: 2, name: "X-Trail", drivetrain: "AWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/7C3AED/ffffff?text=Nissan+X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360 Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
+  { id: 3, name: "Civic", drivetrain: "FWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/1D4ED8/ffffff?text=Honda+Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "TT$3,800", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
+  { id: 4, name: "Outlander PHEV", drivetrain: "AWD", transmission: "Automatic", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$1,200", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
+  { id: 5, name: "Sportage", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360 Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense — outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
+  { id: 6, name: "Hilux", drivetrain: "4WD", transmission: "Automatic 6-Speed", image: "https://placehold.co/800x400/B45309/ffffff?text=Toyota+Hilux", brand: "Toyota", type: "Pickup", price: 385000, year: 2024, fuel: "Diesel", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["4x4 Drive", "Tow Bar", "Bed Liner", "Apple CarPlay", "Multi-Terrain Select"], tags: ["offroad", "towing", "durable", "work"], ev: false, dealership: "Toyota Trinidad", desc: "Built for everything Trinidad throws at it. Construction sites, beach limes, mountain roads. The Hilux does not stop.", monthlyFuel: "TT$6,980", badge: "Most Durable", gradient: "linear-gradient(135deg, #B45309, #F59E0B)", accent: "#B45309" },
+  { id: 7, name: "Tucson", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/0891B2/ffffff?text=Hyundai+Tucson", brand: "Hyundai", type: "SUV", price: 275000, year: 2024, fuel: "Petrol", seats: 5, warranty: "5 years / 100,000 km", safety: "5-Star NHTSA", features: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay", "Safe Exit Assist", "Remote Start"], tags: ["tech", "safety", "style", "family", "affordable"], ev: false, dealership: "Hyundai TT", desc: "Award-winning design. Panoramic sunroof as standard. Premium technology usually found in vehicles at twice the price.", monthlyFuel: "TT$4,800", badge: "Editor's Choice", gradient: "linear-gradient(135deg, #0891B2, #67E8F9)", accent: "#0891B2" },
+  { id: 8, name: "CX-5", drivetrain: "AWD", transmission: "Automatic 6-Speed", image: "https://placehold.co/800x400/374151/ffffff?text=Mazda+CX-5", brand: "Mazda", type: "SUV", price: 310000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / unlimited km", safety: "5-Star NHTSA", features: ["Leather Seats", "Bose Sound System", "Head-Up Display", "Apple CarPlay", "Radar Cruise Control"], tags: ["luxury", "style", "safety", "sporty", "tech"], ev: false, dealership: "Mazda TT", desc: "The most refined driving experience under TT$350,000. Premium leather, Bose audio and a design that commands attention.", monthlyFuel: "TT$5,620", badge: "Most Premium", gradient: "linear-gradient(135deg, #374151, #9CA3AF)", accent: "#374151" },
 ];
 
 const FILTERS = ["All", "SUV", "Sedan", "Pickup", "Hybrid / EV", "Under TT$300k", "7 Seats"];
@@ -527,6 +529,233 @@ function CompareOverlay({ carA, carB, onClose }) {
   );
 }
 
+// ─── VEHICLE DETAIL PANEL ─────────────────────────────────────────────────────
+function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }) {
+  const carImages = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
+
+  const Section = ({ title, children }) => (
+    <div style={{ borderTop: "1px solid #F3F4F6", paddingTop: "1.25rem" }}>
+      <div style={{ fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.14em", color: "#9CA3AF", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "0.85rem" }}>{title}</div>
+      {children}
+    </div>
+  );
+
+  const SpecRow = ({ label, value }) => value ? (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0.5rem 0", borderBottom: "1px solid #F9FAFB", gap: "1rem" }}>
+      <span style={{ fontSize: "0.85rem", color: "#6B7280", flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#111827", textAlign: "right" }}>{value}</span>
+    </div>
+  ) : null;
+
+  // Estimate fuel cost comparison
+  const avgTTMonthly = "TT$5,000";
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 250,
+      background: "rgba(0,0,0,0.6)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: "1rem",
+      backdropFilter: "blur(5px)",
+    }} onClick={onClose}>
+      <div style={{
+        background: "white",
+        borderRadius: 18,
+        width: "100%",
+        maxWidth: 860,
+        maxHeight: "92vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        boxShadow: "0 24px 80px rgba(0,0,0,0.35)",
+        animation: "slideUp 0.25s ease",
+      }} onClick={e => e.stopPropagation()}>
+
+        {/* ── HERO IMAGE ── */}
+        <div style={{ position: "relative", height: 280, background: "#1a1a2e", flexShrink: 0 }}>
+          <img src={car.image} alt={car.name}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
+            onError={e => { e.target.style.display = "none"; e.target.parentNode.style.background = car.gradient; }}
+          />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.05) 100%)" }} />
+
+          {/* Close button */}
+          <button onClick={onClose} style={{
+            position: "absolute", top: "1rem", right: "1rem",
+            background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)",
+            border: "none", borderRadius: 9, padding: "0.4rem",
+            cursor: "pointer", color: "white",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <Icon.x />
+          </button>
+
+          {/* Badge */}
+          {car.badge && (
+            <div style={{
+              position: "absolute", top: "1rem", left: "1rem",
+              background: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)",
+              borderRadius: 20, padding: "0.2rem 0.75rem",
+              fontSize: "0.7rem", fontWeight: 700, color: "white", letterSpacing: "0.04em",
+            }}>{car.badge}</div>
+          )}
+
+          {/* Title overlay */}
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1rem 1.5rem" }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.7)", textTransform: "uppercase", marginBottom: "0.25rem" }}>{car.brand}</div>
+            <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "0.4rem" }}>{car.year} {car.name}</div>
+            <div style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{car.type} · {car.seats} Seats · {car.fuel}</div>
+          </div>
+
+          {/* View Photos button */}
+          {carImages.length >= 1 && (
+            <button onClick={e => { e.stopPropagation(); onViewPhotos(); }}
+              style={{
+                position: "absolute", bottom: "1rem", right: "1.5rem",
+                background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)",
+                border: "1px solid rgba(255,255,255,0.25)", borderRadius: 9,
+                padding: "0.45rem 0.85rem", color: "white", fontSize: "0.78rem",
+                fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+                display: "flex", alignItems: "center", gap: "0.4rem",
+              }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+              </svg>
+              View All Photos {carImages.length > 1 && `· ${carImages.length}`}
+            </button>
+          )}
+        </div>
+
+        {/* ── SCROLLABLE BODY ── */}
+        <div style={{ overflowY: "auto", flex: 1, padding: "1.5rem" }}>
+
+          {/* Price headline */}
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.5rem" }}>
+            <div>
+              <div style={{ fontSize: "0.7rem", color: "#9CA3AF", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.2rem" }}>Starting Price</div>
+              <div style={{ fontSize: "2rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.035em", lineHeight: 1 }}>{fmt(car.price)}</div>
+            </div>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              <div style={{ background: car.accent + "12", border: `1px solid ${car.accent}30`, borderRadius: 9, padding: "0.4rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, color: car.accent }}>{car.safety}</div>
+              <div style={{ background: "#F3F4F6", border: "1px solid #E5E7EB", borderRadius: 9, padding: "0.4rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, color: "#374151" }}>{car.warranty}</div>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p style={{ fontSize: "0.93rem", color: "#4B5563", lineHeight: 1.75, margin: "0 0 1.5rem" }}>{car.desc}</p>
+
+          {/* OVERVIEW */}
+          <Section title="Overview">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
+              <SpecRow label="Make" value={car.brand} />
+              <SpecRow label="Model" value={car.name} />
+              <SpecRow label="Year" value={car.year?.toString()} />
+              <SpecRow label="Body Type" value={car.type} />
+              <SpecRow label="Seating Capacity" value={`${car.seats} passengers`} />
+              <SpecRow label="Condition" value="Brand New" />
+            </div>
+          </Section>
+
+          {/* DRIVETRAIN & PERFORMANCE */}
+          <Section title="Drivetrain">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
+              <SpecRow label="Fuel Type" value={car.fuel} />
+              <SpecRow label="Drivetrain" value={car.drivetrain} />
+              <SpecRow label="Transmission" value={car.transmission} />
+              {car.ev && <SpecRow label="Electric Range" value={car.evRange ? `${car.evRange} km per charge` : null} />}
+            </div>
+          </Section>
+
+          {/* SAFETY */}
+          <Section title="Safety">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "0.75rem" }}>
+              <SpecRow label="Safety Rating" value={car.safety} />
+              <SpecRow label="Rating Body" value={
+                car.safety?.includes("ANCAP") ? "ANCAP (Australasian)" :
+                car.safety?.includes("NHTSA") ? "NHTSA (US Federal)" :
+                car.safety?.includes("Euro NCAP") ? "Euro NCAP (European)" : null
+              } />
+            </div>
+            {/* Safety-related features */}
+            {(() => {
+              const safetyKeywords = ["assist", "warning", "camera", "sensor", "alert", "safety", "brake", "collision", "blind", "lane", "cruise", "pilot", "sensing"];
+              const safetyFeatures = car.features?.filter(f => safetyKeywords.some(k => f.toLowerCase().includes(k))) || [];
+              return safetyFeatures.length > 0 ? (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
+                  {safetyFeatures.map(f => (
+                    <span key={f} style={{ background: car.accent + "12", color: car.accent, border: `1px solid ${car.accent}25`, borderRadius: 20, padding: "0.2rem 0.65rem", fontSize: "0.75rem", fontWeight: 600 }}>{f}</span>
+                  ))}
+                </div>
+              ) : null;
+            })()}
+          </Section>
+
+          {/* COMFORT & TECHNOLOGY */}
+          <Section title="Comfort and Technology">
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+              {car.features?.map(f => (
+                <FeatureTag key={f} feature={f} car={car} onAsk={onFeatureAsk} />
+              ))}
+            </div>
+          </Section>
+
+          {/* WARRANTY & OWNERSHIP */}
+          <Section title="Warranty and Ownership">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "0.75rem" }}>
+              <SpecRow label="Warranty" value={car.warranty} />
+              <SpecRow label="Certified Dealer" value={car.dealership} />
+              <SpecRow label="Vehicle Status" value="New — dealership stock" />
+              <SpecRow label="Market" value="Trinidad and Tobago" />
+            </div>
+            <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 10, padding: "0.85rem 1rem", fontSize: "0.82rem", color: "#6B7280", lineHeight: 1.65 }}>
+              This vehicle is sold exclusively through <strong style={{ color: "#111827" }}>{car.dealership}</strong>, an authorised dealership in Trinidad and Tobago. All warranty terms are honoured locally.
+            </div>
+          </Section>
+
+          {/* FUEL ECONOMY */}
+          <Section title="Fuel Economy and Running Costs">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "0.85rem" }}>
+              <SpecRow label="Est. Monthly Fuel Cost" value={car.monthlyFuel ? `${car.monthlyFuel} /mo` : null} />
+              <SpecRow label="Fuel Type" value={car.fuel} />
+              {car.ev && <SpecRow label="Home Charge Cost" value="~TT$50–80 per full charge" />}
+              {car.evRange && <SpecRow label="Electric Range" value={`${car.evRange} km per charge`} />}
+              <SpecRow label="Petrol Price (TT)" value="~TT$6.97 / litre (subsidised)" />
+            </div>
+            {car.ev || car.fuel?.toLowerCase().includes("hybrid") ? (
+              <div style={{ background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 10, padding: "0.85rem 1rem", fontSize: "0.82rem", color: "#166534", lineHeight: 1.65 }}>
+                This vehicle can run on electricity for most daily trips in Trinidad. The average Port of Spain commute is 20–40 km — well within electric range.
+              </div>
+            ) : (
+              <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 10, padding: "0.85rem 1rem", fontSize: "0.82rem", color: "#6B7280", lineHeight: 1.65 }}>
+                Based on typical T&T driving (20–40 km daily commute). Actual fuel costs vary by driving style, traffic conditions and fuel prices.
+              </div>
+            )}
+          </Section>
+
+          {/* BOOKING ACTIONS */}
+          <div style={{ borderTop: "1px solid #F3F4F6", paddingTop: "1.5rem", marginTop: "0.5rem" }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.14em", color: "#9CA3AF", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "0.75rem" }}>Ready to take the next step?</div>
+            <p style={{ fontSize: "0.85rem", color: "#6B7280", marginBottom: "1rem", lineHeight: 1.6 }}>
+              Contact <strong style={{ color: "#111827" }}>{car.dealership}</strong> directly through Carla AI. A representative will reach out to confirm your booking.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.6rem" }}>
+              {["Test Drive", "Book a Viewing", "Contact Me"].map(intent => (
+                <button key={intent}
+                  style={{ background: car.gradient, color: "white", border: "none", borderRadius: 10, padding: "0.85rem 0.5rem", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "filter 0.15s" }}
+                  className="action-book"
+                  onClick={() => { onClose(); onBook(car, intent); }}>
+                  {intent}
+                </button>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── IMAGE LIGHTBOX ───────────────────────────────────────────────────────────
 function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
   const [idx, setIdx] = useState(startIndex);
@@ -674,9 +903,19 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
   const isSelectedForCompare = compareCarId === car.id;
   const isCompareTarget = compareMode && compareCarId && compareCarId !== car.id;
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
     <>
+      {detailOpen && (
+        <VehicleDetailPanel
+          car={car}
+          onClose={() => setDetailOpen(false)}
+          onBook={onBook}
+          onFeatureAsk={onFeatureAsk}
+          onViewPhotos={() => { setDetailOpen(false); setLightboxOpen(true); }}
+        />
+      )}
       {lightboxOpen && (
         <ImageLightbox
           images={carImages}
@@ -689,7 +928,15 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
         ...s.carCard,
         outline: isSelectedForCompare ? `2px solid ${car.accent}` : isCompareTarget ? "2px dashed #4F46E5" : "none",
         outlineOffset: 2,
-      }} className="car-card">
+        cursor: "pointer",
+      }} className="car-card"
+        onClick={(e) => {
+          // Only open detail if clicking the card background — not buttons/interactive elements
+          if (e.target === e.currentTarget || e.target.closest("[data-card-body]")) {
+            setDetailOpen(true);
+          }
+        }}
+      >
       {/* Image header */}
       <div style={s.cardImageWrap}>
         <img src={currentImg} alt={car.name} style={s.cardImage}
@@ -761,7 +1008,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
             alignSelf: "flex-start",
           }}
           className="view-photos-btn"
-          onClick={() => setLightboxOpen(true)}
+          onClick={e => { e.stopPropagation(); setLightboxOpen(true); }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
@@ -785,7 +1032,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
           </div>
         )}
 
-        <div style={s.cardActions}>
+        <div style={s.cardActions} onClick={e => e.stopPropagation()}>
           <button style={s.actionGhost} className="action-ghost" onClick={() => toggleCard(car.id)}>
             {isExpanded ? <><Icon.chevUp /> Less</> : <><Icon.chevDown /> Features</>}
           </button>
@@ -814,8 +1061,27 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
           )}
         </div>
 
+        {/* View Full Details button */}
+        <button
+          style={{
+            width: "100%", background: "none",
+            border: `1.5px solid ${gray200}`,
+            borderRadius: 9, padding: "0.65rem",
+            fontSize: "0.82rem", fontWeight: 700,
+            color: gray700, cursor: "pointer",
+            fontFamily: "inherit", display: "flex",
+            alignItems: "center", justifyContent: "center",
+            gap: "0.45rem", transition: "all 0.15s",
+          }}
+          className="view-details-btn"
+          onClick={e => { e.stopPropagation(); setDetailOpen(true); }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          View Full Details
+        </button>
+
         {/* Booking intent buttons */}
-        <div style={s.intentRow}>
+        <div style={s.intentRow} onClick={e => e.stopPropagation()}>
           {["Test Drive", "Book a Viewing", "Contact Me"].map(intent => (
             <button key={intent}
               style={{ ...s.intentBtn, background: car.gradient }}
@@ -2001,6 +2267,7 @@ const css = `
   .wizard-btn:hover { border-color: #4F46E5 !important; background: #EEF2FF !important; color: #4338CA !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.1) !important; }
   .lightbox-arrow:hover { background: rgba(255,255,255,0.3) !important; }
   .view-photos-btn:hover { background: var(--accent-bg, rgba(79,70,229,0.12)) !important; border-color: currentColor !important; transform: translateY(-1px); }
+  .view-details-btn:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
   .tab-btn-hover:hover { color: #4F46E5 !important; }
   .matches-back:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
 
@@ -2017,6 +2284,9 @@ const css = `
 
   @supports (height: 100dvh) {
     .chat-page-dvh { height: calc(100dvh - 57px) !important; }
+  }
+  @media (max-width: 500px) {
+    .detail-booking-grid { grid-template-columns: 1fr !important; }
   }
 
   @media (max-width: 640px) {
