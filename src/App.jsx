@@ -60,6 +60,10 @@ function rowToCar(headers, values) {
     image2:     get("image2") || null,
     image3:     get("image3") || null,
     image4:     get("image4") || null,
+    image5:     get("image5") || null,
+    image6:     get("image6") || null,
+    image7:     get("image7") || null,
+    image8:     get("image8") || null,
     brand,
     type:       get("type"),
     price:      parseInt(get("price")) || 0,
@@ -366,11 +370,11 @@ function FeatureTag({ feature, car, onAsk }) {
       >
         {feature}
       </span>
-      {/* Tooltip — desktop hover only */}
+      {/* Tooltip — desktop hover only, appears below */}
       {hovered && (
         <span style={{
           position: "absolute",
-          bottom: "calc(100% + 6px)",
+          top: "calc(100% + 6px)",
           left: "50%",
           transform: "translateX(-50%)",
           background: "#111827",
@@ -385,17 +389,17 @@ function FeatureTag({ feature, car, onAsk }) {
           boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
           lineHeight: 1.4,
         }}>
-          {hint || "Tap to ask Carla about this feature"}
-          {/* Arrow */}
+          {/* Arrow pointing up */}
           <span style={{
             position: "absolute",
-            top: "100%", left: "50%",
+            bottom: "100%", left: "50%",
             transform: "translateX(-50%)",
             width: 0, height: 0,
             borderLeft: "5px solid transparent",
             borderRight: "5px solid transparent",
-            borderTop: "5px solid #111827",
+            borderBottom: "5px solid #111827",
           }} />
+          {hint || "Tap to ask Carla about this feature"}
         </span>
       )}
     </span>
@@ -430,7 +434,7 @@ function ChatCarCard({ car, onBook }) {
           ))}
         </div>
         <div style={{ display: "flex", gap: "0.4rem", flexShrink: 0 }}>
-          {["Test Drive", "View This Car", "Contact Me"].map(intent => (
+          {["Test Drive", "Book a Viewing", "Contact Me"].map(intent => (
             <button key={intent}
               style={{ background: car.gradient, color: "white", border: "none", borderRadius: 7, padding: "0.45rem 0.65rem", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
               onClick={() => onBook(car, intent)}>
@@ -523,21 +527,164 @@ function CompareOverlay({ carA, carB, onClose }) {
   );
 }
 
+// ─── IMAGE LIGHTBOX ───────────────────────────────────────────────────────────
+function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
+  const [idx, setIdx] = useState(startIndex);
+  const touchStartX = useRef(null);
+
+  const prev = () => setIdx(i => (i - 1 + images.length) % images.length);
+  const next = () => setIdx(i => (i + 1) % images.length);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+      else if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Touch swipe
+  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    touchStartX.current = null;
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed", inset: 0, background: "rgba(0,0,0,0.93)", zIndex: 300,
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      }}
+      onClick={onClose}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Top bar */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "1rem 1.25rem",
+        background: "linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)",
+        zIndex: 2,
+      }} onClick={e => e.stopPropagation()}>
+        <div style={{ color: "white", fontWeight: 700, fontSize: "0.95rem", letterSpacing: "-0.01em" }}>
+          {carName}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.85rem", fontWeight: 600, fontFamily: "monospace" }}>
+            {idx + 1} / {images.length}
+          </div>
+          <button onClick={onClose} style={{
+            background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 8,
+            padding: "0.4rem", cursor: "pointer", color: "white",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            backdropFilter: "blur(4px)",
+          }}>
+            <Icon.x />
+          </button>
+        </div>
+      </div>
+
+      {/* Main image */}
+      <div style={{ position: "relative", width: "100%", maxWidth: 900, padding: "0 4rem", boxSizing: "border-box" }}
+        onClick={e => e.stopPropagation()}>
+        <img
+          src={images[idx]}
+          alt={`${carName} — photo ${idx + 1}`}
+          style={{
+            width: "100%", maxHeight: "75vh", objectFit: "contain",
+            borderRadius: 12, display: "block",
+            boxShadow: "0 8px 48px rgba(0,0,0,0.6)",
+          }}
+          onError={e => { e.target.style.opacity = "0.3"; }}
+        />
+      </div>
+
+      {/* Prev arrow */}
+      {images.length > 1 && (
+        <button
+          onClick={e => { e.stopPropagation(); prev(); }}
+          style={{
+            position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)",
+            background: "rgba(255,255,255,0.15)", backdropFilter: "blur(6px)",
+            border: "none", borderRadius: "50%", width: 48, height: 48,
+            color: "white", fontSize: "1.5rem", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "background 0.15s",
+          }}
+          className="lightbox-arrow"
+        >&#8249;</button>
+      )}
+
+      {/* Next arrow */}
+      {images.length > 1 && (
+        <button
+          onClick={e => { e.stopPropagation(); next(); }}
+          style={{
+            position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)",
+            background: "rgba(255,255,255,0.15)", backdropFilter: "blur(6px)",
+            border: "none", borderRadius: "50%", width: 48, height: 48,
+            color: "white", fontSize: "1.5rem", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "background 0.15s",
+          }}
+          className="lightbox-arrow"
+        >&#8250;</button>
+      )}
+
+      {/* Dot indicators */}
+      {images.length > 1 && (
+        <div style={{
+          position: "absolute", bottom: "1.5rem", left: 0, right: 0,
+          display: "flex", justifyContent: "center", gap: 6,
+        }} onClick={e => e.stopPropagation()}>
+          {images.map((_, i) => (
+            <span key={i}
+              onClick={() => setIdx(i)}
+              style={{
+                width: i === idx ? 20 : 7, height: 7, borderRadius: 4,
+                background: i === idx ? "white" : "rgba(255,255,255,0.35)",
+                cursor: "pointer", transition: "all 0.2s",
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── CAR CARD COMPONENT ────────────────────────────────────────────────────────
 function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageIndex, onBook, onAsk, onFeatureAsk, compareMode, compareCarId, onCompareSelect, onCompareStart }) {
-  const carImages = [car.image, car.image2, car.image3, car.image4].filter(Boolean);
+  const carImages = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
   const imgIdx = cardImageIndex[car.id] || 0;
   const currentImg = carImages[imgIdx] || car.image;
   const isExpanded = expandedCards.has(car.id);
   const isSelectedForCompare = compareCarId === car.id;
   const isCompareTarget = compareMode && compareCarId && compareCarId !== car.id;
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   return (
-    <div style={{
-      ...s.carCard,
-      outline: isSelectedForCompare ? `2px solid ${car.accent}` : isCompareTarget ? "2px dashed #4F46E5" : "none",
-      outlineOffset: 2,
-    }} className="car-card">
+    <>
+      {lightboxOpen && (
+        <ImageLightbox
+          images={carImages}
+          startIndex={imgIdx}
+          carName={`${car.year} ${car.brand} ${car.name}`}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
+      <div style={{
+        ...s.carCard,
+        outline: isSelectedForCompare ? `2px solid ${car.accent}` : isCompareTarget ? "2px dashed #4F46E5" : "none",
+        outlineOffset: 2,
+      }} className="car-card">
       {/* Image header */}
       <div style={s.cardImageWrap}>
         <img src={currentImg} alt={car.name} style={s.cardImage}
@@ -589,7 +736,34 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
 
         <p style={s.cardDesc}>{car.desc}</p>
 
-        {isExpanded && (
+        {/* View Photos button */}
+        <button
+          style={{
+            background: "none",
+            border: `1.5px solid ${car.accent}40`,
+            borderRadius: 9,
+            padding: "0.55rem 0.9rem",
+            color: car.accent,
+            fontSize: "0.8rem",
+            fontWeight: 700,
+            cursor: "pointer",
+            fontFamily: "inherit",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.45rem",
+            transition: "all 0.15s",
+            background: car.accent + "0d",
+            alignSelf: "flex-start",
+          }}
+          className="view-photos-btn"
+          onClick={() => setLightboxOpen(true)}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+          View Photos
+          {carImages.length > 1 && <span style={{ opacity: 0.65, fontWeight: 500 }}>· {carImages.length}</span>}
+        </button>
           <div style={s.expandBox} className="fade-up">
             <div style={s.expandTitle}>Key Features</div>
             <div style={s.featTags}>
@@ -635,7 +809,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
 
         {/* Booking intent buttons */}
         <div style={s.intentRow}>
-          {["Test Drive", "View This Car", "Contact Me"].map(intent => (
+          {["Test Drive", "Book a Viewing", "Contact Me"].map(intent => (
             <button key={intent}
               style={{ ...s.intentBtn, background: car.gradient }}
               className="action-book"
@@ -646,6 +820,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
         </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -1422,7 +1597,7 @@ export default function CarlaAI() {
             <div style={s.formInner}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <div style={s.formEyebrow}>
-                  {bookingIntent === "Test Drive" ? "Book a Test Drive" : bookingIntent === "View This Car" ? "Book a Viewing" : "Request Contact"}
+                  {bookingIntent === "Test Drive" ? "Book a Test Drive" : bookingIntent === "Book a Viewing" ? "Book a Viewing" : "Request Contact"}
                 </div>
                 <div style={{ ...s.intentBadge, background: selectedCar.accent + "18", color: selectedCar.accent, borderColor: selectedCar.accent + "35" }}>{bookingIntent}</div>
               </div>
@@ -1440,7 +1615,7 @@ export default function CarlaAI() {
               </div>
               <p style={s.formNote}>
                 {bookingIntent === "Test Drive" && <>A representative from <strong>{selectedCar.dealership}</strong> will contact you to arrange your test drive at a time that suits you.</>}
-                {bookingIntent === "View This Car" && <>A representative from <strong>{selectedCar.dealership}</strong> will reach out to schedule a viewing at their showroom.</>}
+                {bookingIntent === "Book a Viewing" && <>A representative from <strong>{selectedCar.dealership}</strong> will reach out to schedule a viewing at their showroom.</>}
                 {bookingIntent === "Contact Me" && <>A representative from <strong>{selectedCar.dealership}</strong> will call you directly to discuss this vehicle and answer any questions.</>}
               </p>
               <div style={s.formFields}>
@@ -1467,7 +1642,7 @@ export default function CarlaAI() {
 
               <button style={{ ...s.formSubmit, background: selectedCar.gradient, opacity: !lead.name || !lead.phone || submitting ? 0.4 : 1 }}
                 className="action-book" disabled={!lead.name || !lead.phone || submitting} onClick={submitLead}>
-                {submitting ? "Sending Request..." : bookingIntent === "Test Drive" ? "Submit Test Drive Request" : bookingIntent === "View This Car" ? "Submit Viewing Request" : "Request Contact"}
+                {submitting ? "Sending Request..." : bookingIntent === "Test Drive" ? "Submit Test Drive Request" : bookingIntent === "Book a Viewing" ? "Submit Viewing Request" : "Request Contact"}
               </button>
               <button style={s.formBack} onClick={goBack}>Go back</button>
             </div>
@@ -1489,7 +1664,7 @@ export default function CarlaAI() {
               <h2 style={s.thanksTitle}>Request Received!</h2>
               <p style={s.thanksSub}>
                 {bookingIntent === "Test Drive" && <>Your test drive request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
-                {bookingIntent === "View This Car" && <>Your viewing request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
+                {bookingIntent === "Book a Viewing" && <>Your viewing request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
                 {bookingIntent === "Contact Me" && <>Your contact request for the <strong>{selectedCar.year} {selectedCar.brand} {selectedCar.name}</strong> has been submitted.</>}
                 {" "}A representative from <strong>{selectedCar.dealership}</strong> will be in contact shortly.
               </p>
@@ -1626,8 +1801,8 @@ const s = {
 
   // CAR CARDS
   carGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: "1.1rem", alignItems: "start" },
-  carCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", transition: "all 0.22s", alignSelf: "start" },
-  cardImageWrap: { position: "relative", height: 200, overflow: "hidden", background: "#1a1a2e", flexShrink: 0 },
+  carCard: { background: white, border: `1px solid ${gray200}`, borderRadius: 16, display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", transition: "all 0.22s", alignSelf: "start" },
+  cardImageWrap: { position: "relative", height: 200, overflow: "hidden", background: "#1a1a2e", flexShrink: 0, borderRadius: "16px 16px 0 0" },
   cardImage: { width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transition: "transform 0.4s ease" },
   cardImageOverlay: { position: "absolute", inset: 0, pointerEvents: "none" },
   cardOverlayContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: "1rem 1.15rem 1rem", color: white },
@@ -1647,7 +1822,7 @@ const s = {
   keyLabel: { fontSize: "0.6rem", color: gray400, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "monospace", fontWeight: 600, marginBottom: 3 },
   keyVal: { fontSize: "0.8rem", fontWeight: 700, color: gray900, lineHeight: 1.3 },
   cardDesc: { color: gray500, fontSize: "0.85rem", lineHeight: 1.65, margin: 0 },
-  expandBox: { background: gray50, border: `1px solid ${gray200}`, borderRadius: 10, padding: "0.9rem", display: "flex", flexDirection: "column", gap: "0.75rem" },
+  expandBox: { background: gray50, border: `1px solid ${gray200}`, borderRadius: 10, padding: "0.9rem", display: "flex", flexDirection: "column", gap: "0.75rem", overflow: "visible" },
   expandTitle: { fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.15em", color: gray400, textTransform: "uppercase", fontFamily: "monospace" },
   featTags: { display: "flex", flexWrap: "wrap", gap: "0.35rem" },
   featTag: { border: "1px solid", borderRadius: 20, padding: "0.2rem 0.65rem", fontSize: "0.74rem", fontWeight: 600 },
@@ -1817,7 +1992,8 @@ const css = `
   .nudge:hover { background: linear-gradient(135deg, #E0E7FF, #EDE9FE) !important; }
   .send-btn:hover { filter: brightness(1.15); }
   .wizard-btn:hover { border-color: #4F46E5 !important; background: #EEF2FF !important; color: #4338CA !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.1) !important; }
-  .float-matches:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(79,70,229,0.55) !important; }
+  .lightbox-arrow:hover { background: rgba(255,255,255,0.3) !important; }
+  .view-photos-btn:hover { background: var(--accent-bg, rgba(79,70,229,0.12)) !important; border-color: currentColor !important; transform: translateY(-1px); }
   .tab-btn-hover:hover { color: #4F46E5 !important; }
   .matches-back:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
 
