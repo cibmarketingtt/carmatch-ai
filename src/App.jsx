@@ -289,7 +289,120 @@ function formatInline(text) {
   return parts.length > 0 ? parts : text;
 }
 
-// ─── COMPACT CHAT CAR CARD ────────────────────────────────────────────────────
+// ─── FEATURE HINTS ───────────────────────────────────────────────────────────
+// One-line plain-English descriptions shown on hover. Falls back to null.
+const FEATURE_HINTS = {
+  "Apple CarPlay": "Mirror your iPhone on the screen — maps, music, messages",
+  "Android Auto": "Mirror your Android phone — maps, music, messages",
+  "Backup Camera": "Live rear camera view when reversing",
+  "360 Camera": "Birds-eye view of all four sides of the car",
+  "360° Camera": "Birds-eye view of all four sides of the car",
+  "Lane Assist": "Alerts and steers you back if you drift out of your lane",
+  "Blind Spot Warning": "Warns you when a car is in your blind spot",
+  "Adaptive Cruise Control": "Maintains your speed and braking distance from the car ahead",
+  "Radar Cruise Control": "Maintains your speed and braking distance from the car ahead",
+  "Highway Driving Assist": "Combines cruise control and lane keeping on highways",
+  "Mi-Pilot Assist": "Combines cruise control and lane keeping on highways",
+  "Honda Sensing Suite": "Bundle of safety aids: collision alert, lane keep, cruise",
+  "Safe Exit Assist": "Warns you if a cyclist or car is approaching before you open the door",
+  "Wireless Charging": "Charge your phone just by placing it on the pad",
+  "LED Headlights": "Brighter, longer-lasting lights with better night visibility",
+  "Turbocharged Engine": "More power from a smaller engine, better fuel efficiency",
+  "Panoramic Sunroof": "Full-length glass roof — light and open feel inside",
+  "Heated Seats": "Electrically warmed seats for cool mornings",
+  "Ventilated Seats": "Fan-cooled seats — ideal for Trinidad heat",
+  "Remote Start": "Start and cool the car before you get in",
+  "Head-Up Display": "Key info projected onto the windscreen so you never look away",
+  "Leather Seats": "Premium leather upholstery throughout the cabin",
+  "Bose Sound System": "Premium 10-speaker Bose audio fitted from the factory",
+  "Bose Premium Audio": "Premium 10-speaker Bose audio fitted from the factory",
+  "Plug-in Hybrid": "Runs on electric first, petrol as backup — charge at home",
+  "Solar Charging Panel": "Roof solar panel trickle-charges the battery while parked",
+  "7 Seats": "Third row included — fits the whole family",
+  "4x4 Drive": "Power to all four wheels — handles rough roads and mud",
+  "Intelligent AWD": "Auto all-wheel drive — kicks in when traction is needed",
+  "Multi-Terrain Select": "Choose drive modes for mud, sand, rock or snow",
+  "Tow Bar": "Factory-fitted tow hitch for trailers and boat hitches",
+  "Bed Liner": "Protective coating in the truck bed — prevents rust and scratches",
+};
+
+// ─── FEATURE TAG COMPONENT ────────────────────────────────────────────────────
+function FeatureTag({ feature, car, onAsk }) {
+  const [hovered, setHovered] = useState(false);
+  const [asked, setAsked] = useState(false);
+  const hint = FEATURE_HINTS[feature] || null;
+
+  const handleClick = () => {
+    setAsked(true);
+    onAsk(car, feature);
+  };
+
+  return (
+    <span
+      style={{
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <span
+        onClick={handleClick}
+        style={{
+          background: asked ? car.accent : car.accent + "15",
+          color: asked ? "white" : car.accent,
+          borderColor: asked ? car.accent : car.accent + "30",
+          border: "1px solid",
+          borderRadius: 20,
+          padding: "0.2rem 0.65rem",
+          fontSize: "0.74rem",
+          fontWeight: 600,
+          cursor: "pointer",
+          transition: "all 0.15s",
+          userSelect: "none",
+          display: "inline-block",
+        }}
+      >
+        {feature}
+      </span>
+      {/* Tooltip — desktop hover only */}
+      {hovered && (
+        <span style={{
+          position: "absolute",
+          bottom: "calc(100% + 6px)",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "#111827",
+          color: "white",
+          fontSize: "0.72rem",
+          fontWeight: 500,
+          padding: "0.35rem 0.65rem",
+          borderRadius: 7,
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
+          zIndex: 50,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+          lineHeight: 1.4,
+        }}>
+          {hint || "Tap to ask Carla about this feature"}
+          {/* Arrow */}
+          <span style={{
+            position: "absolute",
+            top: "100%", left: "50%",
+            transform: "translateX(-50%)",
+            width: 0, height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderTop: "5px solid #111827",
+          }} />
+        </span>
+      )}
+    </span>
+  );
+}
+
+
 function ChatCarCard({ car, onBook }) {
   return (
     <div style={{
@@ -411,7 +524,7 @@ function CompareOverlay({ carA, carB, onClose }) {
 }
 
 // ─── CAR CARD COMPONENT ────────────────────────────────────────────────────────
-function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageIndex, onBook, onAsk, compareMode, compareCarId, onCompareSelect, onCompareStart }) {
+function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageIndex, onBook, onAsk, onFeatureAsk, compareMode, compareCarId, onCompareSelect, onCompareStart }) {
   const carImages = [car.image, car.image2, car.image3, car.image4].filter(Boolean);
   const imgIdx = cardImageIndex[car.id] || 0;
   const currentImg = carImages[imgIdx] || car.image;
@@ -481,7 +594,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
             <div style={s.expandTitle}>Key Features</div>
             <div style={s.featTags}>
               {car.features.map(f => (
-                <span key={f} style={{ ...s.featTag, background: car.accent + "15", color: car.accent, borderColor: car.accent + "30" }}>{f}</span>
+                <FeatureTag key={f} feature={f} car={car} onAsk={onFeatureAsk} />
               ))}
             </div>
             <div style={s.expandDetails}>
@@ -861,6 +974,11 @@ export default function CarlaAI() {
     expandedCards, toggleCard, cardImageIndex, setCardImageIndex,
     onBook: openLead,
     onAsk: (car) => { setActiveTab("chat"); sendMessage(`Tell me about the ${car.year} ${car.brand} ${car.name}.`); },
+    onFeatureAsk: (car, feature) => {
+      setScreen("chat");
+      setActiveTab("chat");
+      sendMessage(`What is "${feature}" on the ${car.year} ${car.brand} ${car.name}? How does it work and is it useful for driving in Trinidad?`);
+    },
     compareMode, compareCarId: compareCarA?.id,
     onCompareStart: handleCompareStart,
     onCompareSelect: handleCompareSelect,
