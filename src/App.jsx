@@ -78,6 +78,7 @@ function rowToCar(headers, values) {
     evRange:    get("evRange") ? parseInt(get("evRange")) : null,
     drivetrain: get("drivetrain") || null,
     transmission: get("transmission") || null,
+    batteryWarranty: get("batteryWarranty") || null,
     dealership: get("dealership"),
     desc:       get("desc"),
     monthlyFuel:get("monthlyFuel"),
@@ -129,7 +130,7 @@ const FALLBACK_CARS = [
   { id: 1, name: "Corolla Cross", drivetrain: "FWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/DC2626/ffffff?text=Toyota+Corolla+Cross", brand: "Toyota", type: "SUV", price: 320000, year: 2024, fuel: "Hybrid", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["Backup Camera", "Lane Assist", "Apple CarPlay", "Android Auto", "Adaptive Cruise Control"], tags: ["fuel-efficient", "family", "safety", "tech"], ev: false, dealership: "Toyota Trinidad", desc: "Trinidad's best-selling hybrid SUV. Exceptional fuel economy delivers real monthly savings every time you pass a petrol station.", monthlyFuel: "TT$2,400", badge: "Best Seller", gradient: "linear-gradient(135deg, #DC2626, #F87171)", accent: "#DC2626" },
   { id: 2, name: "X-Trail", drivetrain: "AWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/7C3AED/ffffff?text=Nissan+X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360 Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
   { id: 3, name: "Civic", drivetrain: "FWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/1D4ED8/ffffff?text=Honda+Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "TT$3,800", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
-  { id: 4, name: "Outlander PHEV", drivetrain: "AWD", transmission: "Automatic", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$1,200", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
+  { id: 4, name: "Outlander PHEV", drivetrain: "AWD", transmission: "Automatic", batteryWarranty: "8 years / 160,000 km", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$1,200", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
   { id: 5, name: "Sportage", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360 Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense - outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
   { id: 6, name: "Hilux", drivetrain: "4WD", transmission: "Automatic 6-Speed", image: "https://placehold.co/800x400/B45309/ffffff?text=Toyota+Hilux", brand: "Toyota", type: "Pickup", price: 385000, year: 2024, fuel: "Diesel", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["4x4 Drive", "Tow Bar", "Bed Liner", "Apple CarPlay", "Multi-Terrain Select"], tags: ["offroad", "towing", "durable", "work"], ev: false, dealership: "Toyota Trinidad", desc: "Built for everything Trinidad throws at it. Construction sites, beach limes, mountain roads. The Hilux does not stop.", monthlyFuel: "TT$6,980", badge: "Most Durable", gradient: "linear-gradient(135deg, #B45309, #F59E0B)", accent: "#B45309" },
   { id: 7, name: "Tucson", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/0891B2/ffffff?text=Hyundai+Tucson", brand: "Hyundai", type: "SUV", price: 275000, year: 2024, fuel: "Petrol", seats: 5, warranty: "5 years / 100,000 km", safety: "5-Star NHTSA", features: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay", "Safe Exit Assist", "Remote Start"], tags: ["tech", "safety", "style", "family", "affordable"], ev: false, dealership: "Hyundai TT", desc: "Award-winning design. Panoramic sunroof as standard. Premium technology usually found in vehicles at twice the price.", monthlyFuel: "TT$4,800", badge: "Editor's Choice", gradient: "linear-gradient(135deg, #0891B2, #67E8F9)", accent: "#0891B2" },
@@ -723,15 +724,23 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
               </div>
             </div>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              <div style={{ background: car.accent + "12", border: `1px solid ${car.accent}30`, borderRadius: 9, padding: "0.4rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, color: car.accent }}>{car.safety}</div>
-              <div style={{ background: "#F3F4F6", border: "1px solid #E5E7EB", borderRadius: 9, padding: "0.4rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, color: "#374151" }}>{car.warranty}</div>
+              {[
+                { label: "Safety Rating", value: car.safety, bg: car.accent + "12", border: car.accent + "30", color: car.accent },
+                { label: "Warranty", value: car.warranty, bg: "#F3F4F6", border: "#E5E7EB", color: "#374151" },
+                ...(car.batteryWarranty ? [{ label: "Battery Warranty", value: car.batteryWarranty, bg: "#F0FDF4", border: "#BBF7D0", color: "#166534" }] : []),
+              ].map(p => (
+                <div key={p.label} style={{ background: p.bg, border: `1px solid ${p.border}`, borderRadius: 9, padding: "0.35rem 0.85rem" }}>
+                  <div style={{ fontSize: "0.58rem", fontWeight: 700, color: p.color, opacity: 0.7, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 2 }}>{p.label}</div>
+                  <div style={{ fontSize: "0.78rem", fontWeight: 700, color: p.color }}>{p.value}</div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Financing disclaimer */}
           <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 10, padding: "0.7rem 1rem", fontSize: "0.78rem", color: "#92400E", lineHeight: 1.6, marginBottom: "1.5rem", display: "flex", gap: "0.5rem" }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Monthly estimate based on approx. 79% annual interest, 10% down payment, 60-month term. Actual rates vary - speak with your bank or credit union for confirmed financing terms.
+            Monthly estimate based on approx. 7-9% annual interest, 10% down payment, 60-month term. Actual rates vary - speak with your bank or credit union for confirmed financing terms.
           </div>
 
           {/* Description */}
@@ -796,6 +805,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
           <Section title="Warranty and Ownership">
             <div>
               <SpecRow label="Warranty" value={car.warranty} />
+              {car.batteryWarranty && <SpecRow label="Battery Warranty" value={car.batteryWarranty} />}
               <SpecRow label="Certified Dealer" value={car.dealership} />
               <SpecRow label="Vehicle Status" value="New - dealership stock" />
               <SpecRow label="Market" value="Trinidad and Tobago" />
