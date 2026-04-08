@@ -409,45 +409,125 @@ function FeatureTag({ feature, car, onAsk }) {
 }
 
 
-function ChatCarCard({ car, onBook }) {
+function ChatCarCard({ car, onBook, onFeatureAsk }) {
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const carImages = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
+
   return (
-    <div style={{
-      background: "white", border: "1px solid #E5E7EB", borderRadius: 12,
-      overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginTop: "0.5rem",
-    }}>
-      <div style={{ background: car.gradient, padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-        <div>
-          <div style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.75)", marginBottom: 2 }}>{car.brand}</div>
-          <div style={{ color: "white", fontWeight: 800, fontSize: "1rem", letterSpacing: "-0.01em" }}>{car.year} {car.name}</div>
+    <>
+      {detailOpen && (
+        <VehicleDetailPanel
+          car={car}
+          onClose={() => setDetailOpen(false)}
+          onBook={onBook}
+          onFeatureAsk={onFeatureAsk}
+          onViewPhotos={() => setLightboxOpen(true)}
+        />
+      )}
+      {lightboxOpen && (
+        <ImageLightbox
+          images={carImages}
+          startIndex={0}
+          carName={`${car.year} ${car.brand} ${car.name}`}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
+
+      <div style={{
+        background: "white", border: "1px solid #E5E7EB", borderRadius: 14,
+        overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+        marginTop: "0.5rem", cursor: "pointer", transition: "transform 0.15s, box-shadow 0.15s",
+      }}
+        className="chat-car-card"
+        onClick={() => setDetailOpen(true)}
+      >
+        {/* Image header with gradient overlay */}
+        <div style={{ position: "relative", height: 130, background: "#1a1a2e", overflow: "hidden" }}>
+          {car.image && (
+            <img src={car.image} alt={car.name}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
+              onError={e => { e.target.style.display = "none"; }}
+            />
+          )}
+          {/* Gradient overlay — always show */}
+          <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${car.gradient.match(/#[0-9A-Fa-f]{6}/g)?.[0] || "#4F46E5"}CC, ${car.gradient.match(/#[0-9A-Fa-f]{6}/g)?.[1] || "#7C3AED"}99)` }} />
+
+          {/* Badge */}
+          {car.badge && (
+            <div style={{
+              position: "absolute", top: "0.7rem", left: "0.85rem",
+              background: "rgba(255,255,255,0.2)", backdropFilter: "blur(6px)",
+              borderRadius: 20, padding: "0.15rem 0.6rem",
+              fontSize: "0.65rem", fontWeight: 700, color: "white", letterSpacing: "0.04em",
+            }}>{car.badge}</div>
+          )}
+
+          {/* View details hint */}
+          <div style={{
+            position: "absolute", top: "0.7rem", right: "0.85rem",
+            background: "rgba(0,0,0,0.35)", backdropFilter: "blur(4px)",
+            borderRadius: 7, padding: "0.2rem 0.55rem",
+            fontSize: "0.65rem", fontWeight: 600, color: "rgba(255,255,255,0.9)",
+            display: "flex", alignItems: "center", gap: "0.3rem",
+          }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Full Details
+          </div>
+
+          {/* Car name overlay */}
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0.65rem 0.85rem" }}>
+            <div style={{ fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", marginBottom: 2 }}>{car.brand}</div>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+              <div style={{ color: "white", fontWeight: 900, fontSize: "1.1rem", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{car.year} {car.name}</div>
+              <div style={{ color: "white", fontWeight: 900, fontSize: "1rem", letterSpacing: "-0.02em" }}>{fmt(car.price)}</div>
+            </div>
+          </div>
         </div>
-        <div style={{ color: "white", fontWeight: 900, fontSize: "1.05rem" }}>{fmt(car.price)}</div>
-      </div>
-      <div style={{ padding: "0.7rem 1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+
+        {/* Spec pills row */}
+        <div style={{ padding: "0.65rem 0.85rem", display: "flex", gap: "0.4rem", flexWrap: "wrap", borderBottom: "1px solid #F3F4F6" }}
+          onClick={e => e.stopPropagation()}>
           {[
-            { label: "Warranty", val: car.warranty },
-            { label: "Safety", val: car.safety },
-            { label: "Fuel", val: car.fuel },
-          ].map(k => (
-            <div key={k.label}>
-              <div style={{ fontSize: "0.58rem", color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{k.label}</div>
-              <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#111827" }}>{k.val}</div>
+            { icon: <Icon.shield />, val: car.warranty },
+            { icon: <Icon.star />, val: car.safety },
+            { icon: <Icon.fuel />, val: car.fuel },
+            { icon: <Icon.users />, val: `${car.seats} seats` },
+          ].map((k, i) => (
+            <div key={i} style={{
+              display: "flex", alignItems: "center", gap: "0.3rem",
+              background: "#F9FAFB", border: "1px solid #F3F4F6",
+              borderRadius: 20, padding: "0.25rem 0.6rem",
+              fontSize: "0.72rem", fontWeight: 600, color: "#4B5563",
+            }}>
+              <span style={{ color: car.accent, display: "flex" }}>{k.icon}</span>
+              {k.val}
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", gap: "0.4rem", flexShrink: 0 }}>
+
+        {/* Booking buttons */}
+        <div style={{ padding: "0.6rem 0.85rem", display: "flex", gap: "0.4rem" }}
+          onClick={e => e.stopPropagation()}>
           {["Test Drive", "Book a Viewing", "Contact Me"].map(intent => (
             <button key={intent}
-              style={{ background: car.gradient, color: "white", border: "none", borderRadius: 7, padding: "0.45rem 0.65rem", fontSize: "0.72rem", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
+              style={{
+                flex: 1, background: car.gradient, color: "white", border: "none",
+                borderRadius: 8, padding: "0.5rem 0.4rem",
+                fontSize: "0.72rem", fontWeight: 700, cursor: "pointer",
+                fontFamily: "inherit", transition: "filter 0.15s",
+              }}
+              className="action-book"
               onClick={() => onBook(car, intent)}>
               {intent}
             </button>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
 
 // ─── COMPARISON OVERLAY ────────────────────────────────────────────────────────
 function CompareOverlay({ carA, carB, onClose }) {
@@ -1763,7 +1843,7 @@ export default function CarlaAI() {
                     {m.role === "assistant" && messageCards[i] && messageCards[i].length > 0 && (
                       <div style={{ paddingLeft: "2.4rem", display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.25rem" }}>
                         {messageCards[i].map(car => (
-                          <ChatCarCard key={car.id} car={car} onBook={openLead} />
+                          <ChatCarCard key={car.id} car={car} onBook={openLead} onFeatureAsk={sharedCardProps.onFeatureAsk} />
                         ))}
                       </div>
                     )}
@@ -2268,6 +2348,7 @@ const css = `
   .lightbox-arrow:hover { background: rgba(255,255,255,0.3) !important; }
   .view-photos-btn:hover { background: var(--accent-bg, rgba(79,70,229,0.12)) !important; border-color: currentColor !important; transform: translateY(-1px); }
   .view-details-btn:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
+  .chat-car-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
   .tab-btn-hover:hover { color: #4F46E5 !important; }
   .matches-back:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
 
