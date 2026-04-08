@@ -2489,8 +2489,8 @@ const css = `
   .hero-sec:hover   { background: #F3F4F6 !important; }
   .w-chip:hover     { border-color: #4F46E5 !important; background: #EEF2FF !important; color: #4338CA !important; }
   .w-send:hover     { filter: brightness(1.15); }
-  .group-card:hover { border-color: #A5B4FC !important; box-shadow: 0 8px 24px rgba(79,70,229,0.12) !important; transform: translateY(-3px); }
-  .car-card:hover   { border-color: #A5B4FC !important; box-shadow: 0 10px 30px rgba(79,70,229,0.1) !important; transform: translateY(-3px); }
+  .group-card:hover { border-color: #A5B4FC !important; box-shadow: 0 8px 24px rgba(79,70,229,0.12) !important; }
+  .car-card:hover   { border-color: #A5B4FC !important; box-shadow: 0 10px 30px rgba(79,70,229,0.15) !important; }
   .car-card:hover img { transform: scale(1.04); }
   .action-ghost:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; }
   .action-ask:hover { filter: brightness(0.92); }
@@ -2502,7 +2502,7 @@ const css = `
   .lightbox-arrow:hover { background: rgba(255,255,255,0.3) !important; }
   .view-photos-btn:hover { background: var(--accent-bg, rgba(79,70,229,0.12)) !important; border-color: currentColor !important; transform: translateY(-1px); }
   .view-details-btn:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
-  .chat-car-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
+  .chat-car-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.14) !important; }
   .calc-toggle-btn:hover { box-shadow: 0 8px 24px rgba(5,150,105,0.55) !important; transform: translateY(-2px); filter: brightness(1.08); }
   .tab-btn-hover:hover { color: #4F46E5 !important; }
   .matches-back:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
