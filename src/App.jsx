@@ -25,7 +25,7 @@ const Icon = {
   alertCircle: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
 };
 
-// ─── GOOGLE SHEETS CONFIG ─────────────────────────────────────────────────────
+// --- GOOGLE SHEETS CONFIG ---
 const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE";
 
 const CACHE_KEY = "carla_ai_cars_cache";
@@ -130,15 +130,15 @@ const FALLBACK_CARS = [
   { id: 2, name: "X-Trail", drivetrain: "AWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/7C3AED/ffffff?text=Nissan+X-Trail", brand: "Nissan", type: "SUV", price: 295000, year: 2024, fuel: "Petrol", seats: 7, warranty: "3 years / unlimited km", safety: "5-Star ANCAP", features: ["7 Seats", "360 Camera", "Apple CarPlay", "Blind Spot Warning", "Intelligent AWD"], tags: ["family", "space", "safety", "offroad"], ev: false, dealership: "Nissan Motors TT", desc: "Seven-seat SUV built for Trinidad life. Maracas switchbacks, school runs, Beetham traffic. It handles all of it.", monthlyFuel: "TT$5,350", badge: "Family Pick", gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)", accent: "#7C3AED" },
   { id: 3, name: "Civic", drivetrain: "FWD", transmission: "Automatic CVT", image: "https://placehold.co/800x400/1D4ED8/ffffff?text=Honda+Civic", brand: "Honda", type: "Sedan", price: 210000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star NHTSA", features: ["Honda Sensing Suite", "Apple CarPlay", "Wireless Charging", "LED Headlights", "Turbocharged Engine"], tags: ["fuel-efficient", "sporty", "tech", "affordable"], ev: false, dealership: "Honda TT", desc: "Sharp, refined and dependable. A Trinidad staple that navigates city traffic with confidence and looks great doing it.", monthlyFuel: "TT$3,800", badge: "Best Value", gradient: "linear-gradient(135deg, #1D4ED8, #60A5FA)", accent: "#1D4ED8" },
   { id: 4, name: "Outlander PHEV", drivetrain: "AWD", transmission: "Automatic", image: "https://placehold.co/800x400/059669/ffffff?text=Mitsubishi+Outlander+PHEV", brand: "Mitsubishi", type: "SUV", price: 430000, year: 2024, fuel: "Plug-in Hybrid", seats: 7, warranty: "5 years / 100,000 km", safety: "5-Star ANCAP", features: ["Plug-in Hybrid", "7 Seats", "Solar Charging Panel", "Mi-Pilot Assist", "Bose Premium Audio"], tags: ["fuel-efficient", "tech", "family", "luxury", "eco"], ev: true, evRange: 87, dealership: "Mitsubishi Motors TT", desc: "87 km electric range. Drive Port of Spain to San Fernando and back on a single charge. Charge at home for approximately TT$60.", monthlyFuel: "TT$1,200", badge: "Eco Leader", gradient: "linear-gradient(135deg, #059669, #34D399)", accent: "#059669" },
-  { id: 5, name: "Sportage", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360 Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense — outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
+  { id: 5, name: "Sportage", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/D97706/ffffff?text=Kia+Sportage", brand: "Kia", type: "SUV", price: 265000, year: 2024, fuel: "Petrol", seats: 5, warranty: "7 years / 150,000 km", safety: "5-Star Euro NCAP", features: ["Panoramic Sunroof", "Ventilated Seats", "Apple CarPlay", "360 Camera", "Highway Driving Assist"], tags: ["tech", "safety", "sporty", "affordable"], ev: false, dealership: "Kia TT", desc: "Industry-leading 7-year warranty. Premium technology at a price that makes sense - outstanding long-term value.", monthlyFuel: "TT$4,800", badge: "Best Warranty", gradient: "linear-gradient(135deg, #D97706, #FCD34D)", accent: "#D97706" },
   { id: 6, name: "Hilux", drivetrain: "4WD", transmission: "Automatic 6-Speed", image: "https://placehold.co/800x400/B45309/ffffff?text=Toyota+Hilux", brand: "Toyota", type: "Pickup", price: 385000, year: 2024, fuel: "Diesel", seats: 5, warranty: "3 years / 100,000 km", safety: "5-Star ANCAP", features: ["4x4 Drive", "Tow Bar", "Bed Liner", "Apple CarPlay", "Multi-Terrain Select"], tags: ["offroad", "towing", "durable", "work"], ev: false, dealership: "Toyota Trinidad", desc: "Built for everything Trinidad throws at it. Construction sites, beach limes, mountain roads. The Hilux does not stop.", monthlyFuel: "TT$6,980", badge: "Most Durable", gradient: "linear-gradient(135deg, #B45309, #F59E0B)", accent: "#B45309" },
   { id: 7, name: "Tucson", drivetrain: "FWD", transmission: "Automatic DCT", image: "https://placehold.co/800x400/0891B2/ffffff?text=Hyundai+Tucson", brand: "Hyundai", type: "SUV", price: 275000, year: 2024, fuel: "Petrol", seats: 5, warranty: "5 years / 100,000 km", safety: "5-Star NHTSA", features: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay", "Safe Exit Assist", "Remote Start"], tags: ["tech", "safety", "style", "family", "affordable"], ev: false, dealership: "Hyundai TT", desc: "Award-winning design. Panoramic sunroof as standard. Premium technology usually found in vehicles at twice the price.", monthlyFuel: "TT$4,800", badge: "Editor's Choice", gradient: "linear-gradient(135deg, #0891B2, #67E8F9)", accent: "#0891B2" },
   { id: 8, name: "CX-5", drivetrain: "AWD", transmission: "Automatic 6-Speed", image: "https://placehold.co/800x400/374151/ffffff?text=Mazda+CX-5", brand: "Mazda", type: "SUV", price: 310000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / unlimited km", safety: "5-Star NHTSA", features: ["Leather Seats", "Bose Sound System", "Head-Up Display", "Apple CarPlay", "Radar Cruise Control"], tags: ["luxury", "style", "safety", "sporty", "tech"], ev: false, dealership: "Mazda TT", desc: "The most refined driving experience under TT$350,000. Premium leather, Bose audio and a design that commands attention.", monthlyFuel: "TT$5,620", badge: "Most Premium", gradient: "linear-gradient(135deg, #374151, #9CA3AF)", accent: "#374151" },
 ];
 
-// ─── FINANCING CONFIG ─────────────────────────────────────────────────────────
+// --- FINANCING CONFIG ---
 // Update LOAN_RATE_ANNUAL when real bank rates are confirmed
-const LOAN_RATE_ANNUAL = 0.079; // 7.9% placeholder — update when bank deals are locked
+const LOAN_RATE_ANNUAL = 0.079; // 7.9% placeholder - update when bank deals are locked
 const LOAN_DEFAULT_TERM = 60;   // months
 const LOAN_DEFAULT_DOWN = 10;   // percent
 
@@ -194,7 +194,7 @@ function filterCars(cars, f) {
   return cars;
 }
 
-// ─── SMART MATCH EXTRACTION ──────────────────────────────────────────────────
+// --- SMART MATCH EXTRACTION ---
 // Extracts which cars are relevant from an AI reply + conversation context.
 // Priority: full model name match > brand match, then filter by user needs.
 function extractMatchesFromReply(reply, allCars, messages) {
@@ -249,12 +249,12 @@ function extractMatchesFromReply(reply, allCars, messages) {
 }
 
 function buildSystemPrompt(carsData) {
-  return `You are Carla AI, Trinidad and Tobago's AI car advisor. You are friendly, knowledgeable and genuinely helpful. Your personality is warm, casual and genuinely helpful — like a trusted friend who happens to know everything about cars in T&T.
+  return `You are Carla AI, Trinidad and Tobago's AI car advisor. You are friendly, knowledgeable and genuinely helpful. Your personality is warm, casual and genuinely helpful - like a trusted friend who happens to know everything about cars in T&T.
 
 CONVERSATION APPROACH:
 - Start by understanding the user's situation before recommending. Ask ONE focused follow-up question at a time if you need more info.
 - If a user picks a quick-start option (like "Family car" or "Best value"), acknowledge it warmly then ask one clarifying question (e.g. "Nice! How many seats do you typically need?") before recommending.
-- Always make the user feel like they can ask ANYTHING — even things they think are off-topic. Remind them you can answer questions about financing, road conditions, fuel costs, insurance, EV charging, or anything car-related in T&T.
+- Always make the user feel like they can ask ANYTHING - even things they think are off-topic. Remind them you can answer questions about financing, road conditions, fuel costs, insurance, EV charging, or anything car-related in T&T.
 - Never make the user feel like they are filling out a form. Keep it conversational and light.
 
 Trinidad context to weave in naturally:
@@ -270,14 +270,14 @@ Car inventory:
 ${JSON.stringify(carsData.map(c => ({ id: c.id, name: c.brand + " " + c.name, price: c.price, fuel: c.fuel, seats: c.seats, warranty: c.warranty, safety: c.safety, tags: c.tags, ev: c.ev, evRange: c.evRange || null, monthlyFuel: c.monthlyFuel })))}
 
 Guidelines:
-- Be warm, casual and clear — no jargon
+- Be warm, casual and clear - no jargon
 - Ground EV/hybrid savings in real TT distances and dollar amounts
 - Always lead recommendations with Price, Warranty and Safety
 - Keep answers concise and scannable
 - Remind users you can answer broader questions about financing, road suitability, insurance, import info
 - For financing questions: give a rough monthly estimate using ~7-9% annual interest, 10% down, 60 months as a general guide. Always add that actual rates vary by bank and the customer should speak with their bank or credit union directly for accurate terms. Never quote a specific bank rate as confirmed.
 - Guide interested buyers toward booking a test drive
-- Only reference cars in the inventory — never invent specs
+- Only reference cars in the inventory - never invent specs
 - Always quote prices in T&T dollars`;
 }
 
@@ -291,7 +291,7 @@ function renderMarkdown(text) {
     if (line.startsWith("### ")) { elements.push(<div key={key++} style={{ fontWeight: 800, fontSize: "0.95rem", marginTop: "0.75rem", marginBottom: "0.25rem" }}>{formatInline(line.slice(4))}</div>); continue; }
     if (line.startsWith("## ")) { elements.push(<div key={key++} style={{ fontWeight: 800, fontSize: "1rem", marginTop: "0.75rem", marginBottom: "0.25rem" }}>{formatInline(line.slice(3))}</div>); continue; }
     if (line.startsWith("# ")) { elements.push(<div key={key++} style={{ fontWeight: 900, fontSize: "1.05rem", marginTop: "0.75rem", marginBottom: "0.25rem" }}>{formatInline(line.slice(2))}</div>); continue; }
-    if (line.match(/^[-*] /)) { elements.push(<div key={key++} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start", marginBottom: "0.2rem" }}><span style={{ color: "#4F46E5", fontWeight: 700, flexShrink: 0, marginTop: 2 }}>•</span><span>{formatInline(line.slice(2))}</span></div>); continue; }
+    if (line.match(/^[-*] /)) { elements.push(<div key={key++} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start", marginBottom: "0.2rem" }}><span style={{ color: "#4F46E5", fontWeight: 700, flexShrink: 0, marginTop: 2 }}>&#8226;</span><span>{formatInline(line.slice(2))}</span></div>); continue; }
     const numMatch = line.match(/^(\d+)\. (.+)/);
     if (numMatch) { elements.push(<div key={key++} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start", marginBottom: "0.2rem" }}><span style={{ color: "#4F46E5", fontWeight: 700, flexShrink: 0, minWidth: "1.2rem" }}>{numMatch[1]}.</span><span>{formatInline(numMatch[2])}</span></div>); continue; }
     elements.push(<div key={key++} style={{ marginBottom: "0.1rem" }}>{formatInline(line)}</div>);
@@ -314,14 +314,14 @@ function formatInline(text) {
   return parts.length > 0 ? parts : text;
 }
 
-// ─── FEATURE HINTS ───────────────────────────────────────────────────────────
+// --- FEATURE HINTS ---
 // One-line plain-English descriptions shown on hover. Falls back to null.
 const FEATURE_HINTS = {
-  "Apple CarPlay": "Mirror your iPhone on the screen — maps, music, messages",
-  "Android Auto": "Mirror your Android phone — maps, music, messages",
+  "Apple CarPlay": "Mirror your iPhone on the screen - maps, music, messages",
+  "Android Auto": "Mirror your Android phone - maps, music, messages",
   "Backup Camera": "Live rear camera view when reversing",
   "360 Camera": "Birds-eye view of all four sides of the car",
-  "360° Camera": "Birds-eye view of all four sides of the car",
+  "360-degree Camera": "Birds-eye view of all four sides of the car",
   "Lane Assist": "Alerts and steers you back if you drift out of your lane",
   "Blind Spot Warning": "Warns you when a car is in your blind spot",
   "Adaptive Cruise Control": "Maintains your speed and braking distance from the car ahead",
@@ -333,25 +333,25 @@ const FEATURE_HINTS = {
   "Wireless Charging": "Charge your phone just by placing it on the pad",
   "LED Headlights": "Brighter, longer-lasting lights with better night visibility",
   "Turbocharged Engine": "More power from a smaller engine, better fuel efficiency",
-  "Panoramic Sunroof": "Full-length glass roof — light and open feel inside",
+  "Panoramic Sunroof": "Full-length glass roof - light and open feel inside",
   "Heated Seats": "Electrically warmed seats for cool mornings",
-  "Ventilated Seats": "Fan-cooled seats — ideal for Trinidad heat",
+  "Ventilated Seats": "Fan-cooled seats - ideal for Trinidad heat",
   "Remote Start": "Start and cool the car before you get in",
   "Head-Up Display": "Key info projected onto the windscreen so you never look away",
   "Leather Seats": "Premium leather upholstery throughout the cabin",
   "Bose Sound System": "Premium 10-speaker Bose audio fitted from the factory",
   "Bose Premium Audio": "Premium 10-speaker Bose audio fitted from the factory",
-  "Plug-in Hybrid": "Runs on electric first, petrol as backup — charge at home",
+  "Plug-in Hybrid": "Runs on electric first, petrol as backup - charge at home",
   "Solar Charging Panel": "Roof solar panel trickle-charges the battery while parked",
-  "7 Seats": "Third row included — fits the whole family",
-  "4x4 Drive": "Power to all four wheels — handles rough roads and mud",
-  "Intelligent AWD": "Auto all-wheel drive — kicks in when traction is needed",
+  "7 Seats": "Third row included - fits the whole family",
+  "4x4 Drive": "Power to all four wheels - handles rough roads and mud",
+  "Intelligent AWD": "Auto all-wheel drive - kicks in when traction is needed",
   "Multi-Terrain Select": "Choose drive modes for mud, sand, rock or snow",
   "Tow Bar": "Factory-fitted tow hitch for trailers and boat hitches",
-  "Bed Liner": "Protective coating in the truck bed — prevents rust and scratches",
+  "Bed Liner": "Protective coating in the truck bed - prevents rust and scratches",
 };
 
-// ─── FEATURE TAG COMPONENT ────────────────────────────────────────────────────
+// --- FEATURE TAG COMPONENT ---
 function FeatureTag({ feature, car, onAsk }) {
   const [hovered, setHovered] = useState(false);
   const [asked, setAsked] = useState(false);
@@ -391,7 +391,7 @@ function FeatureTag({ feature, car, onAsk }) {
       >
         {feature}
       </span>
-      {/* Tooltip — desktop hover only, appears below */}
+      {/* Tooltip - desktop hover only, appears below */}
       {hovered && (
         <span style={{
           position: "absolute",
@@ -428,39 +428,18 @@ function FeatureTag({ feature, car, onAsk }) {
 }
 
 
-function ChatCarCard({ car, onBook, onFeatureAsk }) {
-  const [detailOpen, setDetailOpen] = useState(false);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+function ChatCarCard({ car, onBook, onFeatureAsk, onOpenDetail, onOpenLightbox }) {
   const carImages = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
 
   return (
-    <>
-      {detailOpen && (
-        <VehicleDetailPanel
-          car={car}
-          onClose={() => setDetailOpen(false)}
-          onBook={onBook}
-          onFeatureAsk={onFeatureAsk}
-          onViewPhotos={() => setLightboxOpen(true)}
-        />
-      )}
-      {lightboxOpen && (
-        <ImageLightbox
-          images={carImages}
-          startIndex={0}
-          carName={`${car.year} ${car.brand} ${car.name}`}
-          onClose={() => setLightboxOpen(false)}
-        />
-      )}
-
-      <div style={{
-        background: "white", border: "1px solid #E5E7EB", borderRadius: 14,
-        overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-        marginTop: "0.5rem", cursor: "pointer", transition: "transform 0.15s, box-shadow 0.15s",
-      }}
-        className="chat-car-card"
-        onClick={() => setDetailOpen(true)}
-      >
+    <div style={{
+      background: "white", border: "1px solid #E5E7EB", borderRadius: 14,
+      overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+      marginTop: "0.5rem", cursor: "pointer", transition: "box-shadow 0.15s",
+    }}
+      className="chat-car-card"
+      onClick={() => onOpenDetail(car)}
+    >
         {/* Image header with gradient overlay */}
         <div style={{ position: "relative", height: 130, background: "#1a1a2e", overflow: "hidden" }}>
           {car.image && (
@@ -469,7 +448,7 @@ function ChatCarCard({ car, onBook, onFeatureAsk }) {
               onError={e => { e.target.style.display = "none"; }}
             />
           )}
-          {/* Gradient overlay — always show */}
+          {/* Gradient overlay - always show */}
           <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${car.gradient.match(/#[0-9A-Fa-f]{6}/g)?.[0] || "#4F46E5"}CC, ${car.gradient.match(/#[0-9A-Fa-f]{6}/g)?.[1] || "#7C3AED"}99)` }} />
 
           {/* Badge */}
@@ -546,12 +525,11 @@ function ChatCarCard({ car, onBook, onFeatureAsk }) {
           ))}
         </div>
       </div>
-    </>
   );
 }
 
 
-// ─── COMPARISON OVERLAY ────────────────────────────────────────────────────────
+// --- COMPARISON OVERLAY ---
 function CompareOverlay({ carA, carB, onClose }) {
   const fields = [
     { label: "Price", get: c => fmt(c.price) },
@@ -567,7 +545,7 @@ function CompareOverlay({ carA, carB, onClose }) {
 
   const winner = (fieldFn) => {
     // Highlight better value for price (lower) and seats (higher)
-    return null; // neutral — no auto-winner highlighting to keep it unbiased
+    return null; // neutral - no auto-winner highlighting to keep it unbiased
   };
 
   return (
@@ -631,7 +609,7 @@ function CompareOverlay({ carA, carB, onClose }) {
   );
 }
 
-// ─── VEHICLE DETAIL PANEL ─────────────────────────────────────────────────────
+// --- VEHICLE DETAIL PANEL ---
 function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }) {
   const carImages = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
 
@@ -673,7 +651,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
         animation: "slideUp 0.25s ease",
       }} onClick={e => e.stopPropagation()}>
 
-        {/* ── HERO IMAGE ── */}
+        {/*  HERO IMAGE  */}
         <div style={{ position: "relative", height: 280, background: "#1a1a2e", flexShrink: 0 }}>
           <img src={car.image} alt={car.name}
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
@@ -706,7 +684,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1rem 1.5rem" }}>
             <div style={{ fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.7)", textTransform: "uppercase", marginBottom: "0.25rem" }}>{car.brand}</div>
             <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "0.4rem" }}>{car.year} {car.name}</div>
-            <div style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{car.type} · {car.seats} Seats · {car.fuel}</div>
+            <div style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{car.type} - {car.seats} Seats - {car.fuel}</div>
           </div>
 
           {/* View Photos button */}
@@ -723,12 +701,12 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
               </svg>
-              View All Photos {carImages.length > 1 && `· ${carImages.length}`}
+              View All Photos {carImages.length > 1 && `- ${carImages.length}`}
             </button>
           )}
         </div>
 
-        {/* ── SCROLLABLE BODY ── */}
+        {/*  SCROLLABLE BODY  */}
         <div style={{ overflowY: "auto", flex: 1, padding: "1.5rem" }}>
 
           {/* Price headline */}
@@ -741,7 +719,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
               <div style={{ paddingBottom: "0.15rem" }}>
                 <div style={{ fontSize: "0.65rem", color: "#9CA3AF", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.2rem" }}>Est. Monthly Payment</div>
                 <div style={{ fontSize: "1.5rem", fontWeight: 900, color: car.accent, letterSpacing: "-0.03em", lineHeight: 1 }}>~{fmtMonthly(car.price)}<span style={{ fontSize: "0.8rem", fontWeight: 600, color: "#9CA3AF" }}>/mo</span></div>
-                <div style={{ fontSize: "0.65rem", color: "#9CA3AF", marginTop: 2 }}>10% down · 60 months · est. rate</div>
+                <div style={{ fontSize: "0.65rem", color: "#9CA3AF", marginTop: 2 }}>10% down - 60 months - est. rate</div>
               </div>
             </div>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
@@ -753,7 +731,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
           {/* Financing disclaimer */}
           <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 10, padding: "0.7rem 1rem", fontSize: "0.78rem", color: "#92400E", lineHeight: 1.6, marginBottom: "1.5rem", display: "flex", gap: "0.5rem" }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Monthly estimate based on approx. 7–9% annual interest, 10% down payment, 60-month term. Actual rates vary — speak with your bank or credit union for confirmed financing terms.
+            Monthly estimate based on approx. 79% annual interest, 10% down payment, 60-month term. Actual rates vary - speak with your bank or credit union for confirmed financing terms.
           </div>
 
           {/* Description */}
@@ -819,7 +797,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
             <div>
               <SpecRow label="Warranty" value={car.warranty} />
               <SpecRow label="Certified Dealer" value={car.dealership} />
-              <SpecRow label="Vehicle Status" value="New — dealership stock" />
+              <SpecRow label="Vehicle Status" value="New - dealership stock" />
               <SpecRow label="Market" value="Trinidad and Tobago" />
             </div>
             <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 10, padding: "0.85rem 1rem", fontSize: "0.82rem", color: "#6B7280", lineHeight: 1.65 }}>
@@ -832,17 +810,17 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
             <div>
               <SpecRow label="Est. Monthly Fuel Cost" value={car.monthlyFuel ? `${car.monthlyFuel} /mo` : null} />
               <SpecRow label="Fuel Type" value={car.fuel} />
-              {car.ev && <SpecRow label="Home Charge Cost" value="~TT$50–80 per full charge" />}
+              {car.ev && <SpecRow label="Home Charge Cost" value="~TT$5080 per full charge" />}
               {car.evRange && <SpecRow label="Electric Range" value={`${car.evRange} km per charge`} />}
               <SpecRow label="Petrol Price (TT)" value="~TT$6.97 / litre (subsidised)" />
             </div>
             {car.ev || car.fuel?.toLowerCase().includes("hybrid") ? (
               <div style={{ background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 10, padding: "0.85rem 1rem", fontSize: "0.82rem", color: "#166534", lineHeight: 1.65 }}>
-                This vehicle can run on electricity for most daily trips in Trinidad. The average Port of Spain commute is 20–40 km — well within electric range.
+                This vehicle can run on electricity for most daily trips in Trinidad. The average Port of Spain commute is 2040 km - well within electric range.
               </div>
             ) : (
               <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 10, padding: "0.85rem 1rem", fontSize: "0.82rem", color: "#6B7280", lineHeight: 1.65 }}>
-                Based on typical T&T driving (20–40 km daily commute). Actual fuel costs vary by driving style, traffic conditions and fuel prices.
+                Based on typical T&T driving (2040 km daily commute). Actual fuel costs vary by driving style, traffic conditions and fuel prices.
               </div>
             )}
           </Section>
@@ -871,7 +849,7 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
   );
 }
 
-// ─── IMAGE LIGHTBOX ───────────────────────────────────────────────────────────
+// --- IMAGE LIGHTBOX ---
 function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
   const [idx, setIdx] = useState(startIndex);
   const touchStartX = useRef(null);
@@ -1009,46 +987,25 @@ function ImageLightbox({ images, startIndex = 0, carName, onClose }) {
   );
 }
 
-// ─── CAR CARD COMPONENT ────────────────────────────────────────────────────────
-function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageIndex, onBook, onAsk, onFeatureAsk, compareMode, compareCarId, onCompareSelect, onCompareStart }) {
+// --- CAR CARD COMPONENT ---
+function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageIndex, onBook, onAsk, onFeatureAsk, onOpenDetail, onOpenLightbox, compareMode, compareCarId, onCompareSelect, onCompareStart }) {
   const carImages = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
   const imgIdx = cardImageIndex[car.id] || 0;
   const currentImg = carImages[imgIdx] || car.image;
   const isExpanded = expandedCards.has(car.id);
   const isSelectedForCompare = compareCarId === car.id;
   const isCompareTarget = compareMode && compareCarId && compareCarId !== car.id;
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
-    <>
-      {detailOpen && (
-        <VehicleDetailPanel
-          car={car}
-          onClose={() => setDetailOpen(false)}
-          onBook={onBook}
-          onFeatureAsk={onFeatureAsk}
-          onViewPhotos={() => { setLightboxOpen(true); }}
-        />
-      )}
-      {lightboxOpen && (
-        <ImageLightbox
-          images={carImages}
-          startIndex={imgIdx}
-          carName={`${car.year} ${car.brand} ${car.name}`}
-          onClose={() => setLightboxOpen(false)}
-        />
-      )}
-      <div style={{
-        ...s.carCard,
-        outline: isSelectedForCompare ? `2px solid ${car.accent}` : isCompareTarget ? "2px dashed #4F46E5" : "none",
-        outlineOffset: 2,
+    <div style={{
+      ...s.carCard,
+      outline: isSelectedForCompare ? `2px solid ${car.accent}` : isCompareTarget ? "2px dashed #4F46E5" : "none",
+      outlineOffset: 2,
         cursor: "pointer",
       }} className="car-card"
         onClick={(e) => {
-          // Only open detail if clicking the card background — not buttons/interactive elements
           if (e.target === e.currentTarget || e.target.closest("[data-card-body]")) {
-            setDetailOpen(true);
+            onOpenDetail(car);
           }
         }}
       >
@@ -1076,7 +1033,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
         )}
         <div style={s.cardOverlayContent}>
           <div style={s.cardName}>{car.year} {car.name}</div>
-          <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
+          <div style={s.cardType}>{car.type} - {car.seats} Seats - {car.fuel}</div>
           <div style={s.cardPriceRow}>
             <div style={s.cardPrice}>{fmt(car.price)}</div>
             <div style={s.cardMonthly}>{car.monthlyFuel} /mo fuel</div>
@@ -1126,13 +1083,13 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
             alignSelf: "flex-start",
           }}
           className="view-photos-btn"
-          onClick={e => { e.stopPropagation(); setLightboxOpen(true); }}
+          onClick={e => { e.stopPropagation(); onOpenLightbox(car, imgIdx); }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
           </svg>
           View Photos
-          {carImages.length > 1 && <span style={{ opacity: 0.65, fontWeight: 500 }}>· {carImages.length}</span>}
+          {carImages.length > 1 && <span style={{ opacity: 0.65, fontWeight: 500 }}>- {carImages.length}</span>}
         </button>
 
         {isExpanded && (
@@ -1192,7 +1149,7 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
             gap: "0.45rem", transition: "all 0.15s",
           }}
           className="view-details-btn"
-          onClick={e => { e.stopPropagation(); setDetailOpen(true); }}
+          onClick={e => { e.stopPropagation(); onOpenDetail(car); }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           View Full Details
@@ -1211,11 +1168,10 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
         </div>
       </div>
     </div>
-    </>
   );
 }
 
-// ─── PRICE RANGE SLIDER ──────────────────────────────────────────────────────
+// --- PRICE RANGE SLIDER ---
 function PriceSlider({ min, max, step, value, onChange }) {
   const trackRef = useRef(null);
   const dragging = useRef(null); // "min" | "max" | null
@@ -1307,18 +1263,18 @@ function PriceSlider({ min, max, step, value, onChange }) {
   );
 }
 
-// ─── MAIN COMPONENT ────────────────────────────────────────────────────────────
+// --- MAIN COMPONENT ---
 export default function CarlaAI() {
   const WIZARD_OPTIONS = [
     { label: "First-time buyer", prompt: "I am buying my first brand-new car in Trinidad. Help me figure out what to get from a certified dealer." },
     { label: "Need a family car", prompt: "I need a brand-new family car from a certified dealer in Trinidad. Space, safety and value matter most." },
     { label: "I have a budget in mind", prompt: "I want to find the best brand-new car for my budget from a certified T&T dealership." },
-    { label: "Curious about EVs / Hybrids", prompt: "Tell me about new electric and hybrid cars available from certified dealers in Trinidad — are they worth it?" },
+    { label: "Curious about EVs / Hybrids", prompt: "Tell me about new electric and hybrid cars available from certified dealers in Trinidad - are they worth it?" },
     { label: "Upgrading my current car", prompt: "I am looking to upgrade to a brand-new car in Trinidad. What are my options from certified dealerships?" },
     { label: "Just browsing", prompt: "I'm exploring what brand-new cars are available from certified dealers in Trinidad. Help me understand my options." },
   ];
 
-  // ── DATA STATE ──
+  // --- DATA STATE ---
   const [cars, setCars] = useState(() => {
     try {
       const cached = localStorage.getItem(CACHE_KEY);
@@ -1329,12 +1285,12 @@ export default function CarlaAI() {
   const [dataSource, setDataSource] = useState("loading");
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  // ── UI STATE ──
+  // --- UI STATE ---
   const [screen, setScreen] = useState("home");
   const [prevScreen, setPrevScreen] = useState(null);   // track where lead form was opened from
   const [prevTab, setPrevTab] = useState("chat");       // track which tab lead form was opened from
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi there! I'm Carla, your automotive AI companion.\n\nI can help you compare models, explore features, understand financing and warranty options — all for brand-new cars from certified dealerships across T&T.\n\n**Tell me, how can I help you find the right car?**" },
+    { role: "assistant", content: "Hi there! I'm Carla, your automotive AI companion.\n\nI can help you compare models, explore features, understand financing and warranty options - all for brand-new cars from certified dealerships across T&T.\n\n**Tell me, how can I help you find the right car?**" },
   ]);
   const [wizardDone, setWizardDone] = useState(false);
   const [input, setInput] = useState("");
@@ -1350,18 +1306,30 @@ export default function CarlaAI() {
   const [expandedCards, setExpandedCards] = useState(new Set());
   const [cardImageIndex, setCardImageIndex] = useState({});
 
-  // ── FINANCING CALCULATOR ──
+  // --- FINANCING CALCULATOR ---
   const [calcOpen, setCalcOpen] = useState(false);
   const [calcPrice, setCalcPrice] = useState(300000);
   const [calcDown, setCalcDown] = useState(LOAN_DEFAULT_DOWN);
   const [calcTerm, setCalcTerm] = useState(LOAN_DEFAULT_TERM);
 
-  // ── COMPARE STATE ──
-  const [compareCarA, setCompareCarA] = useState(null); // first car selected
-  const [compareCarB, setCompareCarB] = useState(null); // second car — triggers overlay
-  const [compareMode, setCompareMode] = useState(false);// is compare mode active
+  // --- COMPARE STATE ---
+  const [compareCarA, setCompareCarA] = useState(null);
+  const [compareCarB, setCompareCarB] = useState(null);
+  const [compareMode, setCompareMode] = useState(false);
 
-  // ── INLINE CHAT CARDS STATE ──
+  // --- OVERLAY STATE - lifted to root so fixed positioning always works ---
+  const [overlayDetail, setOverlayDetail] = useState(null); // car object or null
+  const [overlayLightbox, setOverlayLightbox] = useState(null); // { images, startIndex, carName } or null
+
+  const openDetail = (car) => setOverlayDetail(car);
+  const closeDetail = () => setOverlayDetail(null);
+  const openLightbox = (car, startIndex = 0) => {
+    const images = [car.image, car.image2, car.image3, car.image4, car.image5, car.image6, car.image7, car.image8].filter(Boolean);
+    setOverlayLightbox({ images, startIndex, carName: `${car.year} ${car.brand} ${car.name}` });
+  };
+  const closeLightbox = () => setOverlayLightbox(null);
+
+  // --- INLINE CHAT CARDS STATE ---
   // messageCards[msgIndex] = array of car objects to show under that message
   const [messageCards, setMessageCards] = useState({});
 
@@ -1371,7 +1339,7 @@ export default function CarlaAI() {
     const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next;
   });
 
-  // ── COMPARE HANDLERS ──
+  // --- COMPARE HANDLERS ---
   const handleCompareStart = (car) => {
     if (!car) { setCompareMode(false); setCompareCarA(null); setCompareCarB(null); return; }
     setCompareMode(true);
@@ -1390,10 +1358,10 @@ export default function CarlaAI() {
     setCompareMode(false);
   };
 
-  // ── PAGE TITLE ──
-  useEffect(() => { document.title = "Carla AI — Trinidad & Tobago's Car Advisor"; }, []);
+  // --- PAGE TITLE ---
+  useEffect(() => { document.title = "Carla AI - Trinidad & Tobago's Car Advisor"; }, []);
 
-  // ── GOOGLE SHEET FETCH ──
+  // --- GOOGLE SHEET FETCH ---
   useEffect(() => {
     if (!SHEET_URL || SHEET_URL === "YOUR_GOOGLE_SHEET_CSV_URL_HERE") {
       try {
@@ -1431,7 +1399,7 @@ export default function CarlaAI() {
     if (screen === "chat") chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // ── SEND MESSAGE ──
+  // --- SEND MESSAGE ---
   const sendMessage = async (text) => {
     const msg = (text || input).trim();
     if (!msg || loading) return;
@@ -1452,11 +1420,11 @@ export default function CarlaAI() {
         }),
       });
       const data = await res.json();
-      const reply = data.content?.map(b => b.text || "").join("") || "I apologise — something went wrong. Please try again.";
+      const reply = data.content?.map(b => b.text || "").join("") || "I apologise - something went wrong. Please try again.";
       const updated = [...history, { role: "assistant", content: reply }];
       setMessages(updated);
 
-      // Smart match extraction — brand-level + conversation filter
+      // Smart match extraction - brand-level + conversation filter
       const newMatches = extractMatchesFromReply(reply, cars, updated);
       if (newMatches.length > 0) {
         setMatches(prev => [...new Map([...prev, ...newMatches].map(c => [c.id, c])).values()]);
@@ -1465,12 +1433,12 @@ export default function CarlaAI() {
         setMessageCards(prev => ({ ...prev, [assistantMsgIndex]: newMatches.slice(0, 2) }));
       }
     } catch {
-      setMessages(prev => [...prev, { role: "assistant", content: "Connection issue — please try again." }]);
+      setMessages(prev => [...prev, { role: "assistant", content: "Connection issue - please try again." }]);
     }
     setLoading(false);
   };
 
-  // ── LEAD FORM ──
+  // --- LEAD FORM ---
   const openLead = (car, intent = "Test Drive") => {
     setPrevScreen(screen);
     setPrevTab(activeTab);
@@ -1551,6 +1519,8 @@ export default function CarlaAI() {
       setActiveTab("chat");
       sendMessage(`What is "${feature}" on the ${car.year} ${car.brand} ${car.name}? How does it work and is it useful for driving in Trinidad?`);
     },
+    onOpenDetail: openDetail,
+    onOpenLightbox: openLightbox,
     compareMode, compareCarId: compareCarA?.id,
     onCompareStart: handleCompareStart,
     onCompareSelect: handleCompareSelect,
@@ -1560,12 +1530,33 @@ export default function CarlaAI() {
     <div style={s.root}>
       <style>{css}</style>
 
-      {/* ── COMPARE OVERLAY ── */}
+      {/*  COMPARE OVERLAY  */}
       {compareCarA && compareCarB && (
         <CompareOverlay carA={compareCarA} carB={compareCarB} onClose={closeCompare} />
       )}
 
-      {/* ── COMPARE MODE BANNER ── */}
+      {/*  VEHICLE DETAIL OVERLAY (root level - always above everything)  */}
+      {overlayDetail && (
+        <VehicleDetailPanel
+          car={overlayDetail}
+          onClose={closeDetail}
+          onBook={openLead}
+          onFeatureAsk={sharedCardProps.onFeatureAsk}
+          onViewPhotos={() => openLightbox(overlayDetail, 0)}
+        />
+      )}
+
+      {/*  LIGHTBOX (root level)  */}
+      {overlayLightbox && (
+        <ImageLightbox
+          images={overlayLightbox.images}
+          startIndex={overlayLightbox.startIndex}
+          carName={overlayLightbox.carName}
+          onClose={closeLightbox}
+        />
+      )}
+
+      {/*  COMPARE MODE BANNER  */}
       {compareMode && compareCarA && !compareCarB && (
         <div style={s.compareBanner}>
           <Icon.compare />
@@ -1574,7 +1565,7 @@ export default function CarlaAI() {
         </div>
       )}
 
-      {/* ── NAV ── */}
+      {/*  NAV  */}
       <nav style={s.nav}>
         <button style={s.logoBtn} onClick={() => setScreen("home")}>
           <div style={s.logoMark}><Icon.logo /></div>
@@ -1594,9 +1585,9 @@ export default function CarlaAI() {
         </div>
       </nav>
 
-      {/* ══════════════════════════════
+      {/* 
           HOME
-      ══════════════════════════════ */}
+       */}
       {screen === "home" && (
         <div style={s.homePage}>
           {/* HERO */}
@@ -1613,7 +1604,7 @@ export default function CarlaAI() {
                   <span style={s.heroGradText}>in Trinidad & Tobago</span>
                 </h1>
                 <p style={s.heroBody}>
-                  Tell Carla your preferences — budget, lifestyle and family size. Our AI finds the best brand-new car from certified dealerships across Trinidad and Tobago. Free to use, zero pressure.
+                  Tell Carla your preferences - budget, lifestyle and family size. Our AI finds the best brand-new car from certified dealerships across Trinidad and Tobago. Free to use, zero pressure.
                 </p>
                 <div style={s.heroCapabilities} className="heroCapabilities">
                   {["Brand-new cars only", "Authorized dealers", "Real prices and financing estimates", "Safety and warranty guidance"].map(text => (
@@ -1682,13 +1673,13 @@ export default function CarlaAI() {
                 {[
                   {
                     step: "01", title: "Tell us your preferences",
-                    desc: "Share your budget, lifestyle and what matters most — or just describe what you need in plain English. No forms, just a conversation.",
+                    desc: "Share your budget, lifestyle and what matters most - or just describe what you need in plain English. No forms, just a conversation.",
                     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
                     from: "#4F46E5", to: "#7C3AED",
                   },
                   {
                     step: "02", title: "AI finds your best match",
-                    desc: "Carla AI compares every brand-new car from certified T&T dealerships — price, warranty, fuel costs, safety — and surfaces the ones that fit your life.",
+                    desc: "Carla AI compares every brand-new car from certified T&T dealerships - price, warranty, fuel costs, safety - and surfaces the ones that fit your life.",
                     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>,
                     from: "#7C3AED", to: "#EC4899",
                   },
@@ -1792,7 +1783,7 @@ export default function CarlaAI() {
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
                   </div>
                   <div style={s.emptyTitle}>No vehicles in stock right now</div>
-                  <div style={s.emptyDesc}>Check back soon — inventory is updated regularly. In the meantime, ask Carla what's coming.</div>
+                  <div style={s.emptyDesc}>Check back soon - inventory is updated regularly. In the meantime, ask Carla what's coming.</div>
                   <button style={s.emptyBtn} className="hero-cta" onClick={() => setScreen("chat")}>Ask Carla <Icon.arrowRight /></button>
                 </div>
               ) : (
@@ -1845,7 +1836,7 @@ export default function CarlaAI() {
               </div>
 
               <div style={s.footerBottom}>
-                <span style={s.footerCopy}>© {new Date().getFullYear()} Carla AI. All rights reserved.</span>
+                <span style={s.footerCopy}> {new Date().getFullYear()} Carla AI. All rights reserved.</span>
                 <span style={s.footerCopy}>Trinidad & Tobago</span>
               </div>
             </div>
@@ -1853,9 +1844,9 @@ export default function CarlaAI() {
         </div>
       )}
 
-      {/* ══════════════════════════════
+      {/* 
           CHAT
-      ══════════════════════════════ */}
+       */}
       {screen === "chat" && (
         <div style={s.chatPage} className="chat-page-dvh">
           <div style={s.tabs}>
@@ -1887,7 +1878,7 @@ export default function CarlaAI() {
                     {m.role === "assistant" && messageCards[i] && messageCards[i].length > 0 && (
                       <div style={{ paddingLeft: "2.4rem", display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.25rem" }}>
                         {messageCards[i].map(car => (
-                          <ChatCarCard key={car.id} car={car} onBook={openLead} onFeatureAsk={sharedCardProps.onFeatureAsk} />
+                          <ChatCarCard key={car.id} car={car} onBook={openLead} onFeatureAsk={sharedCardProps.onFeatureAsk} onOpenDetail={openDetail} onOpenLightbox={openLightbox} />
                         ))}
                       </div>
                     )}
@@ -1933,7 +1924,7 @@ export default function CarlaAI() {
               {matches.length > 0 && (
                 <button style={s.nudge} className="nudge" onClick={() => setActiveTab("matches")}>
                   <Icon.car />
-                  <span>{matches.length} vehicle{matches.length > 1 ? "s" : ""} matched — view now</span>
+                  <span>{matches.length} vehicle{matches.length > 1 ? "s" : ""} matched - view now</span>
                   <Icon.arrowRight />
                 </button>
               )}
@@ -1982,7 +1973,7 @@ export default function CarlaAI() {
         </div>
       )}
 
-      {/* ── LEAD FORM ── */}
+      {/*  LEAD FORM  */}
       {screen === "lead" && selectedCar && (
         <div style={s.formPage} className="fade-up">
           <div style={s.formCard}>
@@ -2002,7 +1993,7 @@ export default function CarlaAI() {
                 {[
                   { icon: <Icon.shield />, val: selectedCar.warranty },
                   { icon: <Icon.star />, val: selectedCar.safety },
-                  { icon: <Icon.fuel />, val: selectedCar.fuel + " · " + selectedCar.monthlyFuel },
+                  { icon: <Icon.fuel />, val: selectedCar.fuel + " - " + selectedCar.monthlyFuel },
                 ].map((f, i) => (
                   <div key={i} style={s.formFact}>
                     <span style={{ color: selectedCar.accent }}>{f.icon}</span>
@@ -2047,7 +2038,7 @@ export default function CarlaAI() {
         </div>
       )}
 
-      {/* ── THANKS ── */}
+      {/*  THANKS  */}
       {screen === "thanks" && selectedCar && (
         <div style={s.thanksPage} className="fade-up">
           <div style={s.thanksCard}>
@@ -2072,7 +2063,7 @@ export default function CarlaAI() {
         </div>
       )}
 
-      {/* ── FLOATING MATCHES BUTTON ── */}
+      {/*  FLOATING MATCHES BUTTON  */}
       {matches.length > 0 && screen !== "chat" && (
         <button style={s.floatMatches} className="float-matches"
           onClick={() => { setScreen("chat"); setActiveTab("matches"); }}>
@@ -2081,7 +2072,7 @@ export default function CarlaAI() {
         </button>
       )}
 
-      {/* ── FLOATING FINANCING CALCULATOR ── */}
+      {/*  FLOATING FINANCING CALCULATOR  */}
       <div style={{ position: "fixed", bottom: "1.5rem", left: "1.5rem", zIndex: 101 }}>
         {calcOpen && (
           <div style={{
@@ -2093,7 +2084,7 @@ export default function CarlaAI() {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
               <div>
                 <div style={{ fontWeight: 800, fontSize: "0.92rem", color: "#111827", letterSpacing: "-0.01em" }}>Financing Calculator</div>
-                <div style={{ fontSize: "0.68rem", color: "#9CA3AF", marginTop: 1 }}>Estimate only — speak to your bank for confirmed rates</div>
+                <div style={{ fontSize: "0.68rem", color: "#9CA3AF", marginTop: 1 }}>Estimate only - speak to your bank for confirmed rates</div>
               </div>
               <button onClick={() => setCalcOpen(false)} style={{ background: "#F3F4F6", border: "none", borderRadius: 7, padding: "0.3rem", cursor: "pointer", color: "#6B7280", display: "flex" }}>
                 <Icon.x />
@@ -2156,7 +2147,7 @@ export default function CarlaAI() {
                 {fmt(calcMonthly(calcPrice, calcDown, calcTerm))}
               </div>
               <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.65)", marginTop: "0.3rem" }}>
-                /month for {calcTerm} months · ~{LOAN_RATE_ANNUAL * 100}% rate est.
+                /month for {calcTerm} months - ~{LOAN_RATE_ANNUAL * 100}% rate est.
               </div>
             </div>
 
@@ -2192,7 +2183,7 @@ export default function CarlaAI() {
   );
 }
 
-// ─── TOKENS ──────────────────────────────────────────────────────────────────
+// --- TOKENS ---
 const blue = "#4F46E5";
 const gray50 = "#F9FAFB";
 const gray100 = "#F3F4F6";
