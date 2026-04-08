@@ -571,7 +571,7 @@ function CompareOverlay({ carA, carB, onClose }) {
         </div>
 
         {/* Car headers */}
-        <div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", padding: "1rem 1.5rem 0", flexShrink: 0 }}>
           {[carA, carB].map(car => (
             <div key={car.id} style={{ background: car.gradient, borderRadius: 12, padding: "0.85rem 1rem", color: "white" }}>
               <div style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", opacity: 0.8 }}>{car.brand}</div>
@@ -1920,7 +1920,7 @@ export default function CarlaAI() {
                 </div>
               )}
 
-              {wizardDone && messages.length <= 4 && (
+              {wizardDone && messages.length <= 8 && (
                 <div style={s.chipsArea}>
                   <div style={s.chipsLabel}>You can also ask me about</div>
                   <div style={s.chipsScroll}>
@@ -2083,6 +2083,7 @@ export default function CarlaAI() {
       )}
 
       {/*  FLOATING FINANCING CALCULATOR  */}
+      {screen !== "chat" && (
       <div style={{ position: "fixed", bottom: "1.5rem", left: "1.5rem", zIndex: 101 }}>
         {calcOpen && (
           <div style={{
@@ -2189,6 +2190,7 @@ export default function CarlaAI() {
           {calcOpen ? "Close" : "Financing Calculator"}
         </button>
       </div>
+      )}
     </div>
   );
 }
