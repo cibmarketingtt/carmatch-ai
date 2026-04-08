@@ -136,6 +136,24 @@ const FALLBACK_CARS = [
   { id: 8, name: "CX-5", drivetrain: "AWD", transmission: "Automatic 6-Speed", image: "https://placehold.co/800x400/374151/ffffff?text=Mazda+CX-5", brand: "Mazda", type: "SUV", price: 310000, year: 2024, fuel: "Petrol", seats: 5, warranty: "3 years / unlimited km", safety: "5-Star NHTSA", features: ["Leather Seats", "Bose Sound System", "Head-Up Display", "Apple CarPlay", "Radar Cruise Control"], tags: ["luxury", "style", "safety", "sporty", "tech"], ev: false, dealership: "Mazda TT", desc: "The most refined driving experience under TT$350,000. Premium leather, Bose audio and a design that commands attention.", monthlyFuel: "TT$5,620", badge: "Most Premium", gradient: "linear-gradient(135deg, #374151, #9CA3AF)", accent: "#374151" },
 ];
 
+// ─── FINANCING CONFIG ─────────────────────────────────────────────────────────
+// Update LOAN_RATE_ANNUAL when real bank rates are confirmed
+const LOAN_RATE_ANNUAL = 0.079; // 7.9% placeholder — update when bank deals are locked
+const LOAN_DEFAULT_TERM = 60;   // months
+const LOAN_DEFAULT_DOWN = 10;   // percent
+
+function calcMonthly(price, downPct, termMonths, rateAnnual = LOAN_RATE_ANNUAL) {
+  const principal = price * (1 - downPct / 100);
+  const r = rateAnnual / 12;
+  if (r === 0) return principal / termMonths;
+  return Math.round(principal * (r * Math.pow(1 + r, termMonths)) / (Math.pow(1 + r, termMonths) - 1));
+}
+
+const fmtMonthly = (price, downPct = LOAN_DEFAULT_DOWN, term = LOAN_DEFAULT_TERM) =>
+  `TT$${calcMonthly(price, downPct, term).toLocaleString()}`;
+
+const TERMS = [36, 48, 60, 72];
+
 const FILTERS = ["All", "SUV", "Sedan", "Pickup", "Hybrid / EV", "Under TT$300k", "7 Seats"];
 
 const SUGGESTIONS = [
@@ -257,6 +275,7 @@ Guidelines:
 - Always lead recommendations with Price, Warranty and Safety
 - Keep answers concise and scannable
 - Remind users you can answer broader questions about financing, road suitability, insurance, import info
+- For financing questions: give a rough monthly estimate using ~7-9% annual interest, 10% down, 60 months as a general guide. Always add that actual rates vary by bank and the customer should speak with their bank or credit union directly for accurate terms. Never quote a specific bank rate as confirmed.
 - Guide interested buyers toward booking a test drive
 - Only reference cars in the inventory — never invent specs
 - Always quote prices in T&T dollars`;
@@ -480,7 +499,10 @@ function ChatCarCard({ car, onBook, onFeatureAsk }) {
             <div style={{ fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", marginBottom: 2 }}>{car.brand}</div>
             <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
               <div style={{ color: "white", fontWeight: 900, fontSize: "1.1rem", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{car.year} {car.name}</div>
-              <div style={{ color: "white", fontWeight: 900, fontSize: "1rem", letterSpacing: "-0.02em" }}>{fmt(car.price)}</div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ color: "white", fontWeight: 900, fontSize: "1rem", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{fmt(car.price)}</div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.7rem", fontWeight: 600 }}>~{fmtMonthly(car.price)}/mo est.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -710,15 +732,28 @@ function VehicleDetailPanel({ car, onClose, onBook, onFeatureAsk, onViewPhotos }
         <div style={{ overflowY: "auto", flex: 1, padding: "1.5rem" }}>
 
           {/* Price headline */}
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.5rem" }}>
-            <div>
-              <div style={{ fontSize: "0.7rem", color: "#9CA3AF", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.2rem" }}>Starting Price</div>
-              <div style={{ fontSize: "2rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.035em", lineHeight: 1 }}>{fmt(car.price)}</div>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
+            <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "flex-end" }}>
+              <div>
+                <div style={{ fontSize: "0.65rem", color: "#9CA3AF", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.2rem" }}>Vehicle Price</div>
+                <div style={{ fontSize: "2rem", fontWeight: 900, color: "#111827", letterSpacing: "-0.035em", lineHeight: 1 }}>{fmt(car.price)}</div>
+              </div>
+              <div style={{ paddingBottom: "0.15rem" }}>
+                <div style={{ fontSize: "0.65rem", color: "#9CA3AF", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.2rem" }}>Est. Monthly Payment</div>
+                <div style={{ fontSize: "1.5rem", fontWeight: 900, color: car.accent, letterSpacing: "-0.03em", lineHeight: 1 }}>~{fmtMonthly(car.price)}<span style={{ fontSize: "0.8rem", fontWeight: 600, color: "#9CA3AF" }}>/mo</span></div>
+                <div style={{ fontSize: "0.65rem", color: "#9CA3AF", marginTop: 2 }}>10% down · 60 months · est. rate</div>
+              </div>
             </div>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
               <div style={{ background: car.accent + "12", border: `1px solid ${car.accent}30`, borderRadius: 9, padding: "0.4rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, color: car.accent }}>{car.safety}</div>
               <div style={{ background: "#F3F4F6", border: "1px solid #E5E7EB", borderRadius: 9, padding: "0.4rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, color: "#374151" }}>{car.warranty}</div>
             </div>
+          </div>
+
+          {/* Financing disclaimer */}
+          <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 10, padding: "0.7rem 1rem", fontSize: "0.78rem", color: "#92400E", lineHeight: 1.6, marginBottom: "1.5rem", display: "flex", gap: "0.5rem" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Monthly estimate based on approx. 7–9% annual interest, 10% down payment, 60-month term. Actual rates vary — speak with your bank or credit union for confirmed financing terms.
           </div>
 
           {/* Description */}
@@ -1044,7 +1079,10 @@ function CarCard({ car, expandedCards, toggleCard, cardImageIndex, setCardImageI
           <div style={s.cardType}>{car.type} · {car.seats} Seats · {car.fuel}</div>
           <div style={s.cardPriceRow}>
             <div style={s.cardPrice}>{fmt(car.price)}</div>
-            <div style={s.cardMonthly}>{car.monthlyFuel} /mo est.</div>
+            <div style={s.cardMonthly}>{car.monthlyFuel} /mo fuel</div>
+          </div>
+          <div style={s.cardInstallment}>
+            ~{fmtMonthly(car.price)}<span style={s.cardInstallmentLabel}>/mo est. financing</span>
           </div>
         </div>
       </div>
@@ -1311,6 +1349,12 @@ export default function CarlaAI() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [expandedCards, setExpandedCards] = useState(new Set());
   const [cardImageIndex, setCardImageIndex] = useState({});
+
+  // ── FINANCING CALCULATOR ──
+  const [calcOpen, setCalcOpen] = useState(false);
+  const [calcPrice, setCalcPrice] = useState(300000);
+  const [calcDown, setCalcDown] = useState(LOAN_DEFAULT_DOWN);
+  const [calcTerm, setCalcTerm] = useState(LOAN_DEFAULT_TERM);
 
   // ── COMPARE STATE ──
   const [compareCarA, setCompareCarA] = useState(null); // first car selected
@@ -2036,6 +2080,114 @@ export default function CarlaAI() {
           <span>{matches.length} Match{matches.length > 1 ? "es" : ""}</span>
         </button>
       )}
+
+      {/* ── FLOATING FINANCING CALCULATOR ── */}
+      <div style={{ position: "fixed", bottom: "1.5rem", left: "1.5rem", zIndex: 101 }}>
+        {calcOpen && (
+          <div style={{
+            background: "white", borderRadius: 16, boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
+            border: "1px solid #E5E7EB", padding: "1.25rem", width: 300,
+            marginBottom: "0.65rem", animation: "slideUp 0.2s ease",
+          }}>
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: "0.92rem", color: "#111827", letterSpacing: "-0.01em" }}>Financing Calculator</div>
+                <div style={{ fontSize: "0.68rem", color: "#9CA3AF", marginTop: 1 }}>Estimate only — speak to your bank for confirmed rates</div>
+              </div>
+              <button onClick={() => setCalcOpen(false)} style={{ background: "#F3F4F6", border: "none", borderRadius: 7, padding: "0.3rem", cursor: "pointer", color: "#6B7280", display: "flex" }}>
+                <Icon.x />
+              </button>
+            </div>
+
+            {/* Vehicle Price */}
+            <div style={{ marginBottom: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
+                <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#374151" }}>Vehicle Price</label>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#4F46E5" }}>{fmt(calcPrice)}</span>
+              </div>
+              <input type="range" min={150000} max={4000000} step={10000} value={calcPrice}
+                onChange={e => setCalcPrice(parseInt(e.target.value))}
+                style={{ width: "100%", accentColor: "#4F46E5" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.62rem", color: "#9CA3AF", marginTop: 2 }}>
+                <span>TT$150k</span><span>TT$4M</span>
+              </div>
+            </div>
+
+            {/* Down Payment */}
+            <div style={{ marginBottom: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
+                <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#374151" }}>Down Payment</label>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#4F46E5" }}>{calcDown}% ({fmt(Math.round(calcPrice * calcDown / 100))})</span>
+              </div>
+              <input type="range" min={0} max={50} step={5} value={calcDown}
+                onChange={e => setCalcDown(parseInt(e.target.value))}
+                style={{ width: "100%", accentColor: "#4F46E5" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.62rem", color: "#9CA3AF", marginTop: 2 }}>
+                <span>0%</span><span>50%</span>
+              </div>
+            </div>
+
+            {/* Loan Term */}
+            <div style={{ marginBottom: "1.1rem" }}>
+              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#374151", display: "block", marginBottom: "0.5rem" }}>Loan Term</label>
+              <div style={{ display: "flex", gap: "0.4rem" }}>
+                {TERMS.map(t => (
+                  <button key={t}
+                    style={{
+                      flex: 1, padding: "0.45rem 0.25rem", borderRadius: 8, border: "1.5px solid",
+                      fontSize: "0.75rem", fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+                      borderColor: calcTerm === t ? "#4F46E5" : "#E5E7EB",
+                      background: calcTerm === t ? "#EEF2FF" : "white",
+                      color: calcTerm === t ? "#4F46E5" : "#6B7280",
+                      transition: "all 0.12s",
+                    }}
+                    onClick={() => setCalcTerm(t)}>
+                    {t}mo
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Result */}
+            <div style={{ background: "linear-gradient(135deg, #4F46E5, #7C3AED)", borderRadius: 12, padding: "1rem", textAlign: "center" }}>
+              <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "rgba(255,255,255,0.7)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Est. Monthly Payment</div>
+              <div style={{ fontSize: "2rem", fontWeight: 900, color: "white", letterSpacing: "-0.035em", lineHeight: 1 }}>
+                {fmt(calcMonthly(calcPrice, calcDown, calcTerm))}
+              </div>
+              <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.65)", marginTop: "0.3rem" }}>
+                /month for {calcTerm} months · ~{LOAN_RATE_ANNUAL * 100}% rate est.
+              </div>
+            </div>
+
+            <div style={{ fontSize: "0.68rem", color: "#9CA3AF", marginTop: "0.75rem", lineHeight: 1.5, textAlign: "center" }}>
+              Speak with your bank or credit union for accurate financing rates and terms in T&T.
+            </div>
+          </div>
+        )}
+
+        {/* Toggle button */}
+        <button
+          onClick={() => setCalcOpen(o => !o)}
+          style={{
+            background: calcOpen ? "#111827" : "linear-gradient(135deg, #059669, #10B981)",
+            border: "none",
+            borderRadius: 50, padding: "0.65rem 1.1rem",
+            fontWeight: 700, fontSize: "0.82rem",
+            cursor: "pointer", fontFamily: "inherit",
+            display: "flex", alignItems: "center", gap: "0.45rem",
+            boxShadow: calcOpen ? "0 4px 16px rgba(0,0,0,0.2)" : "0 6px 20px rgba(5,150,105,0.45)",
+            color: "white",
+            transition: "all 0.18s",
+          }}
+          className="calc-toggle-btn"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          {calcOpen ? "Close" : "Financing Calculator"}
+        </button>
+      </div>
     </div>
   );
 }
@@ -2167,7 +2319,9 @@ const s = {
   cardType: { fontSize: "0.76rem", opacity: 0.8, fontWeight: 500 },
   cardPriceRow: { display: "flex", alignItems: "baseline", gap: "0.65rem", marginTop: "0.6rem", flexWrap: "wrap" },
   cardPrice: { fontSize: "1.3rem", fontWeight: 900, letterSpacing: "-0.02em" },
-  cardMonthly: { fontSize: "0.78rem", fontWeight: 700, opacity: 0.88, letterSpacing: "0.01em" },
+  cardMonthly: { fontSize: "0.72rem", fontWeight: 600, opacity: 0.75, letterSpacing: "0.01em" },
+  cardInstallment: { fontSize: "0.88rem", fontWeight: 800, color: "white", letterSpacing: "-0.01em", marginTop: "0.2rem" },
+  cardInstallmentLabel: { fontSize: "0.65rem", fontWeight: 500, opacity: 0.75, marginLeft: "0.2rem" },
   cardBody: { padding: "1rem 1.1rem 1.1rem", display: "flex", flexDirection: "column", gap: "0.85rem", flex: 1 },
   keyGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" },
   keyBox: { background: gray50, border: `1px solid ${gray100}`, borderRadius: 10, padding: "0.6rem 0.7rem" },
@@ -2349,6 +2503,7 @@ const css = `
   .view-photos-btn:hover { background: var(--accent-bg, rgba(79,70,229,0.12)) !important; border-color: currentColor !important; transform: translateY(-1px); }
   .view-details-btn:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
   .chat-car-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
+  .calc-toggle-btn:hover { box-shadow: 0 8px 24px rgba(5,150,105,0.55) !important; transform: translateY(-2px); filter: brightness(1.08); }
   .tab-btn-hover:hover { color: #4F46E5 !important; }
   .matches-back:hover { border-color: #4F46E5 !important; color: #4F46E5 !important; background: #EEF2FF !important; }
 
